@@ -15,7 +15,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex-shrink-0 flex items-center">
-                <span class="text-white text-xl font-bold">Sistema de Cotação</span>
+                <span class="text-white text-xl font-bold">Sistema de Cotaçãoooooo</span>
             </div>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="{{route('login')}}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Login</a>
