@@ -3,6 +3,7 @@
 /public/build
 /public/hot
 /public/storage
+/public/demonstracao.gif
 /storage/*.key
 /storage/pail
 /vendor
