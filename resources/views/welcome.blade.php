@@ -19,14 +19,12 @@
             </div>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="{{route('login')}}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Login</a>
-                <a href="{{route('login')}}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Saiba Mais</a>
+                <a href="#pricing" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Saiba Mais</a>
             </div>
         </div>
     </div>
 </nav>
 
-<!-- Background Particles -->
-<div id="particles-js" class="fixed inset-0 z-0"></div>
 
 <section class="relative min-h-screen pt-16 overflow-hidden" style="background-color: #f5f5f5; background-image: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
@@ -392,14 +390,184 @@
 </section>
 
 
+<section class="py-16 bg-gradient-to-br from-amber-50 to-amber-100/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Título Principal -->
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-900 mb-4">Fale Conosco</h2>
+            <p class="text-amber-800 max-w-2xl mx-auto">Envie suas dúvidas ou sugestões. Estamos aqui para ajudar!</p>
+            <div class="w-24 h-1 bg-amber-700 mx-auto mt-4"></div>
+        </div>
 
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <!-- Formulário -->
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <form class="space-y-6">
+                    <!-- Nome -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-amber-900 mb-2">Nome</label>
+                        <input type="text" id="name" name="name" required
+                               class="w-full px-4 py-3 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
+                               placeholder="Seu nome completo">
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-amber-900 mb-2">Email</label>
+                        <input type="email" id="email" name="email" required
+                               class="w-full px-4 py-3 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
+                               placeholder="seu@email.com">
+                    </div>
+
+                    <!-- Assunto -->
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-amber-900 mb-2">Assunto</label>
+                        <input type="text" id="subject" name="subject" required
+                               class="w-full px-4 py-3 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
+                               placeholder="Assunto da mensagem">
+                    </div>
+
+                    <!-- Mensagem -->
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-amber-900 mb-2">Mensagem</label>
+                        <textarea id="message" name="message" rows="4" required
+                                  class="w-full px-4 py-3 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
+                                  placeholder="Digite sua mensagem aqui..."></textarea>
+                    </div>
+
+                    <!-- Botão Enviar -->
+                    <button type="submit"
+                            class="w-full bg-amber-600 text-white py-3 px-6 rounded-lg hover:bg-amber-700 transition-colors duration-300 flex items-center justify-center">
+                        <span>Enviar Mensagem</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="flex flex-col justify-center lg:justify-start">
+                <div class="bg-amber-50 rounded-xl shadow-lg p-8 border border-amber-200">
+                    <h3 class="text-2xl font-bold text-amber-900 mb-4">Comece Agora Mesmo!</h3>
+                    <p class="text-amber-800 mb-8">
+                        Não perca mais tempo com processos manuais. Automatize suas cotações e aumente suas vendas com nossa plataforma intuitiva.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-amber-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-amber-800">Cotações em segundos</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-amber-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-amber-800">Suporte especializado</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-amber-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="text-amber-800">Sem taxa de adesão</span>
+                        </div>
+                    </div>
+                    <a href="#signup"
+                       class="mt-8 bg-blue-600 text-white py-4 px-8 rounded-lg hover:bg-blue-700 transition-all transform hover:-translate-y-1 inline-flex items-center w-full justify-center">
+                        <span>Começar Agora</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-blue-900 text-white py-10">
+    <div class="container mx-auto px-4">
+        <!-- Grade Principal -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Resumo do Sistema -->
+            <div>
+                <h3 class="text-xl font-bold mb-4">Sobre o Sistema</h3>
+                <p class="text-sm leading-6">
+                    Nosso sistema é uma solução completa para gerenciar planos de saúde e parcerias com as maiores administradoras do mercado. Com foco em eficiência e simplicidade, oferecemos uma plataforma que conecta corretores e clientes de forma ágil e segura.
+                </p>
+            </div>
+
+            <!-- Links para Navegação -->
+            <div>
+                <h3 class="text-xl font-bold mb-4">Navegação</h3>
+                <ul class="space-y-2">
+                    <li><a href="#galeria-administradoras" class="text-sm hover:text-blue-300 transition">Galeria de Administradoras</a></li>
+                    <li><a href="#pricing" class="text-sm hover:text-blue-300 transition">Planos</a></li>
+                    <li><a href="#ranking" class="text-sm hover:text-blue-300 transition">Ranking</a></li>
+                    <li><a href="#contact" class="text-sm hover:text-blue-300 transition">Contato</a></li>
+                </ul>
+            </div>
+
+            <!-- Links Sociais -->
+            <div>
+                <h3 class="text-xl font-bold mb-4">Siga-nos</h3>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-blue-300 transition">
+                        <svg class="w-6 h-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M22.675 0H1.325C.594 0 0 .593 0 1.324v21.351C0 23.406.593 24 1.325 24h21.351C23.407 24 24 23.406 24 22.675V1.325C24 .594 23.407 0 22.675 0zm-2.406 20.736h-3.917v-6.215h3.917v6.215zm-1.958-7.107c-1.255 0-2.276-1.021-2.276-2.276s1.021-2.276 2.276-2.276 2.276 1.021 2.276 2.276-1.021 2.276-2.276 2.276zm5.835 7.107h-3.916v-6.215h3.916v6.215zm-1.958-7.107c-1.255 0-2.276-1.021-2.276-2.276s1.021-2.276 2.276-2.276 2.276 1.021 2.276 2.276-1.021 2.276-2.276 2.276zm0 0"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="hover:text-blue-300 transition">
+                        <svg class="w-6 h-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 .296c-6.624 0-12 5.376-12 12s5.376 12 12 12 12-5.376 12-12-5.376-12-12-12zm.296 5.871h2.216v1.674h-2.216c-.549 0-.876.485-.876 1.137v1.587h2.99v1.662h-2.99v4.777h-1.674v-4.777h-1.674v-1.662h1.674v-1.587c0-1.422.936-2.603 2.55-2.603z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="hover:text-blue-300 transition">
+                        <svg class="w-6 h-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M23.643 4.937c-.835.371-1.73.621-2.675.733a4.673 4.673 0 002.048-2.578c-.889.528-1.874.913-2.92 1.116a4.657 4.657 0 00-7.926 4.243 13.216 13.216 0 01-9.603-4.863 4.657 4.657 0 001.446 6.216 4.632 4.632 0 01-2.11-.584v.06c0 2.256 1.604 4.14 3.735 4.567-.391.104-.801.159-1.222.159-.3 0-.593-.03-.878-.085a4.661 4.661 0 004.348 3.233 9.328 9.328 0 01-6.88 1.935 13.14 13.14 0 007.13 2.087c8.556 0 13.228-7.083 13.228-13.228 0-.202-.005-.403-.015-.604.906-.656 1.692-1.475 2.313-2.41z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Linha de Direitos -->
+        <div class="mt-8 text-center text-sm text-gray-400">
+            &copy; {{ date('Y') }} - Todos os direitos reservados. Criado por BmSys.
+        </div>
+    </div>
+</footer>
 
 
 
 
 
 <script>
-    // Inicializa as animações AOS
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const smoothScrollLinks = document.querySelectorAll('a[href="#pricing"]');
+
+        smoothScrollLinks.forEach(link => {
+            link.addEventListener("click", (event) => {
+                event.preventDefault(); // Evita que o comportamento padrão de adicionar #pricing à URL aconteça
+                const targetSection = document.querySelector("#pricing");
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                    });
+                }
+            });
+        });
+    });
+
+
+
+
+
+
+
     AOS.init({
         duration: 1000,
         once: true
