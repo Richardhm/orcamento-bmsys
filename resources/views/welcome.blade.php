@@ -76,7 +76,7 @@
 <div class="absolute bottom-0 inset-x-0 h-64 bg-gradient-to-t from-black/95 to-transparent"></div>
 </section>
 
-<section id="arguments" class="h-screen bg-gray-100 text-gray-800">
+<section id="arguments" class="bg-gray-100 text-gray-800 h-screen">
     <div class="h-full flex flex-col justify-start items-center px-8 pt-12">
         <!-- Título da seção -->
         <h2 class="text-4xl font-bold mb-10 text-center">Por que escolher nosso sistema?</h2>
@@ -126,10 +126,9 @@
     </div>
 </section>
 
-<section id="pricing" class="h-screen flex items-center justify-center bg-blue-500 text-white text-center py-10 sm:py-16">
-
-    <div class="container mx-auto px-4">
-        <h2 class="text-3xl lg:text-5xl font-bold">Planos Acessíveis</h2>
+<section class="py-16 bg-gradient-to-br from-amber-50 to-amber-100/50 h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl lg:text-5xl font-bold w-full">Planos Acessíveis</h2>
         <div class="mt-8 flex flex-col lg:flex-row gap-6 justify-center">
             <div class="bg-white text-blue-500 rounded-lg shadow-lg p-6 w-72">
                 <h3 class="text-2xl font-semibold">Plano Individual</h3>
