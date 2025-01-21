@@ -96,7 +96,7 @@
             </div>
             <!-- Card 3 -->
             <div class="flex flex-col items-center text-center bg-white p-8 shadow-xl rounded-lg min-h-[16rem]">
-                <h3 class="text-2xl font-semibold mb-4">Mais Credibilidade</h3>
+                <h3 class="text-2xl font-semibold mb-4">Mais Credibilidadesssss</h3>
                 <p>Entregue cotações com apresentação profissional ao seu cliente e saia na frente de seus concorrentes.</p>
             </div>
             <!-- Card 4 -->
