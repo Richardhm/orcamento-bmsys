@@ -76,7 +76,7 @@
 <div class="absolute bottom-0 inset-x-0 h-64 bg-gradient-to-t from-black/95 to-transparent"></div>
 </section>
 
-<section id="arguments" class="bg-gray-100 text-gray-800 h-screen">
+<section id="arguments" class="bg-gray-100 text-gray-800 h-auto">
     <div class="h-full flex flex-col justify-start items-center px-8 pt-12">
         <!-- Título da seção -->
         <h2 class="text-4xl font-bold mb-10 text-center">Por que escolher nosso sistema?</h2>
@@ -126,10 +126,11 @@
     </div>
 </section>
 
-<section class="py-16 bg-gradient-to-br from-amber-50 to-amber-100/50 h-screen">
+<section id="pricing" class="py-16 bg-gradient-to-br from-amber-50 to-amber-100/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl lg:text-5xl font-bold w-full">Planos Acessíveis</h2>
         <div class="mt-8 flex flex-col lg:flex-row gap-6 justify-center">
+            <!-- Plano 1 -->
             <div class="bg-white text-blue-500 rounded-lg shadow-lg p-6 w-72">
                 <h3 class="text-2xl font-semibold">Plano Individual</h3>
                 <p class="text-4xl font-bold mt-4">R$ 29,90/mês</p>
@@ -142,6 +143,7 @@
                     Assinar
                 </button>
             </div>
+            <!-- Plano 2 -->
             <div class="bg-white text-blue-500 rounded-lg shadow-lg p-6 w-72">
                 <h3 class="text-2xl font-semibold">Plano Empresarial</h3>
                 <p class="text-4xl font-bold mt-4">R$ 150,99/mês</p>
@@ -155,6 +157,7 @@
                     Assinar
                 </button>
             </div>
+            <!-- Plano 3 -->
             <div class="bg-white text-blue-500 rounded-lg shadow-lg p-6 w-72">
                 <h3 class="text-2xl font-semibold">Plano Premium</h3>
                 <p class="text-4xl font-bold mt-4">R$ 239,99/mês</p>
@@ -162,7 +165,7 @@
                     <li>- Equipes colaborativas.</li>
                     <li>- Gestão completa.</li>
                     <li>- Relatórios detalhados.</li>
-                    <li>- Cadastro email iliminado.</li>
+                    <li>- Cadastro email ilimitado.</li>
                 </ul>
                 <button class="mt-6 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
                     Assinar
@@ -171,6 +174,7 @@
         </div>
     </div>
 </section>
+
 
 <section class="py-16 bg-gradient-to-br from-white to-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
