@@ -126,7 +126,8 @@
     </div>
 </section>
 
-<section id="pricing" class="h-screen flex items-center justify-center bg-blue-500 text-white text-center py-10 mt-1">
+<section id="pricing" class="min-h-screen flex items-center justify-center bg-blue-500 text-white text-center py-10 sm:py-16">
+
     <div class="container mx-auto px-4">
         <h2 class="text-3xl lg:text-5xl font-bold">Planos Acessíveis</h2>
         <div class="mt-8 flex flex-col lg:flex-row gap-6 justify-center">
