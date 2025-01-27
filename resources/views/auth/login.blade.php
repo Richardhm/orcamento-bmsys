@@ -1,17 +1,41 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-    <section style="width:380px;background-color: white;border-radius: 5px;">
-        <img src="{{asset('logo.png')}}" class="mx-auto my-2 w-10/12" alt="">
+    @if ($errors->has('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Erro!</strong>
+            <span class="block sm:inline">{{ $errors->first('error') }}</span>
+            <button class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none';">
+                <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <title>Fechar</title>
+                    <path d="M14.348 14.849a1 1 0 010-1.415L16.243 11l-1.895-1.434a1 1 0 111.416-1.416L17.656 9.585l1.434-1.895a1 1 0 111.416 1.416L19.415 11l1.895 1.434a1 1 0 11-1.416 1.416L17.656 12.415l-1.434 1.895a1 1 0 01-1.416 0l-1.433-1.894z" />
+                </svg>
+            </button>
+        </div>
+    @endif
+    @if ($errors->has('message'))
+        <div class="bg-green-200 border border-white text-black px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Sucesso!</strong>
+            <span class="block sm:inline">{{ $errors->first('message') }}</span>
+            <button class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none';">
+                <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <title>Fechar</title>
+                    <path d="M14.348 14.849a1 1 0 010-1.415L16.243 11l-1.895-1.434a1 1 0 111.416-1.416L17.656 9.585l1.434-1.895a1 1 0 111.416 1.416L19.415 11l1.895 1.434a1 1 0 11-1.416 1.416L17.656 12.415l-1.434 1.895a1 1 0 01-1.416 0l-1.433-1.894z" />
+                </svg>
+            </button>
+        </div>
+    @endif
+    <section style="width:380px;border-radius: 5px;">
+        <img src="{{asset('logo_bm_1.png')}}" class="mx-auto my-2 w-10/12" alt="">
         <form method="POST" action="{{ route('login') }}" class="p-2">
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <div class="mb-2">
-                <label for="email" class="block mb-1 font-medium text-gray-950 dark:text-white text-sm" style="color:black;">Email</label>
+                <label for="email" class="block mb-1 font-medium text-gray-950 dark:text-white text-white text-sm">Email</label>
                 <input type="email" name="email" id="email" style="color:black;" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" required />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
             <div class="mb-2">
-                <label for="password" class="block mb-1 font-medium dark:text-white text-sm text-gray-950" style="color:black;">Senha</label>
+                <label for="password" class="block mb-1 font-medium dark:text-white text-white text-sm text-gray-950">Senha</label>
                 <div class="relative">
                     <input type="password" name="password" id="password" style="color:black;" class="bg-gray-50 border text-gray-950 border-gray-300 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" required />
                     <button type="button" id="togglePassword" class="absolute right-2 top-2 cursor-pointer" style="color:black;">
@@ -29,19 +53,19 @@
             <div class="flex justify-between">
                 <div>
                     <input type="checkbox" class="text-gray-950">
-                    <span style="color:black;" class="text-sm">Lembrar-me</span>
+                    <span class="text-sm dark:text-white text-white">Lembrar-me</span>
                 </div>
                 <div>
-                    <a href="" style="color:black;text-decoration: underline;" class="text-sm">Esqueceu a Senha?</a>
+                    <a href="{{route('password.request')}}" style="text-decoration: underline;" class="text-sm dark:text-white text-white">Esqueceu a Senha?</a>
                 </div>
             </div>
             <div class="mx-auto my-5 w-full flex justify-center">
                 <button type="submit" style="background-color: rgb(9, 116, 122);color:white;margin:0 auto;" class="focus:outline-none font-medium mt-2 text-lg w-2/3 px-5 py-2 text-center focus:border-transparent focus:ring-0 focus:outline-none rounded-lg text-gray-950">LOGIN</button>
             </div>
         </form>
-        <div class="flex justify-center mb-2">
-            <a href="{{route('register')}}" class="p-2 rounded-lg text-sm" style="color: #1a202c;border:1px solid black;"> CRIAR CONTA</a>
-        </div>
+{{--        <div class="flex justify-center mb-2">--}}
+{{--            <a href="{{route('register')}}" class="p-2 rounded-lg text-sm" style="color: #1a202c;border:1px solid black;"> CRIAR CONTA</a>--}}
+{{--        </div>--}}
 
 
 

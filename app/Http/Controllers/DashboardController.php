@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administradora;
+use App\Models\Layout;
 use App\Models\Plano;
 use App\Models\Tabela;
 use App\Models\Pdf;
@@ -15,6 +16,13 @@ class DashboardController extends Controller
 {
     public function index()
     {
+//        $base64Image = 'data:image/png;base64,'.base64_encode(file_get_contents(public_path("storage/".auth()->user()->imagem)));
+//        dd($base64Image);
+
+
+
+        //echo "";
+        //return;
         $cidades = TabelaOrigens::all();
         $administradoras = Administradora::all();
         $planos = Plano::all();
@@ -103,6 +111,8 @@ class DashboardController extends Controller
 
     public function criarPDF()
     {
+
+        $layout = Layout::find(auth()->user()->layout_id);
         $ambulatorial = request()->ambulatorial;
         $cidade = request()->tabela_origem;
         $plano = request()->plano;
@@ -147,11 +157,13 @@ class DashboardController extends Controller
         $frase = $plano_nome.$odonto_frase;
         $keys = implode(",",$chaves);
         $image_user = "";
-        if(auth()->user()->image) {
-            $image_user = 'data:image/png;base64,'.base64_encode(file_get_contents(public_path(auth()->user()->image)));
+        if(auth()->user()->imagem) {
+            //$image_user = 'data:image/png;base64,'.base64_encode(file_get_contents(public_path(auth()->user()->image)));
+            //$image_user = 'data:image/png;base64,'.base64_encode(file_get_contents(public_path("storage/".auth()->user()->imagem)));
+            $image_user = public_path("storage/".auth()->user()->imagem);
         }
         $nome = auth()->user()->name;
-        $celular = auth()->user()->celular;
+        $celular = auth()->user()->phone;
         $corretora = auth()->user()->corretora_id;
         $status_carencia = request()->status_carencia == "true" ? 1 : 0;
         $status_desconto = request()->status_desconto == "true" ? 1 : 0;
@@ -167,11 +179,13 @@ class DashboardController extends Controller
                 ->whereIn('tabelas.faixa_etaria_id', explode(',', $keys))
                 ->get();
 
-
+            //dd($image_user);
 
             //$carencias = Carencia::where("plano_id",$plano)->get();
-
+            $base64Image = "";
             $view = \Illuminate\Support\Facades\View::make("cotacao.cotacao3",[
+                'base64Image' => $base64Image,
+                'layout' => $layout,
                 'carencias' => "",
                 'image' => $image_user,
                 'dados' => $dados,

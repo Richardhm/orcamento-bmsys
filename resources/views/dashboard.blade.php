@@ -3,7 +3,7 @@
         <x-informacoes :cidades="$cidades" class="sm:mx-5"></x-informacoes>
         <x-operadoras :operadoras="$administradoras" class="sm:mx-5"></x-operadoras>
         <x-planos :planos="$planos" class="sm:mx-5"></x-planos>
-        <div class="p-1 rounded mt-2 hidden bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border border-black dark:border-white w-full lg:w-[30%] sm:mx-5" id="resultado"></div>
+        <div class="p-1 rounded mt-2 hidden bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border border-white dark:border-white w-full lg:w-[30%] sm:mx-5" id="resultado"></div>
     </div>
 
     @section('scripts')

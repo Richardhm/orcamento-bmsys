@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\CustomVerifyEmail;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -21,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'imagem',
     ];
 
     /**
@@ -45,4 +48,34 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail());
+    }
+
+    public function assinatura()
+    {
+        return $this->hasOne(Assinatura::class);
+    }
+
+    // Verificar se o usuário logado é administrador
+    public function isAdmin()
+    {
+        $emailAssinatura = EmailAssinatura::whereHas('assinatura', function ($query) {
+            $query->where('user_id', $this->id);
+        })->first();
+
+        if ($emailAssinatura && $emailAssinatura->is_administrador == 1) {
+            return true;
+        }
+
+        return false;
+
+
+
+
+    }
+
+
 }

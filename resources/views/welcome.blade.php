@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Cotações de Plano de Saúde</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"/>
+
+
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        /* Aumentar a largura do toastr */
+        .toast {
+            width: 400px !important; /* Modifique esse valor conforme necessário */
+        }
+    </style>
 </head>
 <body class="bg-black">
 <!-- Navbar -->
@@ -128,49 +135,51 @@
 
 <section id="pricing" class="py-16 bg-gradient-to-br from-amber-50 to-amber-100/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl lg:text-5xl font-bold w-full">Planos Acessíveis</h2>
+        <h2 class="text-3xl lg:text-5xl font-bold w-full text-center">Planos Acessíveis</h2>
         <div class="mt-8 flex flex-col lg:flex-row gap-6 justify-center">
             <!-- Plano 1 -->
-            <div class="bg-white text-blue-500 rounded-lg shadow-lg p-6 w-72">
-                <h3 class="text-2xl font-semibold">Plano Individual</h3>
-                <p class="text-4xl font-bold mt-4">R$ 29,90/mês</p>
-                <ul class="mt-4 text-left">
-                    <li>- Acesso ao sistema.</li>
-                    <li>- Cotações ilimitadas.</li>
-                    <li>- Fácil de usar.</li>
-                </ul>
-                <button class="mt-6 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-                    Assinar
-                </button>
+            <div class="bg-white text-blue-500 rounded-lg shadow-lg flex-wrap p-6 w-[30%] flex content-between">
+                <div class="w-full">
+                    <h3 class="text-2xl font-semibold text-center border-b border-black uppercase">Plano Individual</h3>
+                    <p class="text-4xl font-bold mt-4">R$ 29,90/mês</p>
+                    <ul class="mt-4 text-left text-sm">
+                        <li>- Acesso ao sistema.</li>
+                        <li>- Cotações ilimitadas.</li>
+                        <li>- Fácil de usar.</li>
+                        <li>- Apenas um Emáil</li>
+                    </ul>
+                </div>
+                <div class="w-full">
+                    <a href="{{route('assinaturas.individual.create')}}" class="mt-6 bg-blue-500 text-white flex justify-center w-full py-2 px-4 rounded-lg hover:bg-blue-600">
+                        Assinar
+                    </a>
+                </div>
             </div>
             <!-- Plano 2 -->
-            <div class="bg-white text-blue-500 rounded-lg shadow-lg p-6 w-72">
-                <h3 class="text-2xl font-semibold">Plano Empresarial</h3>
-                <p class="text-4xl font-bold mt-4">R$ 150,99/mês</p>
-                <ul class="mt-4 text-left">
-                    <li>- Equipes colaborativas.</li>
-                    <li>- Gestão completa.</li>
-                    <li>- Relatórios detalhados.</li>
-                    <li>- Cadastrar até 10 email.</li>
-                </ul>
-                <button class="mt-6 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-                    Assinar
-                </button>
+            <div class="bg-white text-blue-500 rounded-lg shadow-lg flex-wrap p-6 w-[30%] flex content-between" style="border:5px solid black;">
+                <div class="w-full">
+                    <h3 class="text-2xl font-semibold text-center border-b border-black uppercase">Plano Empresarial</h3>
+                    <p class="text-4xl font-bold mt-4">R$ 129,90/mês</p>
+                    <ul class="mt-4 text-left text-sm">
+                        <li>- Acesso ao sistema.</li>
+                        <li>- Cotações ilimitadas.</li>
+                        <li>- Fácil de usar.</li>
+                        <li>- Equipes colaborativas.</li>
+                        <li>- Gestão completa.</li>
+                        <li>- Relatórios detalhados.</li>
+                        <li>- Cadastrar até 5 email's.</li>
+                        <li>- Acima de 5 email's é cobrado 30 reais por email.</li>
+                    </ul>
+                </div>
+                <div class="w-full">
+                    <a href="{{route('assinaturas.empresarial.create')}}" class="mt-6 bg-blue-500 text-white flex justify-center w-full py-2 px-4 rounded-lg hover:bg-blue-600">
+                        Assinar
+                    </a>
+                </div>
+
             </div>
             <!-- Plano 3 -->
-            <div class="bg-white text-blue-500 rounded-lg shadow-lg p-6 w-72">
-                <h3 class="text-2xl font-semibold">Plano Premium</h3>
-                <p class="text-4xl font-bold mt-4">R$ 239,99/mês</p>
-                <ul class="mt-4 text-left">
-                    <li>- Equipes colaborativas.</li>
-                    <li>- Gestão completa.</li>
-                    <li>- Relatórios detalhados.</li>
-                    <li>- Cadastro email ilimitado.</li>
-                </ul>
-                <button class="mt-6 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-                    Assinar
-                </button>
-            </div>
+
         </div>
     </div>
 </section>
@@ -406,7 +415,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             <!-- Formulário -->
             <div class="bg-white rounded-xl shadow-lg p-8">
-                <form class="space-y-6">
+                <form id="suggestion-form" class="space-y-6">
                     <!-- Nome -->
                     <div>
                         <label for="name" class="block text-sm font-medium text-amber-900 mb-2">Nome</label>
@@ -444,7 +453,7 @@
                             class="w-full bg-amber-600 text-white py-3 px-6 rounded-lg hover:bg-amber-700 transition-colors duration-300 flex items-center justify-center">
                         <span>Enviar Mensagem</span>
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                         </svg>
                     </button>
                 </form>
@@ -545,13 +554,15 @@
 
 
 
-
-
+<script
+    src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
 
     document.addEventListener("DOMContentLoaded", () => {
         const smoothScrollLinks = document.querySelectorAll('a[href="#pricing"]');
-
         smoothScrollLinks.forEach(link => {
             link.addEventListener("click", (event) => {
                 event.preventDefault(); // Evita que o comportamento padrão de adicionar #pricing à URL aconteça
@@ -564,76 +575,55 @@
                 }
             });
         });
-    });
 
 
+        document.getElementById('suggestion-form').addEventListener('submit', function (e) {
+            e.preventDefault();
 
+            // Obter os dados do formulário
+            const formData = new FormData(this);
 
-
-
-
-    AOS.init({
-        duration: 1000,
-        once: true
-    });
-
-    // Configuração do Particles.js
-    particlesJS("particles-js", {
-        particles: {
-            number: {
-                value: 80,
-                density: {
-                    enable: true,
-                    value_area: 800
-                }
-            },
-            color: {
-                value: "#4B5563"
-            },
-            shape: {
-                type: "circle"
-            },
-            opacity: {
-                value: 0.5,
-                random: false
-            },
-            size: {
-                value: 3,
-                random: true
-            },
-            line_linked: {
-                enable: true,
-                distance: 150,
-                color: "#4B5563",
-                opacity: 0.4,
-                width: 1
-            },
-            move: {
-                enable: true,
-                speed: 2,
-                direction: "none",
-                random: false,
-                straight: false,
-                out_mode: "out",
-                bounce: false
-            }
-        },
-        interactivity: {
-            detect_on: "canvas",
-            events: {
-                onhover: {
-                    enable: true,
-                    mode: "grab"
+            // Enviar via AJAX
+            fetch('{{ route('send.suggestion') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                onclick: {
-                    enable: true,
-                    mode: "push"
-                },
-                resize: true
-            }
-        },
-        retina_detect: true
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.success) {
+                        toastr.success(data.message, 'Sucesso');
+                        document.getElementById('suggestion-form').reset(); // Limpar formulário
+                    } else {
+                        toastr.error('Ocorreu um erro. Tente novamente.', 'Erro');
+                    }
+                })
+                .catch(error => {
+                    toastr.error('Ocorreu um erro. Tente novamente.', 'Erro');
+                });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     });
+
+
+
 </script>
 </body>
 </html>

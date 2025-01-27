@@ -11,23 +11,23 @@
 </div>
 <div class="flex justify-center items-center w-full
 py-0.5 mb-1 text-sm font-medium
-text-white focus:outline-none bg-gray-700 rounded-lg border
-border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-black">
+text-white focus:outline-none bg-gray-500 bg-opacity-10 rounded-lg border
+border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-white">
    Com Odonto
 </div>
 
 <table class="min-w-full bg-gray-300 bg-opacity-20 rounded-lg bordered" id="tabela_aqui">
     <thead>
     <tr>
-        <td rowspan="2" class="text-center text-sm border dark:border-white border-r border-b border-black text-dark dark:text-white" style="vertical-align:middle;">Faixa Etária</td>
-        <td colspan="2" class="text-center text-sm border dark:border-white border-r border-b border-black text-dark dark:text-white">Com Copar</td>
-        <td colspan="2" class="text-center text-sm border dark:border-white border-r border-b border-black text-dark dark:text-white">Sem Copar</td>
+        <td rowspan="2" class="text-center text-sm border dark:border-white border-r border-b border-white text-white dark:text-white" style="vertical-align:middle;">Faixa Etária</td>
+        <td colspan="2" class="text-center text-sm border dark:border-white border-r border-b border-white text-white dark:text-white">Com Copar</td>
+        <td colspan="2" class="text-center text-sm border dark:border-white border-r border-b border-white text-white dark:text-white">Sem Copar</td>
     </tr>
     <tr>
-        <td class="border dark:border-white border-r border-b border-black text-sm text-dark dark:text-white text-center">APART</td>
-        <td class="border dark:border-white border-r border-b border-black text-sm text-dark dark:text-white text-center">ENFER</td>
-        <td class="border dark:border-white border-r border-b border-black text-sm text-dark dark:text-white text-center">APART</td>
-        <td class="border dark:border-white border-r border-b border-black text-sm text-dark dark:text-white text-center">ENFER</td>
+        <td class="border dark:border-white border-r border-b border-white text-sm text-white dark:text-white text-center">APART</td>
+        <td class="border dark:border-white border-r border-b border-white text-sm text-white dark:text-white text-center">ENFER</td>
+        <td class="border dark:border-white border-r border-b border-white text-sm text-white dark:text-white text-center">APART</td>
+        <td class="border dark:border-white border-r border-b border-white text-sm text-white dark:text-white text-center">ENFER</td>
     </tr>
     </thead>
     <tbody>
@@ -74,27 +74,27 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-black">
     @foreach($dadosComOdonto as $faixaEtaria => $valores)
         @for($i=0;$i<$valores['quantidade'];$i++)
             <tr>
-                <td class="dark:text-white text-dark text-center text-xs">{{ $faixaEtaria }}</td>
-                <td class="dark:text-white text-dark text-right mr-1">
+                <td class="dark:text-white text-white text-center text-xs">{{ $faixaEtaria }}</td>
+                <td class="dark:text-white text-white text-right mr-1">
                     <span class="mr-2 text-xs">{{ number_format($valores['1_com_copar'], 2, ",", ".") }}</span>
                     @php
                         $totalApartamento_com_copar += $valores['1_com_copar'];
                     @endphp
                 </td>
-                <td class="dark:text-white text-dark text-right">
+                <td class="dark:text-white text-white text-right">
                     <span class="mr-2 text-xs">{{ number_format($valores['2_com_copar'], 2, ",", ".") }}</span>
                     @php
                         $totalEnfermaria_com_copar += $valores['2_com_copar'];
                     @endphp
                 </td>
 
-                <td class="dark:text-white text-black text-right mr-1">
+                <td class="dark:text-white text-white text-right mr-1">
                     <span class="mr-2 text-xs">{{ number_format($valores['1_sem_copar'], 2, ",", ".") }}</span>
                     @php
                         $totalApartamento_sem_copar += $valores['1_sem_copar'];
                     @endphp
                 </td>
-                <td class="dark:text-white text-black text-right mr-1">
+                <td class="dark:text-white text-white text-right mr-1">
                     <span class="mr-2 text-xs">{{ number_format($valores['2_sem_copar'], 2, ",", ".") }}</span>
                     @php
                         $totalEnfermaria_sem_copar += $valores['2_sem_copar'];
@@ -111,18 +111,18 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-black">
 
         <tfoot>
         <tr>
-            <td class="dark:text-white text-black text-xs py-0.5 text-center">Total</td>
-            <td class="dark:text-white text-black py-0.5 text-right mr-1 text-xs">
+            <td class="dark:text-white text-white text-xs py-0.5 text-center">Total</td>
+            <td class="dark:text-white text-white py-0.5 text-right mr-1 text-xs">
                 <span class="mr-2 text-xs">{{ number_format($totalApartamento_com_copar, 2, ",", ".") }}</span>
             </td>
-            <td class="dark:text-white text-black py-0.5 text-right mr-1 text-xs">
+            <td class="dark:text-white text-white py-0.5 text-right mr-1 text-xs">
                 <span class="mr-2 text-xs">{{ number_format($totalEnfermaria_com_copar, 2, ",", ".") }}</span>
             </td>
 
-            <td class="dark:text-white text-black py-0.5 text-xs text-right mr-1">
+            <td class="dark:text-white text-white py-0.5 text-xs text-right mr-1">
                 <span class="mr-2 text-xs">{{ number_format($totalApartamento_sem_copar, 2, ",", ".") }}</span>
             </td>
-            <td class="dark:text-white text-black py-0.5 text-xs text-right mr-1">
+            <td class="dark:text-white text-white py-0.5 text-xs text-right mr-1">
                 <span class="mr-2 text-xs">{{ number_format($totalEnfermaria_sem_copar, 2, ",", ".") }}</span>
             </td>
 
@@ -149,12 +149,12 @@ focus:ring-4 focus:ring-gray-200 bg-red-400">
 
 @if($status)
 
-<div class="h-1 my-1 w-full dark:bg-white bg-black rounded-lg"></div>
+<div class="h-1 my-1 w-full dark:bg-white bg-white rounded-lg"></div>
 {{--Sem Odotno--}}
 {{-- Tabela sem Odonto --}}
 <div class="flex justify-center items-center w-full
 py-0.5 mb-1 text-sm font-medium
-text-white focus:outline-none bg-gray-700 rounded-lg border
+text-white focus:outline-none bg-gray-500 bg-opacity-10 rounded-lg border
 border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-black">
     Sem Odonto
 </div>
@@ -164,16 +164,16 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-black">
     <thead>
 
     <tr>
-        <td rowspan="2" class="text-center text-sm border dark:border-white border-r border-b border-black text-dark dark:text-white" style="vertical-align:middle;">Faixa Etária</td>
-        <td colspan="2" class="text-center text-sm border dark:border-white border-r border-b border-black text-dark dark:text-white">Com Copar</td>
-        <td colspan="2" class="text-center text-sm border dark:border-white border-r border-b border-black text-dark dark:text-white">Sem Copar</td>
+        <td rowspan="2" class="text-center text-sm border dark:border-white border-r border-b border-white text-white dark:text-white" style="vertical-align:middle;">Faixa Etária</td>
+        <td colspan="2" class="text-center text-sm border dark:border-white border-r border-b border-white text-white dark:text-white">Com Copar</td>
+        <td colspan="2" class="text-center text-sm border dark:border-white border-r border-b border-white text-white dark:text-white">Sem Copar</td>
     </tr>
     <tr>
-        <td class="border dark:border-white border-r border-b border-black text-sm text-dark dark:text-white text-center">APART</td>
-        <td class="border dark:border-white border-r border-b border-black text-sm text-dark dark:text-white text-center">ENFER</td>
+        <td class="border dark:border-white border-r border-b border-white text-sm text-white dark:text-white text-center">APART</td>
+        <td class="border dark:border-white border-r border-b border-white text-sm text-white dark:text-white text-center">ENFER</td>
 
-        <td class="border dark:border-white border-r border-b border-black text-sm text-dark dark:text-white text-center">APART</td>
-        <td class="border dark:border-white border-r border-b border-black text-sm text-dark dark:text-white text-center">ENFER</td>
+        <td class="border dark:border-white border-r border-b border-white text-sm text-white dark:text-white text-center">APART</td>
+        <td class="border dark:border-white border-r border-b border-white text-sm text-white dark:text-white text-center">ENFER</td>
 
     </tr>
     </thead>
@@ -222,20 +222,20 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-black">
     @foreach($dadosSemOdonto as $faixaEtariaSemOdonto => $valorSemOdonto)
         @for($ii=0;$ii<$valorSemOdonto['quantidade'];$ii++)
             <tr>
-                <td class="dark:text-white text-black text-center text-xs">{{ $faixaEtariaSemOdonto }}</td>
-                <td class="dark:text-white text-black text-xs text-right">
+                <td class="dark:text-white text-white text-center text-xs">{{ $faixaEtariaSemOdonto }}</td>
+                <td class="dark:text-white text-white text-xs text-right">
                     <span class="mr-2">{{ number_format($valorSemOdonto['1_com_copar'], 2, ",", ".") }}</span>
                     @php $totalApartamentoSemOdonto_com_copar += $valorSemOdonto['1_com_copar'];@endphp
                 </td>
-                <td class="dark:text-white text-black text-right text-xs">
+                <td class="dark:text-white text-white text-right text-xs">
                     <span class="mr-2">{{ number_format($valorSemOdonto['2_com_copar'], 2, ",", ".") }}</span>
                     @php $totalEnfermariaSemOdonto_com_copar += $valorSemOdonto['2_com_copar'];@endphp
                 </td>
-                <td class="dark:text-white text-black text-xs text-right">
+                <td class="dark:text-white text-white text-xs text-right">
                     <span class="mr-2">{{ number_format($valorSemOdonto['1_sem_copar'], 2, ",", ".") }}</span>
                     @php $totalApartamentoSemOdonto_sem_copar += $valorSemOdonto['1_sem_copar'];@endphp
                 </td>
-                <td class="dark:text-white text-black text-xs text-right">
+                <td class="dark:text-white text-white text-xs text-right">
                     <span class="mr-2">{{ number_format($valorSemOdonto['2_sem_copar'], 2, ",", ".") }}</span>
                     @php
                         $totalEnfermariaSemOdonto_sem_copar += $valorSemOdonto['2_sem_copar'];
@@ -251,18 +251,18 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-black">
     <table class="dark:bg-gray-700 w-full dark:bg-opacity-20 rounded-lg bordered mt-2 py-0.5">
         <tfoot>
         <tr>
-            <td class="dark:text-white text-black text-xs py-0.5 text-center">Total</td>
-            <td class="dark:text-white text-black py-0.5 text-xs text-right mr-1">
+            <td class="dark:text-white text-white text-xs py-0.5 text-center">Total</td>
+            <td class="dark:text-white text-white py-0.5 text-xs text-right mr-1">
                 <span class="mr-2">{{ number_format($totalApartamentoSemOdonto_com_copar, 2, ",", ".") }}</span>
             </td>
-            <td class="dark:text-white text-black py-0.5 text-right text-xs mr-1">
+            <td class="dark:text-white text-white py-0.5 text-right text-xs mr-1">
                 <span class="mr-2">{{ number_format($totalEnfermariaSemOdonto_com_copar, 2, ",", ".") }}</span>
             </td>
 
-            <td class="dark:text-white text-black py-0.5 text-right mr-1 text-xs">
+            <td class="dark:text-white text-white py-0.5 text-right mr-1 text-xs">
                 <span class="mr-2">{{ number_format($totalApartamentoSemOdonto_sem_copar, 2, ",", ".") }}</span>
             </td>
-            <td class="dark:text-white text-black py-0.5 text-right mr-1 text-xs">
+            <td class="dark:text-white text-white py-0.5 text-right mr-1 text-xs">
                 <span class="mr-2">{{ number_format($totalEnfermariaSemOdonto_sem_copar, 2, ",", ".") }}</span>
             </td>
 
@@ -287,12 +287,12 @@ focus:ring-4 focus:ring-gray-200 bg-red-400">
 <div class="flex justify-around items-center w-full mt-4 py-2">
     <label for="status_carencia">
         <input type="checkbox" name="status_carencia" id="status_carencia" class="w-6 h-6 text-teal-600 bg-white border border-2 border-black rounded dark:bg-white dark:border-purple-900">
-        <span class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-2xl text-black">Com Carências</span>
+        <span class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-2xl text-white">Com Carências</span>
     </label>
 
     <label for="status_desconto">
         <input type="checkbox" name="status_desconto" id="status_desconto" class="w-6 h-6 text-teal-600 bg-white border border-2 border-black rounded dark:bg-white dark:border-purple-900">
-        <span class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-2xl text-black">Desconto</span>
+        <span class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-2xl text-white">Desconto</span>
     </label>
 
 

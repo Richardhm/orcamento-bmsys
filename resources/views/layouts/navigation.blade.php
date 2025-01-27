@@ -9,13 +9,6 @@
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
-
-                <!-- Navigation Links -->
-{{--                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">--}}
-{{--                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">--}}
-{{--                        {{ __('Dashboard') }}--}}
-{{--                    </x-nav-link>--}}
-{{--                </div>--}}
             </div>
 
 
@@ -23,18 +16,43 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
 
+                @if(Auth::user()->isAdmin()) <!-- Somente para administradores -->
+                    <a class="text-white" title="Gerenciar Usuarios" alt="Gerenciar Usuarios" href="{{route('users.manage')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                        </svg>
+
+                    </a>
+                @endif
+
+                    <a class="text-white ml-2" title="Editar Seu Perfil" alt="Editar Seu Perfil" href="{{route('profile.edit')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </a>
+
+                    <a class="text-white ml-2" title="Escolher o seu Layout" alt="Editar Seu Perfil" href="{{route('layouts.index')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                        </svg>
+                    </a>
+
+
+
                 <div class="flex items-center">
-                    <button id="theme-toggle" class="p-2 rounded-full focus:outline-none">
+                    <button id="theme-toggle" title="Mudar Cor" class="p-2 rounded-full focus:outline-none">
                         <!-- Ícone para modo claro -->
-                        <svg id="theme-toggle-light-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-800 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg id="theme-toggle-light-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8-8h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
                         </svg>
                         <!-- Ícone para modo escuro -->
-                        <svg id="theme-toggle-dark-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hidden text-yellow-400 dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg id="theme-toggle-dark-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hidden text-white dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657A8 8 0 1112 4v1a7 7 0 001.657 4.657A7 7 0 0017.657 16.657z" />
                         </svg>
                     </button>
                 </div>
+
+
 
 
 
@@ -54,14 +72,11 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
+
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
