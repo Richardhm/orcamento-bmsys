@@ -14,8 +14,8 @@ class LayoutSeeder extends Seeder
     public function run(): void
     {
         DB::table('layouts')->insert([
-            ['imagem' => 'layouts/layout1.png', 'nome' => 'Layout 1'],
-            ['imagem' => 'layouts/layout2.png', 'nome' => 'Layout 2']
+            ['imagem' => 'layouts/01.png', 'nome' => 'Layout 1'],
+            ['imagem' => 'layouts/02.png', 'nome' => 'Layout 2']
         ]);
     }
 }

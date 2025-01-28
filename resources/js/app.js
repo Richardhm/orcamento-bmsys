@@ -20,14 +20,15 @@ if (storedTheme === 'dark') {
     localStorage.setItem('theme', 'light'); // Define "light" como padrão
 }
 
-// Alterna entre os temas quando o botão é clicado
-themeToggle.addEventListener('click', () => {
-    if (htmlElement.classList.contains('dark')) {
-        htmlElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-    } else {
-        htmlElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-    }
-});
 
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        if (htmlElement.classList.contains('dark')) {
+            htmlElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            htmlElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+}

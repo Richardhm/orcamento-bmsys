@@ -5,6 +5,7 @@ use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AssinaturaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TabelaController;
 use Illuminate\Support\Facades\Route;
 use App\Jobs\SendSuggestionEmail;
 
@@ -56,7 +57,22 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(callback: funct
         ->name('dashboard');
     Route::get('/layout', [LayoutController::class, 'index'])->name('layouts.index');
     Route::post('/layouts/select', [LayoutController::class, 'select'])->name('layouts.select');
+
+    Route::get('/tabela_completa',[TabelaController::class,'index'])->name('tabela_completa.index');
+    Route::get('/tabela',[TabelaController::class,'tabela_preco'])->name('tabela.config');
+    Route::post('/corretora/select/planos/administradoras',[TabelaController::class,'planosAdministradoraSelect'])->name('planos.administradora.select');
+    Route::post('/corretora/mudar/valor/tabela',[TabelaController::class,'mudarValorTabela'])->name('corretora.mudar.valor.tabela');
+    Route::post("/tabela/verificar/valores",[TabelaController::class,'verificarValoresTabela'])->name("verificar.valores.tabela");
+    Route::post("/tabela/cadastrar/valores",[TabelaController::class,'cadastrarValoresTabela'])->name("cadastrar.valores.tabela");
+    Route::post("/coparticipacao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacao'])->name("cadastrar.coparticipacao.tabela");
+    Route::post("/coparticipacao/excecao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacaoExcecao'])->name("cadastrar.excecao.coparticipacao.tabela");
+    Route::post("/coparticipacao/existe/valores",[TabelaController::class,'coparticipacaoJaExiste'])->name("coparticipacao.ja.existe");
+
+
+
+
 });
 
+Route::post('/dashboard/tabela/orcamento',[TabelaController::class,'orcamento'])->middleware(['auth', 'verified'])->name('orcamento.tabela.montarOrcamento');
 
 require __DIR__.'/auth.php';
