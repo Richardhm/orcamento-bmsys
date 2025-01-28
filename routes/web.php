@@ -67,8 +67,9 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(callback: funct
     Route::post("/coparticipacao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacao'])->name("cadastrar.coparticipacao.tabela");
     Route::post("/coparticipacao/excecao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacaoExcecao'])->name("cadastrar.excecao.coparticipacao.tabela");
     Route::post("/coparticipacao/existe/valores",[TabelaController::class,'coparticipacaoJaExiste'])->name("coparticipacao.ja.existe");
-
-
+    Route::post('/users/editar/manager', [UserController::class, 'getUser'])->name('users.get');
+    Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
+    Route::post('/users/deletar', [UserController::class, 'deletar'])->name('deletar.user');
 
 
 });

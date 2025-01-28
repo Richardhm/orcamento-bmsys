@@ -2,14 +2,14 @@
     <!-- Botão redondo -->
     <div class="flex justify-end mt-4 mr-4 relative">
         <button id="toggle-modal"
-                class="w-12 h-12 flex items-center justify-center rounded-full bg-white text-blue-500 border border-blue-500 shadow-lg hover:bg-blue-100 transition">
+                class="w-16 h-16 flex items-center justify-center rounded-full bg-blue-600 text-white text-3xl font-bold shadow-lg hover:bg-blue-700 transition">
             +
         </button>
 
+
         <!-- Modal ao lado esquerdo do botão -->
         <div id="user-modal"
-             class="absolute hidden bg-white shadow-lg rounded-lg p-6 top-0 right-full mr-36 w-96 z-50 transform transition-transform duration-500 translate-x-full"
-             style="margin-right:50px;">
+             class="absolute hidden bg-white shadow-lg rounded-lg p-6 top-24 right-0 w-96 z-50 transform transition-transform duration-500 translate-x-full max-h-[80vh] overflow-auto">
             <!-- Cabeçalho da modal -->
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg font-semibold">Cadastrar Usuário</h2>
@@ -17,7 +17,7 @@
             </div>
 
             <!-- Formulário -->
-            <form id="user-form" action="" method="POST">
+            <form id="user-form" action="{{route('storeUser')}}" method="POST">
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
@@ -37,6 +37,12 @@
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                 </div>
 
+                <div class="mb-4">
+                    <label for="image" class="block text-sm font-medium text-gray-700">Imagem do Usuário</label>
+                    <input type="file" name="image" id="image" accept="image/*"
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                </div>
+
                 <div class="flex justify-end">
                     <button type="button" id="cancel-modal"
                             class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition mr-2">
@@ -52,79 +58,304 @@
     </div>
 
     <div id="user-table">
-        <!-- A tabela de usuários será carregada aqui via AJAX -->
+        @include('partials.user-table', ['users' => $users])
     </div>
+
+    <!--Modal Editar-->
+    <div
+        id="editUserModal"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50"
+    >
+        <div
+            class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative"
+        >
+            <!-- Botão de fechar -->
+            <button
+                id="closeModal"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+                ✕
+            </button>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Formulário -->
+                <div class="flex-1">
+                    <h2 class="text-xl font-semibold mb-4">Editar Usuário</h2>
+                    <form action="/update-user" method="POST" enctype="multipart/form-data" class="space-y-4" id="editUserForm">
+                        <!-- Nome -->
+                        <input type="hidden" name="id_edit" id="id_edit">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+                            <input
+                                type="text"
+                                id="name_edit"
+                                name="name"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                placeholder="Digite o nome do usuário"
+                                required
+                            />
+                        </div>
+
+                        <!-- E-mail -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                            <input
+                                type="email"
+                                id="email_edit"
+                                name="email"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                placeholder="Digite o e-mail"
+                                required
+                            />
+                        </div>
+
+                        <!-- Telefone -->
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
+                            <input
+                                type="text"
+                                id="phone_edit"
+                                name="phone"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                placeholder="Digite o telefone"
+                            />
+                        </div>
+
+                        <!-- Campo de imagem -->
+                        <div>
+                            <label for="imagem" class="block text-sm font-medium text-gray-700">Imagem</label>
+                            <input
+                                type="file"
+                                id="imagem"
+                                name="imagem"
+                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                            />
+                        </div>
+
+                        <!-- Botão Salvar -->
+                        <div class="flex w-full">
+                            <button
+                                type="submit"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 w-full"
+                            >
+                                Editar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Foto do Usuário -->
+                <div class="flex items-center justify-center">
+                    <div>
+                        <img
+                            src=""
+                            id="imagem_edit"
+                            alt="Foto do usuário"
+                            class="w-40 h-40 rounded-full border-2 border-gray-300 object-cover"
+                        />
+                        <p class="mt-4 text-center text-sm text-gray-500">Foto do Usuário</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Fim Modal Editar-->
+
+
 
     @section('scripts')
         <script>
+
             document.addEventListener('DOMContentLoaded', function () {
                 const modal = document.getElementById('user-modal');
                 const toggleModalButton = document.getElementById('toggle-modal');
                 const closeModalButton = document.getElementById('close-modal');
                 const cancelModalButton = document.getElementById('cancel-modal');
+                const userForm = document.getElementById('user-form');
 
-                // Alternar modal com animação
-                toggleModalButton.addEventListener('click', function () {
-                    if (modal.classList.contains('hidden')) {
-                        modal.classList.remove('hidden', 'translate-x-full');
-                        modal.classList.add('translate-x-0');
-                    } else {
-                        modal.classList.add('translate-x-full');
-                        modal.classList.remove('translate-x-0');
-                        setTimeout(() => modal.classList.add('hidden'), 500); // Aguarda a animação terminar antes de esconder
-                    }
-                });
 
-                // Fechar modal
-                closeModalButton.addEventListener('click', function () {
+
+
+
+
+
+
+
+
+                const openModal = () => {
+                    modal.classList.remove('hidden', 'translate-x-full');
+                    modal.classList.add('translate-x-0');
+                    document.body.classList.add('overflow-hidden'); // Bloquear scroll
+                };
+
+                const closeModal = () => {
                     modal.classList.add('translate-x-full');
                     modal.classList.remove('translate-x-0');
-                    setTimeout(() => modal.classList.add('hidden'), 500);
-                });
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden'); // Restaurar scroll
+                    }, 500);
+                };
 
-                cancelModalButton.addEventListener('click', function () {
-                    modal.classList.add('translate-x-full');
-                    modal.classList.remove('translate-x-0');
-                    setTimeout(() => modal.classList.add('hidden'), 500);
-                });
+                if (toggleModalButton && modal) {
+                    toggleModalButton.addEventListener('click', function () {
+                        if (modal.classList.contains('hidden')) {
+                            openModal();
+                        } else {
+                            closeModal();
+                        }
+                    });
+                }
+
+                if (closeModalButton) {
+                    closeModalButton.addEventListener('click', closeModal);
+                }
+
+                if (cancelModalButton) {
+                    cancelModalButton.addEventListener('click', closeModal);
+                }
 
                 // Fechar modal ao clicar fora
-                window.addEventListener('click', function (event) {
-                    if (!modal.contains(event.target) && event.target !== toggleModalButton) {
-                        modal.classList.add('translate-x-full');
-                        modal.classList.remove('translate-x-0');
-                        setTimeout(() => modal.classList.add('hidden'), 200);
+                document.addEventListener('click', function (event) {
+                    if (!modal.contains(event.target) && !toggleModalButton.contains(event.target)) {
+                        closeModal();
                     }
                 });
-                const userForm = document.getElementById("user-form");
-                // Enviar formulário com AJAX
-                userForm.addEventListener('submit', function (event) {
-                    event.preventDefault(); // Impede o comportamento padrão do formulário
 
-                    const formData = new FormData(userForm);
-
-                    fetch("{{ route('storeUser') }}", {
-                        method: 'POST',
-                        body: formData,
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Atualizar a tabela de usuários
-                                document.getElementById('user-table').innerHTML = data.html;
-                                // Fechar o modal
-                                modal.classList.add('hidden');
-                            } else {
-                                alert("Erro ao cadastrar o usuário");
-                            }
+                if (userForm) {
+                    userForm.addEventListener('submit', function (event) {
+                        event.preventDefault();
+                        const formData = new FormData(userForm);
+                        fetch("{{ route('storeUser') }}", {
+                            method: 'POST',
+                            body: formData,
                         })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Erro ao enviar os dados.');
-                        });
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    document.getElementById('user-table').innerHTML = data.html;
+                                    closeModal();
+                                } else {
+                                    alert("Erro ao cadastrar o usuário");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('Erro ao enviar os dados.');
+                            });
+                    });
+                }
+            });
+
+            $(document).ready(function(){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                const openModalButtonEdit = document.getElementById('openModal');
+                const closeModalButtonEdit = document.getElementById('closeModal');
+                const modalEdit = document.getElementById('editUserModal');
+
+                // Abrir a modal
+                $("body").on('click','#openModal',function(){
+                    let id = $(this).attr('data-id');
+                    $.ajax({
+                        url: `{{route('users.get')}}`, // Rota definida no Laravel
+                        method: 'POST',
+                        data: {
+                            id
+                        },
+                        success: function (data) {
+
+                            // Preenche o formulário com os dados do usuário
+                            $('#name_edit').val(data.name);
+                            $('#email_edit').val(data.email);
+                            $('#phone_edit').val(data.phone);
+                            $('#id_edit').val(data.id);
+
+                            // Se tiver imagem, exibe na visualização
+                            if (data.imagem) {
+
+                                $('#imagem_edit').attr('src',data.imagem);
+                            }
+                        },
+                        error: function (xhr) {
+                            console.error('Erro ao buscar os dados do usuário:', xhr.responseJSON);
+                            alert('Erro ao buscar os dados do usuário.');
+                        }
+                    });
+                    modalEdit.classList.remove('hidden');
+                    modalEdit.classList.add('flex');
                 });
 
-                // Função para atualizar a tabela de usuários
+                $("body").on('click','#closeModal',function(){
+                    modalEdit.classList.add('hidden');
+                    modalEdit.classList.remove('flex');
+                });
+
+                // Fechar a modal ao clicar fora dela
+                modalEdit.addEventListener('click', (e) => {
+                    if (e.target === modalEdit) {
+                        modalEdit.classList.add('hidden');
+                        modalEdit.classList.remove('flex');
+                    }
+                });
+
+
+                $("body").on("submit", "#editUserForm", function (e) {
+                    e.preventDefault();
+
+                    let formData = new FormData(this);
+
+                    $.ajax({
+                        url: "{{ route('users.update') }}", // Rota definida no Laravel
+                        method: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            console.log(response);
+                            if (response.success) {
+                                alert(response.message);
+                                // Atualiza os dados na interface ou fecha a modal
+                                location.reload(); // Recarrega a página para refletir as alterações
+                            }
+                        },
+                        error: function (xhr) {
+                            console.error("Erro ao atualizar os dados:", xhr.responseJSON);
+                            alert("Erro ao atualizar os dados.");
+                        },
+                    });
+                });
+
+
+
+                $("body").on('click','.delete',function(e){
+                   e.preventDefault();
+                   let id = $(this).attr('data-id');
+
+                    if (confirm('Tem certeza de que deseja excluir este usuário?')) {
+                        $.ajax({
+                           url:"{{route('deletar.user')}}",
+                           method:"POST",
+                           data: {
+                               id:id
+                           },
+                           success:function(res) {
+                                console.log(res);
+                           }
+                        });
+                    }
+
+
+
+
+                   return false;
+                });
+
+
 
 
 
@@ -133,6 +364,9 @@
 
 
             });
+
+
+
         </script>
     @endsection
 </x-app-layout>

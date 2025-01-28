@@ -13,6 +13,17 @@
     <script src="{{asset('jquery.min.js')}}"></script>
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        #user-modal {
+            opacity: 0; /* Inicialmente invisível */
+            transform: translateX(100%);
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+        #user-modal.translate-x-0 {
+            opacity: 1; /* Tornar visível */
+            transform: translateX(0);
+        }
+    </style>
 </head>
 <body class="font-sans antialiased">
 <!-- Container principal -->
