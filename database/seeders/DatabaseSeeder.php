@@ -19,6 +19,15 @@ class DatabaseSeeder extends Seeder
 //            'name' => 'Test User',
 //            'email' => 'test@example.com',
 //        ]);
-        $this->call(TiposPlanosSeeder::class);
+        $this->call([
+            TiposPlanosSeeder::class,
+            LayoutSeeder::class,
+            AdministradorasTableSeeder::class,
+            AcomodacoesTableSeeder::class,
+            PlanosTableSeeder::class,
+            TabelaOrigensTableSeeder::class,
+            FaixaEtariasTableSeeder::class,
+            AdministradoraPlanosTableSeeder::class,
+        ]);
     }
 }
