@@ -6,6 +6,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AssinaturaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TabelaController;
+use App\Models\EmailAssinatura;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Jobs\SendSuggestionEmail;
 
@@ -73,7 +75,25 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(callback: funct
 
 
 });
+Route::get('/configuracoes', function () {
+    $assinatura_id = \App\Models\Assinatura::where("user_id",auth()->user()->id)->first()->id;
 
+    $users = User::whereIn(
+        'id',
+        EmailAssinatura::where('assinatura_id', $assinatura_id)
+            ->where('is_administrador', 0)
+            ->pluck('user_id')
+    )->get();
+
+
+
+
+
+    //$users = \App\Models\User::all(); // Carrega os usuários para a tabela de gerenciamento
+
+    $user = auth()->user();
+    return view('configuracoes', compact('users','user'));
+})->middleware('auth')->name('configuracoes');
 Route::post('/dashboard/tabela/orcamento',[TabelaController::class,'orcamento'])->middleware(['auth', 'verified'])->name('orcamento.tabela.montarOrcamento');
 
 require __DIR__.'/auth.php';

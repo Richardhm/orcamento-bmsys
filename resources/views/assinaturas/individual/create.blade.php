@@ -7,23 +7,31 @@
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <div class="mb-2">
                 <label for="name" class="block mb-1 font-medium text-white dark:text-white text-sm">Nome</label>
-                <input type="text" name="name" id="name" style="color:black;" placeholder="Seu Nome" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" required />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                <input type="text" name="name" id="name" style="color:black;" placeholder="Seu Nome" value="{{old('name')}}" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" required />
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
             <div class="mb-2">
                 <label for="email" class="block mb-1 font-medium text-white dark:text-white text-sm">Email</label>
-                <input type="email" name="email" id="email" style="color:black;" placeholder="Seu Email" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" required />
+                <input type="email" name="email" id="email" style="color:black;" value="{{old('email')}}" placeholder="Seu Email"
+                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" required />
+                <div id="emailError" class="text-red-500 text-sm mt-1"></div>
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
             <div class="mb-2">
                 <label for="phone" class="block mb-1 font-medium text-white dark:text-white text-sm">Telefone</label>
-                <input type="text" name="phone" id="phone" style="color:black;" placeholder="(XX) X XXXX-XXXX" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" required />
+                <input type="text" name="phone" id="phone"
+                       value="{{ old('phone') }}"
+                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg"
+                       placeholder="(XX) X XXXX-XXXX"
+                       required />
+                <div id="phoneError" class="text-red-500 text-sm mt-1"></div>
                 <x-input-error :messages="$errors->get('phone')" class="mt-2" />
             </div>
             <div class="mb-2">
                 <label for="imagem" class="block mb-1 font-medium text-white dark:text-white text-sm">Imagem:</label>
-                <input type="file" name="imagem" id="imagem" style="color:black;"
-                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" />
+                <input type="file" name="imagem" id="imagem"
+                       class="bg-gray-50 border..." />
+                <div id="fileFeedback" class="text-white text-sm mt-1"></div>
                 <x-input-error :messages="$errors->get('imagem')" class="mt-2" />
             </div>
             <div class="mb-2">
@@ -73,14 +81,94 @@
                 im.mask(phoneInput);
             });
         </script>
-
-
-
-
-
-
-
         <script>
+
+            const emailInput = $('#email');
+            const emailError = $('#emailError');
+
+            function validateEmail(email) {
+                // Regex melhorada para validar estrutura completa
+                const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                return regex.test(email);
+            }
+
+            emailInput.on('blur', function() {
+                const email = emailInput.val().trim();
+                if (email && !validateEmail(email)) {
+                    emailError.text('Formato inválido (ex: nome@provedor.com)');
+                    emailInput.addClass('border-red-500');
+                } else {
+                    emailError.text('');
+                    emailInput.removeClass('border-red-500');
+                }
+            });
+
+            emailInput.on('input', function() {
+                if (validateEmail(emailInput.val().trim())) {
+                    emailError.text('');
+                    emailInput.removeClass('border-red-500');
+                }
+            });
+
+            const fileInput = document.getElementById('imagem');
+            const fileFeedback = document.getElementById('fileFeedback');
+            const storedFile = sessionStorage.getItem('selectedFile');
+
+            if(storedFile) {
+                fileFeedback.textContent = 'Arquivo mantido: ' + storedFile.split('/').pop();
+            }
+
+            fileInput.addEventListener('change', function(e) {
+                if(this.files[0]) {
+                    sessionStorage.setItem('selectedFile', this.files[0].name);
+                    fileFeedback.textContent = 'Selecionado: ' + this.files[0].name;
+                }
+            });
+
+            // Validação de Telefone
+            const phoneInput = $('#phone');
+            const phoneError = $('#phoneError');
+
+            function validatePhone(phone) {
+                return phoneRegex.test(phone);
+            }
+
+            // Validação em tempo real
+            phoneInput.on('blur', function() {
+                const phone = phoneInput.val().trim();
+                if (phone && !validatePhone(phone)) {
+                    phoneError.text('Formato inválido (ex: (99) 9 9999-9999)');
+                    phoneInput.addClass('border-red-500');
+                } else {
+                    phoneError.text('');
+                    phoneInput.removeClass('border-red-500');
+                }
+            });
+
+
+
+
+            $('form').on('submit', function(e) {
+                const email = emailInput.val().trim();
+                if (!validateEmail(email)) {
+                    e.preventDefault();
+                    emailError.text('Formato inválido (ex: nome@provedor.com)');
+                    emailInput.addClass('border-red-500');
+                    emailInput[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                const phone = phoneInput.val().trim();
+                if (!validatePhone(phone)) {
+                    e.preventDefault();
+                    phoneError.text('Formato inválido (ex: (99) 9 9999-9999)');
+                    phoneInput.addClass('border-red-500');
+                    phoneInput[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+
+
+
+
+
 
             const passwordInput = document.getElementById('password');
             const passwordInputConfirmation = document.getElementById('password_confirmation');

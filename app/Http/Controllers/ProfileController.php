@@ -25,28 +25,35 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request)
     {
-        $user = $request->user();
-        $imagemAntiga = $user->imagem;
-        // Atualizar campos validados (nome, telefone, etc.)
-        $user->fill($request->validated());
+        {
+            try {
+                $user = $request->user();
+                $imagemAntiga = $user->imagem;
 
-        // Verificar se uma nova imagem foi enviada
-        if ($request->hasFile('imagem')) {
-            if (!empty($user->imagem) && Storage::disk('public')->exists($imagemAntiga)) {
-                Storage::disk('public')->delete($imagemAntiga);
+                $user->fill($request->validated());
+
+                if ($request->hasFile('imagem')) {
+                    if (!empty($user->imagem) && Storage::disk('public')->exists($imagemAntiga)) {
+                        Storage::disk('public')->delete($imagemAntiga);
+                    }
+                    $user->imagem = $request->file('imagem')->store('users', 'public');
+                }
+                $user->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Atualizado com sucesso',
+                    'imagem' => $user->imagem ? Storage::url($user->imagem) : null
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Erro ao atualizar: ' . $e->getMessage()
+                ], 500);
             }
-            // Salvar a nova imagem e armazenar o caminho
-            $user->imagem = $request->file('imagem')->store('users', 'public');
         }
-
-        // Salvar as alterações no banco de dados
-        $user->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
-
     /**
      * Delete the user's account.
      */

@@ -4,200 +4,277 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Cotações de Plano de Saúde</title>
-
-
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="{{asset('toastr.min.css')}}">
     <style>
         /* Aumentar a largura do toastr */
         .toast {
             width: 400px !important; /* Modifique esse valor conforme necessário */
         }
+        .ajax_load {display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;}
+        .ajax_load_box{margin:auto;text-align:center;color:#fff;font-weight:var(700);text-shadow:1px 1px 1px rgba(0,0,0,.5)}
+        .ajax_load_box_circle{border:16px solid #e3e3e3;border-top:16px solid #61DDBC;border-radius:50%;margin:auto;width:80px;height:80px;-webkit-animation:spin 1.2s linear infinite;-o-animation:spin 1.2s linear infinite;animation:spin 1.2s linear infinite}
+        @-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg)}}
+        @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+        /* Estilização do Scroll */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FEF3C7; /* Cor de fundo do track */
+            border-radius: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #34150b; /* text-amber-950 */
+            border-radius: 8px;
+            border: 3px solid #FEF3C7; /* Borda combinando com o track */
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #431d0e; /* Tom levemente mais claro para hover */
+        }
+
+        #pricing {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #pricing .flex-1 {
+            flex: 1 1 0%;
+            min-height: 75vh;
+        }
+
+        /* Para Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #34150b #FEF3C7;
+        }
+
+
+
     </style>
 </head>
 <body class="bg-black">
+<div class="ajax_load">
+    <div class="ajax_load_box">
+        <div class="ajax_load_box_circle"></div>
+        <p class="ajax_load_box_title">Aguarde, carregando...</p>
+    </div>
+</div>
 <!-- Navbar -->
-<nav class="fixed w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-800">
+<nav class="fixed w-full z-50 bg-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex-shrink-0 flex items-center">
-                <span class="text-white text-xl font-bold">Sistema de Cotação</span>
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center bg-black/60 rounded-lg">
+                <img src="{{asset('logo_bm_1.png')}}" alt="Logo" class="h-16 p-1">
             </div>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="{{route('login')}}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Login</a>
-                <a href="#pricing" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Saiba Mais</a>
+
+            <!-- Título Centralizado -->
+            <div class="absolute left-1/2 transform -translate-x-1/2">
+                <h1 class="text-4xl font-bold text-red-950">Sistema Cotação</h1>
+            </div>
+
+            <!-- Botões Direita -->
+            <div class="flex items-center space-x-4">
+                <a href="#pricing" class="bg-red-900 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors">
+                    Assine Agora
+                </a>
+                <a href="{{route('login')}}" class="bg-gray-800 text-white px-6 py-2 rounded-full hover:bg-gray-900 transition-colors">
+                    Login
+                </a>
             </div>
         </div>
     </div>
 </nav>
 
 
-<section class="relative min-h-screen pt-16 overflow-hidden" style="background-color: #f5f5f5; background-image: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <!-- Left Column - Content -->
-        <div class="text-white z-10" data-aos="fade-right">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                Revolucione suas Cotações de Plano de Saúde
-            </h1>
-            <p class="text-gray-300 text-lg md:text-xl mb-8">
-                Crie orçamentos profissionais em poucos cliques. Economize tempo e feche mais vendas com nossa plataforma intuitiva.
-            </p>
-            <div class="flex flex-wrap gap-4">
-                <a href="#pricing" class="bg-blue-600 w-full text-center text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-all transform hover:-translate-y-1 inline-flex items-center">
-                    <p class="w-full text-center flex justify-center items-center">
-                        Começar Agora
+
+
+
+
+<section id="imagem-dobra" class="relative min-h-screen flex items-center justify-center pt-16 pb-20 overflow-hidden" style="background-color: #B0C4DE;">
+
+    <!-- Background pattern -->
+    <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.05\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Column - Content -->
+            <div class="text-amber-950 z-10">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                    Revolucione suas Cotações de Plano de Saúde
+                </h1>
+                <p class="text-amber-950 text-lg md:text-xl mb-8">
+                    Crie orçamentos profissionais em poucos cliques. Economize tempo e feche mais vendas com nossa plataforma intuitiva.
+                </p>
+
+                <!-- Botão CTA e Video -->
+                <div class="flex flex-col gap-6">
+                    <a href="#pricing" class="bg-amber-700 text-white px-8 py-4 rounded-lg hover:bg-amber-700 transition-all transform hover:-translate-y-1 flex items-center justify-center">
+                        Saiba Mais
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                         </svg>
-                    </p>
-                </a>
-                <img src="{{asset('demonstracao.gif')}}" alt="Demonstração">
-            </div>
-            <!-- Metrics -->
-            <div class="grid grid-cols-3 gap-8 mt-12">
-                <div>
-                    <h4 class="text-3xl font-bold text-blue-500">+1000</h4>
-                    <p class="text-gray-400">Corretores Ativos</p>
-                </div>
-                <div>
-                    <h4 class="text-3xl font-bold text-blue-500">30s</h4>
-                    <p class="text-gray-400">Tempo Médio de Cotação</p>
-                </div>
-                <div>
-                    <h4 class="text-3xl font-bold text-blue-500">98%</h4>
-                    <p class="text-gray-400">Satisfação</p>
-                </div>
-            </div>
-        </div>
+                    </a>
 
-        <!-- Right Column - Video -->
-        <div class="relative" data-aos="fade-left">
-            <img src="{{asset('tela.png')}}" alt="Tela" title="Tela" class="w-full h-[80%] object-cover"/>
-            <div class="absolute top-0 left-0 w-full h-full bg-gray-400 opacity-10"></div>
+                    <!-- Botão Ver Vídeo -->
+                    <button onclick="openVideoModal()" class="group relative inline-flex items-center justify-center">
+                        <div class="absolute inset-0 bg-white/10 rounded-lg blur-md group-hover:bg-white/20 transition"></div>
+                        <span class="relative flex items-center text-amber-950 font-bold text-3xl group-hover:text-white transition">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            </svg>
+                            Ver Demonstração
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Metrics -->
+                <div class="flex justify-between mt-12">
+                    <div>
+                        <h4 class="text-3xl font-bold text-amber-900 text-center">+1000</h4>
+                        <p class="text-amber-950 text-lg">Corretores Ativos</p>
+                    </div>
+                    <div>
+                        <h4 class="text-3xl font-bold text-amber-900 text-center">30s</h4>
+                        <p class="text-amber-950 text-lg">Tempo Médio de Cotação</p>
+                    </div>
+                    <div>
+                        <h4 class="text-3xl font-bold text-amber-900 text-center">98%</h4>
+                        <p class="text-amber-950 text-lg">Satisfação</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Preview do GIF -->
+            <div class="relative group cursor-pointer scale-75" onclick="openVideoModal()">
+                <div class="relative rounded-xl overflow-hidden shadow-2xl transform group-hover:scale-105 transition-transform">
+                    <img src="{{asset('tela.png')}}" alt="Preview" class="object-cover">
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <svg class="w-14 h-14 text-white opacity-75 hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<!-- Decorative Elements -->
-<div class="absolute bottom-0 inset-x-0 h-64 bg-gradient-to-t from-black/95 to-transparent"></div>
-</section>
 
-<section id="arguments" class="bg-gray-100 text-gray-800 h-auto">
-    <div class="h-full flex flex-col justify-start items-center px-8 pt-12">
-        <!-- Título da seção -->
-        <h2 class="text-4xl font-bold mb-10 text-center">Por que escolher nosso sistema?</h2>
-        <!-- Argumentos -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-7xl">
-            <!-- Card 1 -->
-            <div class="flex flex-col items-center text-center bg-white p-8 shadow-xl rounded-lg min-h-[16rem]">
-                <h3 class="text-2xl font-semibold mb-4">Alta Performance</h3>
-                <p>Tudo o que você e seu time precisam para trabalhar, na palma da sua mão, de qualquer lugar e a qualquer momento, à sua disposição.</p>
-            </div>
-            <!-- Card 2 -->
-            <div class="flex flex-col items-center text-center bg-white p-8 shadow-xl rounded-lg min-h-[16rem]">
-                <h3 class="text-2xl font-semibold mb-4">Agilidade</h3>
-                <p>Envie cotações em 1 minuto direto no WhatsApp ou e-mail do seu cliente. Nosso time mantém todas tabelas atualizadas para você.</p>
-            </div>
-            <!-- Card 3 -->
-            <div class="flex flex-col items-center text-center bg-white p-8 shadow-xl rounded-lg min-h-[16rem]">
-                <h3 class="text-2xl font-semibold mb-4">Mais Credibilidades</h3>
-                <p>Entregue cotações com apresentação profissional ao seu cliente e saia na frente de seus concorrentes.</p>
-            </div>
-            <!-- Card 4 -->
-            <div class="flex flex-col items-center text-center bg-white p-8 shadow-xl rounded-lg min-h-[16rem]">
-                <h3 class="text-2xl font-semibold mb-4">Precisão</h3>
-                <p>Dados consistentes para evitar erros.</p>
-            </div>
-            <!-- Card 5 -->
-            <div class="flex flex-col items-center text-center bg-white p-8 shadow-xl rounded-lg min-h-[16rem]">
-                <h3 class="text-2xl font-semibold mb-4">Personalização</h3>
-                <p>Ajuste cotações para atender a cada cliente.</p>
-            </div>
-            <!-- Card 6 -->
-            <div class="flex flex-col items-center text-center bg-white p-8 shadow-xl rounded-lg min-h-[16rem]">
-                <h3 class="text-2xl font-semibold mb-4">Suporte Dedicado</h3>
-                <p>Nossa equipe está disponível para ajudá-lo sempre que precisar, garantindo a continuidade do seu trabalho.</p>
-            </div>
-            <!-- Card 7 -->
-            <div class="flex flex-col items-center text-center bg-white p-8 shadow-xl rounded-lg min-h-[16rem]">
-                <h3 class="text-2xl font-semibold mb-4">Segurança</h3>
-                <p>Seus dados estão protegidos com as melhores práticas de segurança digital.</p>
-            </div>
-            <!-- Card 8 -->
-            <div class="flex flex-col items-center text-center bg-white p-8 shadow-xl rounded-lg min-h-[16rem]">
-                <h3 class="text-2xl font-semibold mb-4">Economia</h3>
-                <p>Reduza os custos operacionais e foque no que importa: vender mais e melhor.</p>
-            </div>
+    <!-- Modal do Vídeo -->
+    <div id="videoModal" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="relative w-full max-w-4xl">
+            <button onclick="closeVideoModal()" class="absolute -top-8 right-0 text-white text-2xl hover:text-gray-300">
+                &times;
+            </button>
+            <img src="{{asset('demonstracao.gif')}}" alt="Demonstração" class="w-full h-auto rounded-lg shadow-2xl">
         </div>
     </div>
 </section>
 
-<section id="pricing" class="py-16 bg-gradient-to-br from-amber-50 to-amber-100/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl lg:text-5xl font-bold w-full text-center">Planos Acessíveis</h2>
-        <div class="mt-8 flex flex-col lg:flex-row gap-6 justify-center">
-            <!-- Plano 1 -->
-            <div class="bg-white text-blue-500 rounded-lg shadow-lg flex-wrap p-6 w-[30%] flex content-between">
-                <div class="w-full">
-                    <h3 class="text-2xl font-semibold text-center border-b border-black uppercase">Plano Individual</h3>
-                    <p class="text-4xl font-bold mt-4">R$ 29,90/mês</p>
-                    <ul class="mt-4 text-left text-sm">
-                        <li>- Acesso ao sistema.</li>
-                        <li>- Cotações ilimitadas.</li>
-                        <li>- Fácil de usar.</li>
-                        <li>- Apenas um Emáil</li>
+<section id="pricing" class="min-h-screen flex flex-col justify-center py-18" style="background-color:#E6E6FA;">
+    <div class="max-w-5xl w-[70%] mx-auto h-full flex flex-col">
+        <div class="text-center mb-8">
+            <h2 class="text-6xl font-bold text-amber-950 mb-4">Nossos Planos</h2>
+            <p class="text-4xl text-amber-900 font-bold">Escolha o plano ideal para suas necessidades</p>
+        </div>
+
+        <div class="flex flex-1 gap-6 justify-center items-stretch h-full">
+            <!-- Plano Individual -->
+            <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-[320px] rounded-xl shadow-lg p-6 border border-blue-100 transition-all hover:shadow-xl flex flex-col justify-between">
+                <div>
+                    <span class="bg-white text-white px-4 py-2 rounded-full text-sm block w-max mx-auto mb-4"></span>
+                    <h3 class="text-4xl font-bold text-gray-800 mb-4 text-center">Individual</h3>
+                    <div class="my-6 text-center flex items-center">
+                        <span class="text-3xl font-bold text-purple-900">R$ 29,90</span>&nbsp;
+                        <span class="text-black text-sm block">/mês</span>
+                    </div>
+                    <ul class="space-y-3 text-gray-600 text-sm">
+                        <li class="flex items-center">
+                            ✅ Acesso ao sistema
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Cotações ilimitadas
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Fácil de usar
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Apenas um e-mail
+                        </li>
                     </ul>
                 </div>
-                <div class="w-full">
-                    <a href="{{route('assinaturas.individual.create')}}" class="mt-6 bg-blue-500 text-white flex justify-center w-full py-2 px-4 rounded-lg hover:bg-blue-600">
-                        Assinar
-                    </a>
+                <div class="bg-purple-950 text-white text-center py-3 rounded-lg mt-6">
+                    Começar Agora
                 </div>
-            </div>
-            <!-- Plano 2 -->
-            <div class="bg-white text-blue-500 rounded-lg shadow-lg flex-wrap p-6 w-[30%] flex content-between" style="border:5px solid black;">
-                <div class="w-full">
-                    <h3 class="text-2xl font-semibold text-center border-b border-black uppercase">Plano Empresarial</h3>
-                    <p class="text-4xl font-bold mt-4">R$ 129,90/mês</p>
-                    <ul class="mt-4 text-left text-sm">
-                        <li>- Acesso ao sistema.</li>
-                        <li>- Cotações ilimitadas.</li>
-                        <li>- Fácil de usar.</li>
-                        <li>- Equipes colaborativas.</li>
-                        <li>- Gestão completa.</li>
-                        <li>- Relatórios detalhados.</li>
-                        <li>- Cadastrar até 5 email's.</li>
-                        <li>- Acima de 5 email's é cobrado 30 reais por email.</li>
+            </a>
+
+            <!-- Plano Empresarial -->
+            <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-[320px] rounded-xl shadow-lg p-6 border-4 border-blue-600 transition-all hover:shadow-xl flex flex-col justify-between">
+                <div>
+                    <span class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm block w-max mx-auto mb-4">Mais Popular</span>
+                    <h3 class="text-4xl font-bold text-black mb-4 text-center">Empresarial</h3>
+                    <div class="my-6 text-center">
+                        <span class="text-3xl font-bold text-purple-900">R$ 129,90</span>
+                        <span class="text-black text-sm block">/mês</span>
+                    </div>
+                    <ul class="space-y-3 text-gray-600 text-sm">
+                        <li class="flex items-center">
+                            ✅ Acesso ao sistema
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Cotações ilimitadas
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Fácil de usar
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Equipes colaborativas
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Gestão completa
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Relatórios detalhados
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Cadastrar até 5 e-mails
+                        </li>
+                        <li class="flex items-center">
+                            ✅ Acima de 5 e-mails é cobrado 25 reais
+                        </li>
                     </ul>
                 </div>
-                <div class="w-full">
-                    <a href="{{route('assinaturas.empresarial.create')}}" class="mt-6 bg-blue-500 text-white flex justify-center w-full py-2 px-4 rounded-lg hover:bg-blue-600">
-                        Assinar
-                    </a>
+                <div class="bg-purple-950 text-white text-center py-3 rounded-lg mt-6">
+                    Começar Agora
                 </div>
-
-            </div>
-            <!-- Plano 3 -->
-
+            </a>
         </div>
     </div>
 </section>
 
 
-<section class="py-16 bg-gradient-to-br from-white to-gray-50">
+
+
+
+<section class="py-10 bg-gradient-to-br from-white to-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Título Principal -->
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">O que é o Sistema de Cotação?</h2>
-            <div class="w-24 h-1 bg-blue-600 mx-auto"></div>
-        </div>
+        <div class="text-center mb-4">
+            <h2 class="text-2xl md:text-4xl font-bold text-gray-900">O que é o Sistema de Cotação?</h2>
 
+        </div>
         <!-- Grid de Características -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-2">
             <!-- Card 1 - Rapidez -->
-            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+            <div class="bg-white p-4 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center mb-2">
                     <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
@@ -205,7 +282,6 @@
                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Cotação Instantânea</h3>
                 <p class="text-gray-600">Gere cotações em segundos para seus clientes. Nossa plataforma processa os dados rapidamente, permitindo respostas imediatas e aumentando suas chances de fechamento.</p>
             </div>
-
             <!-- Card 2 - Comparativo -->
             <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
                 <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
@@ -216,7 +292,6 @@
                 <h3 class="text-xl font-semibold text-gray-900 mb-3">Comparativo Completo</h3>
                 <p class="text-gray-600">Compare diferentes planos lado a lado, destacando benefícios e coberturas. Facilite a decisão do seu cliente com informações claras e organizadas.</p>
             </div>
-
             <!-- Card 3 - Personalização -->
             <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
                 <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
@@ -228,14 +303,12 @@
                 <p class="text-gray-600">Ajuste as cotações de acordo com as necessidades específicas de cada cliente, incluindo coberturas adicionais e personalizações do plano.</p>
             </div>
         </div>
-
         <!-- Descrição Detalhada com Fluxo -->
-        <div class="mt-16 bg-white rounded-xl shadow-lg p-8">
+        <div class="mt-6 bg-white rounded-xl shadow-lg p-4">
             <div class="max-w-3xl mx-auto">
-                <h3 class="text-2xl font-bold text-gray-900 mb-6">Como Funciona?</h3>
-
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Como Funciona?</h3>
                 <!-- Fluxo do Processo -->
-                <div class="space-y-8">
+                <div class="space-y-4">
                     <!-- Passo 1 -->
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">1</div>
@@ -244,7 +317,6 @@
                             <p class="text-gray-600 mt-2">Insira os dados básicos do cliente como idade, localização e tipo de plano desejado. Nossa interface intuitiva guia você pelo processo.</p>
                         </div>
                     </div>
-
                     <!-- Passo 2 -->
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">2</div>
@@ -253,7 +325,6 @@
                             <p class="text-gray-600 mt-2">O sistema processa os dados automaticamente e consulta nossa base de planos atualizada para encontrar as melhores opções.</p>
                         </div>
                     </div>
-
                     <!-- Passo 3 -->
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">3</div>
@@ -263,9 +334,8 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Benefícios -->
-                <div class="mt-12">
+                <div class="mt-2">
                     <h4 class="text-lg font-semibold text-gray-900 mb-4">Principais Benefícios:</h4>
                     <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <li class="flex items-center space-x-2">
@@ -299,108 +369,7 @@
     </div>
 </section>
 
-<section class="py-16 bg-gradient-to-br from-amber-50 to-amber-100/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Título Principal -->
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-amber-900 mb-4">Perguntas Frequentes (F.A.Q)</h2>
-            <p class="text-amber-800 max-w-2xl mx-auto">Encontre respostas para as dúvidas mais comuns sobre nosso sistema de cotação.</p>
-            <div class="w-24 h-1 bg-amber-700 mx-auto mt-4"></div>
-        </div>
 
-        <!-- Container de Perguntas e Respostas -->
-        <div class="max-w-3xl mx-auto space-y-4">
-            <!-- Pergunta 1 -->
-            <div class="bg-amber-50 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-amber-200">
-                <button class="w-full text-left px-6 py-4 focus:outline-none flex justify-between items-center">
-                    <span class="font-semibold text-amber-900">Como faço para começar a usar o sistema?</span>
-                    <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div class="px-6 pb-4 text-amber-800">
-                    Basta se cadastrar em nossa plataforma, preencher seus dados profissionais e fazer a verificação da sua corretora. Após a aprovação, você terá acesso imediato a todas as funcionalidades do sistema.
-                </div>
-            </div>
-
-            <!-- Pergunta 2 -->
-            <div class="bg-amber-50 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-amber-200">
-                <button class="w-full text-left px-6 py-4 focus:outline-none flex justify-between items-center">
-                    <span class="font-semibold text-amber-900">Quanto tempo leva para gerar uma cotação?</span>
-                    <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div class="px-6 pb-4 text-amber-800">
-                    O processo de cotação é instantâneo. Após inserir os dados do cliente, você receberá as opções de planos em segundos. O relatório completo com comparativos fica pronto em menos de 1 minuto.
-                </div>
-            </div>
-
-            <!-- Pergunta 3 -->
-            <div class="bg-amber-50 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-amber-200">
-                <button class="w-full text-left px-6 py-4 focus:outline-none flex justify-between items-center">
-                    <span class="font-semibold text-amber-900">Quais operadoras estão disponíveis no sistema?</span>
-                    <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div class="px-6 pb-4 text-amber-800">
-                    Trabalhamos com as principais operadoras do mercado. Nossa base é atualizada constantemente e inclui todas as operadoras com atuação nacional e as principais operadoras regionais.
-                </div>
-            </div>
-
-            <!-- Pergunta 4 -->
-            <div class="bg-amber-50 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-amber-200">
-                <button class="w-full text-left px-6 py-4 focus:outline-none flex justify-between items-center">
-                    <span class="font-semibold text-amber-900">Como são calculadas as comissões?</span>
-                    <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div class="px-6 pb-4 text-amber-800">
-                    As comissões são calculadas automaticamente com base nas tabelas atualizadas de cada operadora. O sistema mostra o valor da sua comissão em tempo real durante a cotação.
-                </div>
-            </div>
-
-            <!-- Pergunta 5 -->
-            <div class="bg-amber-50 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-amber-200">
-                <button class="w-full text-left px-6 py-4 focus:outline-none flex justify-between items-center">
-                    <span class="font-semibold text-amber-900">Posso personalizar os relatórios para meus clientes?</span>
-                    <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div class="px-6 pb-4 text-amber-800">
-                    Sim! Você pode personalizar os relatórios com sua logo, cores e informações de contato. Também é possível escolher quais informações serão exibidas no comparativo.
-                </div>
-            </div>
-
-            <!-- Pergunta 6 -->
-            <div class="bg-amber-50 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-amber-200">
-                <button class="w-full text-left px-6 py-4 focus:outline-none flex justify-between items-center">
-                    <span class="font-semibold text-amber-900">O sistema funciona em dispositivos móveis?</span>
-                    <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div class="px-6 pb-4 text-amber-800">
-                    Sim, nossa plataforma é 100% responsiva e funciona perfeitamente em smartphones e tablets. Você pode fazer cotações de qualquer lugar, a qualquer momento.
-                </div>
-            </div>
-        </div>
-
-        <!-- Suporte Adicional -->
-        <div class="mt-12 text-center">
-            <p class="text-amber-800">Não encontrou o que procurava?</p>
-            <a href="#contact" class="inline-flex items-center text-amber-700 hover:text-amber-800 mt-2">
-                Entre em contato com nosso suporte
-                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
-            </a>
-        </div>
-    </div>
-</section>
 
 
 <section class="py-16 bg-gradient-to-br from-amber-50 to-amber-100/50">
@@ -552,14 +521,40 @@
     </div>
 </footer>
 
-<script
-    src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="{{asset('jquery.min.js')}}"></script>
+<script src="{{asset('toastr.min.js')}}"></script>
 <script>
+    function openVideoModal() {
+        // Mostrar o loader
+        document.querySelector('.ajax_load').style.display = 'flex';
+
+        // Criar um elemento de imagem temporário para garantir que a mídia foi carregada
+        let demoImage = new Image();
+        demoImage.src = "{{asset('demonstracao.gif')}}"; // Ajuste caso seja um vídeo
+
+        demoImage.onload = function() {
+            // Esconder o loader
+            document.querySelector('.ajax_load').style.display = 'none';
+
+            // Exibir o modal
+            document.getElementById('videoModal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        };
+    }
+
+    function closeVideoModal() {
+        document.getElementById('videoModal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    // Fechar modal ao clicar fora
+    document.getElementById('videoModal').addEventListener('click', function(e) {
+        if(e.target === this) closeVideoModal();
+    });
+
 
     document.addEventListener("DOMContentLoaded", () => {
+
         const smoothScrollLinks = document.querySelectorAll('a[href="#pricing"]');
         smoothScrollLinks.forEach(link => {
             link.addEventListener("click", (event) => {
@@ -591,7 +586,6 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     if (data.success) {
                         toastr.success(data.message, 'Sucesso');
                         document.getElementById('suggestion-form').reset(); // Limpar formulário

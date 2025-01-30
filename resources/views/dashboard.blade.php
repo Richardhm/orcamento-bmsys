@@ -392,14 +392,10 @@
                     return false;
                 });
 
-
-
-
                 $("body").on('click','.btn_ambulatorial',function(){
                     $("#resultado").slideUp("slow");
                     $("#resultado").empty();
                     atualizarResultado(1)
-
                 });
 
                 $("body").on('click','.btn_normal',function(){

@@ -1,60 +1,66 @@
 <x-app-layout>
     <!-- Botão redondo -->
     <div class="flex justify-end mt-4 mr-4 relative">
+        <!-- Botão para abrir a modal -->
         <button id="toggle-modal"
                 class="w-16 h-16 flex items-center justify-center rounded-full bg-blue-600 text-white text-3xl font-bold shadow-lg hover:bg-blue-700 transition">
             +
         </button>
 
+        <!-- Fundo de sobreposição (backdrop) -->
+        <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
-        <!-- Modal ao lado esquerdo do botão -->
+        <!-- Modal centralizada -->
         <div id="user-modal"
-             class="absolute hidden bg-white shadow-lg rounded-lg p-6 top-24 right-0 w-96 z-50 transform transition-transform duration-500 translate-x-full max-h-[80vh] overflow-auto">
-            <!-- Cabeçalho da modal -->
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold">Cadastrar Usuário</h2>
-                <button id="close-modal" class="text-gray-500 hover:text-gray-700">&times;</button>
+             class="fixed inset-0 hidden flex items-center justify-center z-50">
+            <div class="bg-white shadow-lg rounded-lg p-6 w-96 max-h-[80vh] overflow-auto relative">
+                <!-- Cabeçalho da modal -->
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Cadastrar Usuário</h2>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+                </div>
+
+                <!-- Formulário -->
+                <form id="user-form" action="{{ route('storeUser') }}" method="POST">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+                        <input type="text" name="name" id="name" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                        <input type="email" name="email" id="email" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
+                        <input type="text" name="phone" id="phone" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="image" class="block text-sm font-medium text-gray-700">Imagem do Usuário</label>
+                        <input type="file" name="image" id="image" accept="image/*"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="button" id="cancel-modal"
+                                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition mr-2">
+                            Cancelar
+                        </button>
+                        <button type="submit"
+                                class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
+                            Salvar
+                        </button>
+                    </div>
+                </form>
             </div>
-
-            <!-- Formulário -->
-            <form id="user-form" action="{{route('storeUser')}}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
-                    <input type="text" name="name" id="name" required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                </div>
-
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
-                    <input type="email" name="email" id="email" required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                </div>
-
-                <div class="mb-4">
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
-                    <input type="text" name="phone" id="phone" required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                </div>
-
-                <div class="mb-4">
-                    <label for="image" class="block text-sm font-medium text-gray-700">Imagem do Usuário</label>
-                    <input type="file" name="image" id="image" accept="image/*"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                </div>
-
-                <div class="flex justify-end">
-                    <button type="button" id="cancel-modal"
-                            class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition mr-2">
-                        Cancelar
-                    </button>
-                    <button type="submit"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
-                        Salvar
-                    </button>
-                </div>
-            </form>
         </div>
+
     </div>
 
     <div id="user-table">
@@ -331,29 +337,53 @@
                 });
 
 
+                $("body").on('click', '.delete', function(e) {
+                    e.preventDefault();
+                    let id = $(this).attr('data-id');
 
-                $("body").on('click','.delete',function(e){
-                   e.preventDefault();
-                   let id = $(this).attr('data-id');
+                    // Exibe a confirmação com SweetAlert2
+                    Swal.fire({
+                        title: "Tem certeza?",
+                        text: "Você não poderá reverter esta ação!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Sim, excluir!",
+                        cancelButtonText: "Cancelar"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Se confirmado, faz a requisição AJAX para deletar o usuário
+                            $.ajax({
+                                url: "{{route('deletar.user')}}",
+                                method: "POST",
+                                data: { id: id },
+                                success: function(res) {
+                                    if (res.success) {
+                                        // Atualiza a tabela de usuários
+                                        $("#user-table").html(res.html);
 
-                    if (confirm('Tem certeza de que deseja excluir este usuário?')) {
-                        $.ajax({
-                           url:"{{route('deletar.user')}}",
-                           method:"POST",
-                           data: {
-                               id:id
-                           },
-                           success:function(res) {
-                                console.log(res);
-                           }
-                        });
-                    }
+                                        // Exibe um Toastr de sucesso
+                                        toastr.success("Usuário excluído com sucesso!", 'Sucesso',{
 
+                                                toastClass: "toast-custom-width" // Aplica a classe personalizada
 
+                                        });
 
+                                    } else {
+                                        toastr.error("Ocorreu um erro ao excluir o usuário.", "Erro");
+                                    }
+                                },
+                                error: function() {
+                                    toastr.error("Erro ao tentar excluir o usuário.", "Erro");
+                                }
+                            });
+                        }
+                    });
 
-                   return false;
+                    return false;
                 });
+
 
 
 

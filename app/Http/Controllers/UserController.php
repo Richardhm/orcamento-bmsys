@@ -27,34 +27,42 @@ class UserController extends Controller
 
     public function storeUser(Request $request)
     {
+
         // Validação dos dados
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|string|max:20',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name_cadastrar' => 'required|string|max:255',
+            'email_cadastrar' => 'required|email|unique:users,email',
+            'phone_cadastrar' => 'nullable|string|max:20',
+            'image_cadastrar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         DB::beginTransaction(); // Inicia uma transação
 
         try {
             $imagePath = null;
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('users', 'public');
+            if ($request->hasFile('image_cadastrar')) {
+                $imagePath = $request->file('image_cadastrar')->store('users', 'public');
             }
+
+
+
+
             // Passo 1: Cadastrar o usuário
             $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'] ?? null,
+                'name' => $validated['name_cadastrar'],
+                'email' => $validated['email_cadastrar'],
+                'phone' => $validated['phone_cadastrar'] ?? null,
                 'password' => '12345678', // Senha padrão
-                'imagem' => $imagePath,
+                'imagem' => $imagePath
+
             ]);
+
+            $user->email_verified_at = now(); // Define o usuário como verificado automaticamente
+            $user->save();
 
             // Passo 2: Lógica de Assinaturas
             $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
             $emailCount = $assinatura->emailsAssinatura()->count();
-
             if ($emailCount >= 5) {
                 $emailsExtra = $emailCount - 4;
                 $assinatura->update([
@@ -66,10 +74,11 @@ class UserController extends Controller
             // Passo 3: Atualizar a tabela `emails_assinatura`
             EmailAssinatura::create([
                 'assinatura_id' => $assinatura->id,
-                'email' => $validated['email'],
+                'email' => $validated['email_cadastrar'],
                 'user_id' => $user->id,
                 'is_administrador' => false,
             ]);
+
 
             DB::commit(); // Confirma as transações
 
@@ -122,11 +131,33 @@ class UserController extends Controller
 
     public function deletar(Request $request)
     {
-        return $request->id;
+        $emailAssinatura = EmailAssinatura::where('user_id', $request->id);
+        if ($emailAssinatura->count() == 1) {
+            $emailAssinatura->delete();
+        }
+
+        $user = User::find($request->id);
+        if ($user) {
+            // Deleta a imagem se existir
+            if ($user->imagem) {
+                Storage::disk('public')->delete($user->imagem);
+            }
+            $user->delete();
+        }
+
+        $assinatura_id = Assinatura::where("user_id", auth()->user()->id)->first()->id;
+        $users = User::whereIn(
+            'id',
+            EmailAssinatura::where('assinatura_id', $assinatura_id)
+                ->where('is_administrador', 0)
+                ->pluck('user_id')
+        )->get();
+
+        return [
+            "success" => true,
+            'html' => view('partials.user-table', ['users' => $users])->render(),
+        ];
     }
-
-
-
 
     public function update(Request $request)
     {
@@ -157,10 +188,22 @@ class UserController extends Controller
 
         $user->save();
 
+        $assinatura_id = Assinatura::where("user_id",auth()->user()->id)->first()->id;
+
+        $users = User::whereIn(
+            'id',
+            EmailAssinatura::where('assinatura_id', $assinatura_id)
+                ->where('is_administrador', 0)
+                ->pluck('user_id')
+        )->get();
+
+        // Retornar o HTML da tabela de usuários
+        $html = view('partials.user-table', compact('users'))->render();
         return response()->json([
             'success' => true,
             'message' => 'Dados atualizados com sucesso!',
             'user' => $user,
+            'html' => $html
         ]);
     }
 
