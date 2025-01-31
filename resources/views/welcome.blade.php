@@ -60,7 +60,7 @@
 
     </style>
 </head>
-<body class="bg-black">
+<body class="bg-blue-950">
 <div class="ajax_load">
     <div class="ajax_load_box">
         <div class="ajax_load_box_circle"></div>
@@ -68,28 +68,32 @@
     </div>
 </div>
 <!-- Navbar -->
-<nav class="fixed w-full z-50 bg-white shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<nav class="fixed w-full z-50 shadow-md bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
+    <div class="mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
             <!-- Logo -->
-            <div class="flex items-center bg-black/60 rounded-lg">
+            <div class="flex items-center rounded-lg">
                 <img src="{{asset('logo_bm_1.png')}}" alt="Logo" class="h-16 p-1">
             </div>
 
             <!-- Título Centralizado -->
             <div class="absolute left-1/2 transform -translate-x-1/2">
-                <h1 class="text-4xl font-bold text-red-950">Sistema Cotação</h1>
+                <h1 class="text-4xl font-bold text-white">Sistema Orçamento</h1>
             </div>
 
             <!-- Botões Direita -->
             <div class="flex items-center space-x-4">
-                <a href="#pricing" class="bg-red-900 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors">
+                <a href="#pricing" class="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-900 transition-colors">
                     Assine Agora
                 </a>
-                <a href="{{route('login')}}" class="bg-gray-800 text-white px-6 py-2 rounded-full hover:bg-gray-900 transition-colors">
+                <a href="{{route('login')}}" class="bg-white text-black px-6 py-2 rounded-full hover:bg-gray-900 hover:text-white transition-colors">
                     Login
                 </a>
+                <div>
+                    <img src="{{asset('hapvida-notreDame_baixa_1.png')}}" alt="Hapvida">
+                </div>
             </div>
+
         </div>
     </div>
 </nav>
@@ -99,7 +103,7 @@
 
 
 
-<section id="imagem-dobra" class="relative min-h-screen flex items-center justify-center pt-16 pb-20 overflow-hidden" style="background-color: #B0C4DE;">
+<section id="imagem-dobra" class="relative min-h-screen flex items-center justify-center pt-16 pb-20 overflow-hidden">
 
     <!-- Background pattern -->
     <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.05\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
@@ -107,17 +111,17 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <!-- Left Column - Content -->
-            <div class="text-amber-950 z-10">
+            <div class="text-white z-10">
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
                     Revolucione suas Cotações de Plano de Saúde
                 </h1>
-                <p class="text-amber-950 text-lg md:text-xl mb-8">
+                <p class="text-white text-lg md:text-xl mb-8">
                     Crie orçamentos profissionais em poucos cliques. Economize tempo e feche mais vendas com nossa plataforma intuitiva.
                 </p>
 
                 <!-- Botão CTA e Video -->
                 <div class="flex flex-col gap-6">
-                    <a href="#pricing" class="bg-amber-700 text-white px-8 py-4 rounded-lg hover:bg-amber-700 transition-all transform hover:-translate-y-1 flex items-center justify-center">
+                    <a href="#pricing" class="bg-white text-black px-8 py-4 rounded-lg hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 flex items-center justify-center">
                         Saiba Mais
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -127,7 +131,7 @@
                     <!-- Botão Ver Vídeo -->
                     <button onclick="openVideoModal()" class="group relative inline-flex items-center justify-center">
                         <div class="absolute inset-0 bg-white/10 rounded-lg blur-md group-hover:bg-white/20 transition"></div>
-                        <span class="relative flex items-center text-amber-950 font-bold text-3xl group-hover:text-white transition">
+                        <span class="relative flex items-center text-white font-bold text-3xl group-hover:text-white transition">
                             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
                             </svg>
@@ -139,16 +143,16 @@
                 <!-- Metrics -->
                 <div class="flex justify-between mt-12">
                     <div>
-                        <h4 class="text-3xl font-bold text-amber-900 text-center">+1000</h4>
-                        <p class="text-amber-950 text-lg">Corretores Ativos</p>
+                        <h4 class="text-3xl font-bold text-white text-center">+1000</h4>
+                        <p class="text-white text-lg">Corretores Ativos</p>
                     </div>
                     <div>
-                        <h4 class="text-3xl font-bold text-amber-900 text-center">30s</h4>
-                        <p class="text-amber-950 text-lg">Tempo Médio de Cotação</p>
+                        <h4 class="text-3xl font-bold text-white text-center">30s</h4>
+                        <p class="text-white text-lg">Tempo Médio de Cotação</p>
                     </div>
                     <div>
-                        <h4 class="text-3xl font-bold text-amber-900 text-center">98%</h4>
-                        <p class="text-amber-950 text-lg">Satisfação</p>
+                        <h4 class="text-3xl font-bold text-white text-center">98%</h4>
+                        <p class="text-white text-lg">Satisfação</p>
                     </div>
                 </div>
             </div>
@@ -178,24 +182,33 @@
     </div>
 </section>
 
-<section id="pricing" class="min-h-screen flex flex-col justify-center py-18" style="background-color:#E6E6FA;">
+<section id="pricing" class="min-h-screen flex flex-col justify-center py-18">
     <div class="max-w-5xl w-[70%] mx-auto h-full flex flex-col">
         <div class="text-center mb-8">
-            <h2 class="text-6xl font-bold text-amber-950 mb-4">Nossos Planos</h2>
-            <p class="text-4xl text-amber-900 font-bold">Escolha o plano ideal para suas necessidades</p>
+            <h2 class="text-6xl font-bold text-white mb-4">Nossos Planos</h2>
+            <p class="text-4xl text-white font-bold">Escolha o plano ideal para suas necessidades</p>
         </div>
 
         <div class="flex flex-1 gap-6 justify-center items-stretch h-full">
             <!-- Plano Individual -->
-            <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-[320px] rounded-xl shadow-lg p-6 border border-blue-100 transition-all hover:shadow-xl flex flex-col justify-between">
+            <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-[320px] rounded-xl shadow-lg p-6 border border-blue-100 transition-all hover:bg-gray-100 flex flex-col justify-between">
                 <div>
-                    <span class="bg-white text-white px-4 py-2 rounded-full text-sm block w-max mx-auto mb-4"></span>
-                    <h3 class="text-4xl font-bold text-gray-800 mb-4 text-center">Individual</h3>
-                    <div class="my-6 text-center flex items-center">
-                        <span class="text-3xl font-bold text-purple-900">R$ 29,90</span>&nbsp;
-                        <span class="text-black text-sm block">/mês</span>
+                    <div>
+                        <p class="text-purple-900 text-center font-bold text-lg">INDIVIDUAL</p>
+                        <p class="text-purple-900 text-center">Ideal para uma única pessoa</p>
                     </div>
-                    <ul class="space-y-3 text-gray-600 text-sm">
+                    <div class="bg-purple-950 text-white text-center py-3 rounded-full mt-6">
+                        Começar Agora
+                    </div>
+                    <div class="my-6 text-center flex items-center justify-center">
+                        <p class="flex flex-col items-start relative">
+                            <span class="text-lg font-bold text-purple-900 leading-none">R$</span>
+                            <span class="text-7xl font-bold text-purple-900">29,90</span>
+                            <span class="text-sm text-purple-900 self-end">/mês</span>
+                        </p>
+                    </div>
+
+                    <ul class="space-y-2 text-gray-600 text-sm">
                         <li class="flex items-center">
                             ✅ Acesso ao sistema
                         </li>
@@ -209,22 +222,42 @@
                             ✅ Apenas um e-mail
                         </li>
                     </ul>
+
+
+
                 </div>
-                <div class="bg-purple-950 text-white text-center py-3 rounded-lg mt-6">
-                    Começar Agora
+
+                <div>
+                    <p class="text-center text-gray-500 flex justify-center items-center text-sm">
+                        Saiba Mais, clique aqui
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                        </svg>
+
+                    </p>
+
                 </div>
+
             </a>
 
             <!-- Plano Empresarial -->
-            <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-[320px] rounded-xl shadow-lg p-6 border-4 border-blue-600 transition-all hover:shadow-xl flex flex-col justify-between">
+            <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-[320px] rounded-xl shadow-lg p-6 border-4 border-orange-400 transition-all hover:bg-gray-100 hover:shadow-xl flex flex-col justify-between">
                 <div>
-                    <span class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm block w-max mx-auto mb-4">Mais Popular</span>
-                    <h3 class="text-4xl font-bold text-black mb-4 text-center">Empresarial</h3>
-                    <div class="my-6 text-center">
-                        <span class="text-3xl font-bold text-purple-900">R$ 129,90</span>
-                        <span class="text-black text-sm block">/mês</span>
+                    <div>
+                        <p class="text-purple-900 text-center font-bold text-lg">MULTIUSUÁRIO</p>
+                        <p class="text-purple-900 text-center">Ideal para a sua corretora</p>
                     </div>
-                    <ul class="space-y-3 text-gray-600 text-sm">
+                    <div class="bg-purple-950 text-white text-center py-3 rounded-full mt-6">
+                        Começar Agora
+                    </div>
+                    <div class="my-6 text-center flex items-center justify-center">
+                        <p class="flex flex-col items-start relative">
+                            <span class="text-lg font-bold text-purple-900 leading-none">R$</span>
+                            <span class="text-7xl font-bold text-purple-900">129,90</span>
+                            <span class="text-sm text-purple-900 self-end">/mês</span>
+                        </p>
+                    </div>
+                    <ul class="space-y-2 text-gray-600 text-sm">
                         <li class="flex items-center">
                             ✅ Acesso ao sistema
                         </li>
@@ -251,8 +284,13 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bg-purple-950 text-white text-center py-3 rounded-lg mt-6">
-                    Começar Agora
+                <div>
+                    <p class="text-center text-gray-500 flex justify-center items-center text-sm">
+                        Saiba Mais, clique aqui
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </p>
                 </div>
             </a>
         </div>
@@ -263,11 +301,11 @@
 
 
 
-<section class="py-10 bg-gradient-to-br from-white to-gray-50">
+<section class="py-10 to-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Título Principal -->
         <div class="text-center mb-4">
-            <h2 class="text-2xl md:text-4xl font-bold text-gray-900">O que é o Sistema de Cotação?</h2>
+            <h2 class="text-2xl md:text-4xl font-bold text-white">O que é o Sistema de Cotação?</h2>
 
         </div>
         <!-- Grid de Características -->
@@ -372,13 +410,13 @@
 
 
 
-<section class="py-16 bg-gradient-to-br from-amber-50 to-amber-100/50">
+<section class="py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Título Principal -->
         <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-amber-900 mb-4">Fale Conosco</h2>
-            <p class="text-amber-800 max-w-2xl mx-auto">Envie suas dúvidas ou sugestões. Estamos aqui para ajudar!</p>
-            <div class="w-24 h-1 bg-amber-700 mx-auto mt-4"></div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Fale Conosco</h2>
+            <p class="text-white max-w-2xl mx-auto">Envie suas dúvidas ou sugestões. Estamos aqui para ajudar!</p>
+            <div class="w-24 h-1 bg-white mx-auto mt-4"></div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
@@ -387,39 +425,39 @@
                 <form id="suggestion-form" class="space-y-6">
                     <!-- Nome -->
                     <div>
-                        <label for="name" class="block text-sm font-medium text-amber-900 mb-2">Nome</label>
+                        <label for="name" class="block text-sm font-medium text-black mb-2">Nome</label>
                         <input type="text" id="name" name="name" required
-                               class="w-full px-4 py-3 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
+                               class="w-full px-4 py-3 rounded-lg border border-black focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
                                placeholder="Seu nome completo">
                     </div>
 
                     <!-- Email -->
                     <div>
-                        <label for="email" class="block text-sm font-medium text-amber-900 mb-2">Email</label>
+                        <label for="email" class="block text-sm font-medium text-black mb-2">Email</label>
                         <input type="email" id="email" name="email" required
-                               class="w-full px-4 py-3 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
+                               class="w-full px-4 py-3 rounded-lg border border-black focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
                                placeholder="seu@email.com">
                     </div>
 
                     <!-- Assunto -->
                     <div>
-                        <label for="subject" class="block text-sm font-medium text-amber-900 mb-2">Assunto</label>
+                        <label for="subject" class="block text-sm font-medium text-black mb-2">Assunto</label>
                         <input type="text" id="subject" name="subject" required
-                               class="w-full px-4 py-3 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
+                               class="w-full px-4 py-3 rounded-lg border border-black focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
                                placeholder="Assunto da mensagem">
                     </div>
 
                     <!-- Mensagem -->
                     <div>
-                        <label for="message" class="block text-sm font-medium text-amber-900 mb-2">Mensagem</label>
+                        <label for="message" class="block text-sm font-medium text-black mb-2">Mensagem</label>
                         <textarea id="message" name="message" rows="4" required
-                                  class="w-full px-4 py-3 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
+                                  class="w-full px-4 py-3 rounded-lg border border-black focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
                                   placeholder="Digite sua mensagem aqui..."></textarea>
                     </div>
 
                     <!-- Botão Enviar -->
                     <button type="submit"
-                            class="w-full bg-amber-600 text-white py-3 px-6 rounded-lg hover:bg-amber-700 transition-colors duration-300 flex items-center justify-center">
+                            class="w-full bg-purple-900 text-white py-3 px-6 rounded-lg hover:bg-amber-700 transition-colors duration-300 flex items-center justify-center">
                         <span>Enviar Mensagem</span>
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
@@ -430,29 +468,29 @@
 
             <!-- Call to Action -->
             <div class="flex flex-col justify-center lg:justify-start">
-                <div class="bg-amber-50 rounded-xl shadow-lg p-8 border border-amber-200">
-                    <h3 class="text-2xl font-bold text-amber-900 mb-4">Comece Agora Mesmo!</h3>
-                    <p class="text-amber-800 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-8 border border-amber-200">
+                    <h3 class="text-2xl font-bold text-black mb-4">Comece Agora Mesmo!</h3>
+                    <p class="text-black mb-8">
                         Não perca mais tempo com processos manuais. Automatize suas cotações e aumente suas vendas com nossa plataforma intuitiva.
                     </p>
                     <div class="space-y-4">
                         <div class="flex items-center">
-                            <svg class="w-6 h-6 text-amber-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-purple-900 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            <span class="text-amber-800">Cotações em segundos</span>
+                            <span class="text-black">Cotações em segundos</span>
                         </div>
                         <div class="flex items-center">
-                            <svg class="w-6 h-6 text-amber-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-purple-900 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            <span class="text-amber-800">Suporte especializado</span>
+                            <span class="text-black">Suporte especializado</span>
                         </div>
                         <div class="flex items-center">
-                            <svg class="w-6 h-6 text-amber-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-purple-900 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            <span class="text-amber-800">Sem taxa de adesão</span>
+                            <span class="text-black">Sem taxa de adesão</span>
                         </div>
                     </div>
                     <a href="#signup"
@@ -468,7 +506,7 @@
     </div>
 </section>
 
-<footer class="bg-blue-900 text-white py-10">
+<footer class="text-white py-10">
     <div class="container mx-auto px-4">
         <!-- Grade Principal -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -597,25 +635,7 @@
                     toastr.error('Ocorreu um erro. Tente novamente.', 'Erro');
                 });
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     });
-
-
-
 </script>
 </body>
 </html>
