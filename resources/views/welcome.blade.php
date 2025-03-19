@@ -7,6 +7,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{asset('toastr.min.css')}}">
     <style>
+        #demoVideo {
+            max-height: 80vh;
+            background: #000;
+        }
         /* Aumentar a largura do toastr */
         .toast {
             width: 400px !important; /* Modifique esse valor conforme necessário */
@@ -134,9 +138,6 @@
             #imagem-dobra {
                 min-height: calc(100vh - 6rem);
             }
-
-
-
         }
 
         @media (max-width: 480px) {
@@ -205,7 +206,17 @@
 </nav>
 
 
-
+<div id="videoModal" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="relative w-full max-w-4xl">
+        <button onclick="closeVideoModal()" class="absolute -top-8 right-0 text-white text-2xl hover:text-gray-300">
+            &times;
+        </button>
+        <video id="demoVideo" controls class="w-full h-auto rounded-lg shadow-2xl">
+            <source src="{{asset('demonstracao.mp4')}}" type="video/mp4">
+            Seu navegador não suporta vídeos HTML5.
+        </video>
+    </div>
+</div>
 
 
 
@@ -459,24 +470,33 @@
 <script src="{{asset('toastr.min.js')}}"></script>
 <script>
     function openVideoModal() {
+        const video = document.getElementById('demoVideo');
+
         // Mostrar o loader
         document.querySelector('.ajax_load').style.display = 'flex';
 
-        // Criar um elemento de imagem temporário para garantir que a mídia foi carregada
-        let demoImage = new Image();
-        demoImage.src = "{{asset('demonstracao.gif')}}"; // Ajuste caso seja um vídeo
+        // Carregar o vídeo
+        video.load();
 
-        demoImage.onload = function() {
+        video.onloadeddata = function() {
             // Esconder o loader
             document.querySelector('.ajax_load').style.display = 'none';
 
             // Exibir o modal
             document.getElementById('videoModal').classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
+
+            // Iniciar reprodução
+            video.play().catch(error => {
+                console.log('Reprodução automática bloqueada pelo navegador');
+            });
         };
     }
 
     function closeVideoModal() {
+        const video = document.getElementById('demoVideo');
+        video.pause();
+        video.currentTime = 0;
         document.getElementById('videoModal').classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
     }
