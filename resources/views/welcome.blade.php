@@ -161,7 +161,7 @@
 <!-- Navbar -->
 <nav class="fixed w-full z-50 shadow-md bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center py-4">
+        <div class="flex flex-row justify-between items-center py-4">
             <!-- Logo -->
             <div class="order-1 md:order-none">
                 <img src="{{asset('logo_bm_1.png')}}" alt="Logo" class="h-12 md:h-16 p-1">
