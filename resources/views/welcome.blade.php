@@ -168,13 +168,13 @@
             </div>
 
             <!-- Título Centralizado -->
-            <div class="order-3 md:order-none mt-4 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
+            <div class="order-3 md:order-none mt-4 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 hidden md:block">
                 <h1 class="text-2xl md:text-4xl font-bold text-white text-center">Sistema Orçamento</h1>
             </div>
 
             <!-- Botões Direita -->
             <div class="order-2 md:order-none flex items-center space-x-2 md:space-x-4">
-                <a href="#pricing" class="bg-red-600 text-white px-4 py-2 text-sm md:px-6 md:py-2 rounded-full hover:bg-red-900 transition-colors">
+                <a href="#pricing" class="bg-red-600 text-white px-4 py-2 text-sm md:px-6 md:py-2 rounded-full hover:bg-red-900 transition-colors hidden md:inline-block">
                     Assine Agora
                 </a>
                 <a href="{{route('login')}}" class="bg-white text-black px-4 py-2 text-sm md:px-6 md:py-2 rounded-full hover:bg-gray-900 hover:text-white transition-colors">
