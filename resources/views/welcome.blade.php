@@ -56,6 +56,97 @@
             scrollbar-color: #34150b #FEF3C7;
         }
 
+        @media (max-width: 768px) {
+            /* Ajustes para navbar */
+            nav .flex.justify-between {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+            }
+
+            .absolute.left-1\/2 {
+                position: relative;
+                left: 0;
+                transform: none;
+                text-align: center;
+                margin: 10px 0;
+            }
+
+            .flex.space-x-4 {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            /* Ajustes hero section */
+            #imagem-dobra .grid-cols-1 {
+                gap: 30px;
+            }
+
+            #imagem-dobra h1 {
+                font-size: 2rem;
+                text-align: center;
+            }
+
+            #imagem-dobra .flex.justify-between {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            /* Ajustes seção de preços */
+            #pricing .flex.flex-1 {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #pricing .max-w-5xl {
+                width: 90%!important;
+            }
+
+            #pricing h2 {
+                font-size: 2.5rem;
+            }
+
+            /* Footer ajustes */
+            footer .grid-cols-3 {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+
+            footer .flex.space-x-4 {
+                justify-content: center;
+            }
+
+            /* Ajustes gerais de tamanho */
+            .text-4xl { font-size: 1.8rem; }
+            .text-6xl { font-size: 2.5rem; }
+            .text-7xl { font-size: 3rem; }
+        }
+
+        @media (max-width: 480px) {
+            /* Ajustes finos para telas pequenas */
+            .bg-red-600, .bg-white {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .w-\[320px\] {
+                width: 100%!important;
+                max-width: 320px;
+            }
+
+            #imagem-dobra .scale-75 {
+                scale: 0.6;
+            }
+
+
+            .h-16.p-1 {
+                height: 50px;
+            }
+        }
+
 
 
     </style>
@@ -70,23 +161,23 @@
 <!-- Navbar -->
 <nav class="fixed w-full z-50 shadow-md bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
+        <div class="flex flex-col md:flex-row justify-between items-center py-4">
             <!-- Logo -->
-            <div class="flex items-center rounded-lg">
-                <img src="{{asset('logo_bm_1.png')}}" alt="Logo" class="h-16 p-1">
+            <div class="order-1 md:order-none">
+                <img src="{{asset('logo_bm_1.png')}}" alt="Logo" class="h-12 md:h-16 p-1">
             </div>
 
             <!-- Título Centralizado -->
-            <div class="absolute left-1/2 transform -translate-x-1/2">
-                <h1 class="text-4xl font-bold text-white">Sistema Orçamento</h1>
+            <div class="order-3 md:order-none mt-4 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
+                <h1 class="text-2xl md:text-4xl font-bold text-white text-center">Sistema Orçamento</h1>
             </div>
 
             <!-- Botões Direita -->
-            <div class="flex items-center space-x-4">
-                <a href="#pricing" class="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-900 transition-colors">
+            <div class="order-2 md:order-none flex items-center space-x-2 md:space-x-4">
+                <a href="#pricing" class="bg-red-600 text-white px-4 py-2 text-sm md:px-6 md:py-2 rounded-full hover:bg-red-900 transition-colors">
                     Assine Agora
                 </a>
-                <a href="{{route('login')}}" class="bg-white text-black px-6 py-2 rounded-full hover:bg-gray-900 hover:text-white transition-colors">
+                <a href="{{route('login')}}" class="bg-white text-black px-4 py-2 text-sm md:px-6 md:py-2 rounded-full hover:bg-gray-900 hover:text-white transition-colors">
                     Login
                 </a>
                 <div>
@@ -182,16 +273,16 @@
     </div>
 </section>
 
-<section id="pricing" class="min-h-screen flex flex-col justify-center py-18">
-    <div class="max-w-5xl w-[70%] mx-auto h-full flex flex-col">
+<section id="pricing" class="min-h-screen flex flex-col justify-center py-12 md:py-18">
+    <div class="max-w-5xl w-full md:w-[90%] mx-auto px-4">
         <div class="text-center mb-8">
-            <h2 class="text-6xl font-bold text-white mb-4">Nossos Planos</h2>
-            <p class="text-4xl text-white font-bold">Escolha o plano ideal para suas necessidades</p>
+            <h2 class="text-4xl md:text-6xl font-bold text-white mb-4">Nossos Planos</h2>
+            <p class="text-xl md:text-4xl text-white font-bold">Escolha o plano ideal</p>
         </div>
 
-        <div class="flex flex-1 gap-6 justify-center items-stretch h-full">
+        <div class="flex flex-col md:flex-row gap-6 justify-center items-stretch">
             <!-- Plano Individual -->
-            <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-[320px] rounded-xl shadow-lg p-6 border border-blue-100 transition-all hover:bg-gray-100 flex flex-col justify-between">
+            <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-full md:w-[320px] rounded-xl shadow-lg p-4 md:p-6 border border-blue-100 transition-all hover:bg-gray-100">
                 <div>
                     <div>
                         <p class="text-purple-900 text-center font-bold text-lg">INDIVIDUAL</p>
@@ -241,7 +332,7 @@
             </a>
 
             <!-- Plano Empresarial -->
-            <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-[320px] rounded-xl shadow-lg p-6 border-4 border-orange-400 transition-all hover:bg-gray-100 hover:shadow-xl flex flex-col justify-between">
+            <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-full md:w-[320px] rounded-xl shadow-lg p-4 md:p-6 border-4 border-orange-400 transition-all hover:bg-gray-100">
                 <div>
                     <div>
                         <p class="text-purple-900 text-center font-bold text-lg">MULTIUSUÁRIO</p>
@@ -297,10 +388,10 @@
     </div>
 </section>
 
-<footer class="text-white py-10">
+<footer class="text-white py-10 px-4">
     <div class="container mx-auto px-4">
         <!-- Grade Principal -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Resumo do Sistema -->
             <div>
                 <h3 class="text-xl font-bold mb-4">Sobre o Sistema</h3>
