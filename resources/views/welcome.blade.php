@@ -163,17 +163,17 @@
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-row justify-between items-center py-4">
             <!-- Logo -->
-            <div class="order-1 md:order-none">
+            <div>
                 <img src="{{asset('logo_bm_1.png')}}" alt="Logo" class="h-12 md:h-16 p-1">
             </div>
 
             <!-- Título Centralizado -->
-            <div class="order-3 md:order-none mt-4 md:mt-0 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 hidden md:block">
+            <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2">
                 <h1 class="text-2xl md:text-4xl font-bold text-white text-center">Sistema Orçamento</h1>
             </div>
 
             <!-- Botões Direita -->
-            <div class="order-2 md:order-none flex items-center space-x-2 md:space-x-4">
+            <div class="flex items-center space-x-2 md:space-x-4">
                 <a href="#pricing" class="bg-red-600 text-white px-4 py-2 text-sm md:px-6 md:py-2 rounded-full hover:bg-red-900 transition-colors hidden md:inline-block">
                     Assine Agora
                 </a>
