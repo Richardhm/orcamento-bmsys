@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91ec52008b81dd2911593593560d3a45",
+    "content-hash": "798e21f277600186509ff3e2057f3c87",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -749,6 +749,64 @@
                 }
             ],
             "time": "2024-10-09T13:47:03+00:00"
+        },
+        {
+            "name": "efipay/sdk-php-apis-efi",
+            "version": "1.12.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/efipay/sdk-php-apis-efi.git",
+                "reference": "3c811d6167db540dd53f2a440afb1e07e741012f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/efipay/sdk-php-apis-efi/zipball/3c811d6167db540dd53f2a440afb1e07e741012f",
+                "reference": "3c811d6167db540dd53f2a440afb1e07e741012f",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.0",
+                "php": ">=7.2.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Efi\\": "src/Efi"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Cota"
+                },
+                {
+                    "name": "Jéssica Gava"
+                },
+                {
+                    "name": "Sady Coimbra"
+                },
+                {
+                    "name": "Matheus Rodrigues"
+                },
+                {
+                    "name": "João Oliveira"
+                },
+                {
+                    "name": "Paloma Brito"
+                }
+            ],
+            "description": "SDK PHP para APIs Efi Pay",
+            "homepage": "https://github.com/efipay/sdk-php-apis-efi/",
+            "support": {
+                "discord": "https://comunidade.sejaefi.com.br/",
+                "docs": "https://dev.sejaefi.com.br/",
+                "issues": "https://github.com/efipay/sdk-php-apis-efi/issues",
+                "source": "https://github.com/efipay/sdk-php-apis-efi/tree/1.12.2"
+            },
+            "time": "2025-02-19T18:22:52+00:00"
         },
         {
             "name": "egulias/email-validator",

@@ -12,9 +12,35 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Efi\Exception\EfiException;
+use Efi\EfiPay;
 
 class AssinaturaController extends Controller
 {
+    private $efi;
+
+    public function __construct()
+    {
+        $mode = config('gerencianet.mode');
+        $certificate = config("gerencianet.{$mode}.certificate_name");
+
+        $client_id = config("gerencianet.{$mode}.client_id");
+        $client_secret = config("gerencianet.{$mode}.client_secret");
+        $certificate_path = base_path("certs/{$certificate}");
+
+
+
+        $options = [
+            'client_id' => $client_id,
+            'client_secret' => $client_secret,
+            'sandbox' => true,
+            'debug' => false
+        ];
+
+        $this->efi = new EfiPay($options);
+    }
+
+
     public function testNotification()
     {
 //        $user = User::find(1); // Substitua pelo ID válido de um usuário
@@ -50,11 +76,14 @@ class AssinaturaController extends Controller
 
     public function storeIndividual(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'cpf' => 'required|string',
             'phone' => 'required|string',
+            'password' => 'required|confirmed|min:8|confirmed',
+            'paymentToken' => 'required|string',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
@@ -63,100 +92,225 @@ class AssinaturaController extends Controller
             $imagePath = $request->file('imagem')->store('users', 'public');
         }
 
-        // Criar o usuário
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'phone' => $request->phone,
-            'imagem' => $imagePath,
-        ]);
+        try {
+            // Parâmetros do plano
+            $params = [
+                "id" => 13289 // ID do plano individual
+            ];
 
-        // Criar a assinatura
-        Assinatura::create([
-            'user_id' => $user->id,
-            'tipo_plano_id' => 1, // ID do plano Individual
-            'preco_base' => 29.90,
-            'emails_permitidos' => 1,
-            'emails_extra' => 0,
-            'preco_total' => 29.90, // Preço base sem e-mails extras
-            'status' => 'ativo',
-        ]);
+            // Itens da assinatura
+            $items = [
+                [
+                    "name" => "Plano Individual",
+                    "amount" => 1,
+                    "value" => 2990 // R$29,90 em centavos
+                ]
+            ];
 
-        // Realizar login automático
-        //Auth::login($user);
-        //event(new Registered($user));
-        //$user->notify(new WelcomeNotification);
-        SendVerificationEmail::dispatch($user);
-        // Redirecionar para o dashboard
-        return redirect()->route('login')->withErrors([
-            'message' => 'Cadastrado com sucesso, por favor verificar seu email.',
-        ]);
+
+
+            // Dados do cliente
+            $customer = [
+                "name" => $request->name,
+                "cpf" => preg_replace('/[^0-9]/', '', $request->cpf),
+                "phone_number" => preg_replace('/[^0-9]/', '', $request->phone),
+                "email" => $request->email,
+                "birth" => $request->birth_date // Você precisa adicionar este campo no formulário!
+            ];
+
+            // Endereço (também necessário)
+            $billingAddress = [
+                "street" => $request->street, // Adicionar campo no formulário
+                "number" => !empty($request->number) ? $request->number : "S/N", // Adicionar campo no formulário
+                "neighborhood" => $request->neighborhood, // Adicionar campo no formulário
+                "zipcode" => str_replace('-', '', $request->zipcode), // Adicionar campo no formulário
+                "city" => $request->city, // Adicionar campo no formulário
+                "state" => $request->state, // Adicionar campo no formulário
+            ];
+
+
+
+            $body = [
+                "items" => $items,
+                "payment" => [
+                    "credit_card" => [
+                        "billing_address" => $billingAddress,
+                        "payment_token" => $request->paymentToken,
+                        "customer" => $customer
+                    ]
+                ]
+            ];
+
+            $response = $this->efi->createOneStepSubscription($params, $body);
+
+            // Aqui você deve:
+            // 1. Criar o usuário no seu banco de dados
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password,
+                'phone' => $request->phone,
+                'imagem' => $imagePath,
+            ]);
+
+            // 2. Vincular o ID da assinatura ao usuário
+            Assinatura::create([
+                'user_id' => $user->id,
+                'tipo_plano_id' => 1, // ID do plano Individual
+                'preco_base' => 29.90,
+                'emails_permitidos' => 1,
+                'emails_extra' => 0,
+                'preco_total' => 29.90, // Preço base sem e-mails extras
+                'status' => 'ativo',
+                'subscription_id' => $response['data']['subscription_id']
+            ]);
+
+
+            // Dispara o email
+            SendVerificationEmail::dispatch($user);
+
+            return response()->json([
+                'success' => true,
+                'data' => $response,
+                'redirect' => route('bemvindo', ['user' => $user->id])
+            ]);
+
+        } catch (EfiException $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->errorDescription,
+                'code' => $e->code
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
     }
 
     public function storeEmpresarial(Request $request)
     {
-        // Validação dos dados de entrada
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'cpf' => 'required|string',
             'phone' => 'required|string',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+            'password' => 'required|confirmed|min:8|confirmed',
+            'paymentToken' => 'required|string',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
 
+        ]);
 
         $imagePath = null;
         if ($request->hasFile('imagem')) {
             $imagePath = $request->file('imagem')->store('users', 'public');
-
         }
 
-        // Criação do usuário (administrador do plano empresarial)
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'phone' => $request->phone,
-            'imagem' => $imagePath,
-        ]);
+        try {
+            // Parâmetros do plano
+            $params = [
+                "id" => 13290 // ID do plano multiusuario
+            ];
 
-        // Configurações do plano empresarial
-        $precoBase = 129.90; // Valor base do plano empresarial
-        $emailsPermitidos = 5; // Limite inicial de e-mails permitidos
-        $emailsExtras = $request->input('emails_extra', 0); // Quantidade de e-mails extras (opcional)
-        $precoPorEmailExtra = 30.00; // Preço por e-mail extra
+            // Itens da assinatura
+            $items = [
+                [
+                    "name" => "Plano Multiusuário",
+                    "amount" => 1,
+                    "value" => 12990 // R$29,90 em centavos
+                ]
+            ];
 
-        // Calcular o valor total da assinatura
-        $precoTotal = $precoBase + ($emailsExtras * $precoPorEmailExtra);
 
-        // Criar a assinatura empresarial
-        $assinatura = Assinatura::create([
-            'user_id' => $user->id,
-            'tipo_plano_id' => 2, // ID do plano Empresarial
-            'preco_base' => $precoBase,
-            'emails_permitidos' => $emailsPermitidos,
-            'emails_extra' => $emailsExtras,
-            'preco_total' => $precoTotal,
-            'status' => 'ativo',
-        ]);
 
-        // Associar o e-mail do administrador ao plano
-        EmailAssinatura::create([
-            'assinatura_id' => $assinatura->id,
-            'email' => $user->email,
-            'user_id' => $user->id,
-            'is_administrador' => true, // Marca este e-mail como administrador
-        ]);
+            // Dados do cliente
+            $customer = [
+                "name" => $request->name,
+                "cpf" => preg_replace('/[^0-9]/', '', $request->cpf),
+                "phone_number" => preg_replace('/[^0-9]/', '', $request->phone),
+                "email" => $request->email,
+                "birth" => $request->birth_date // Você precisa adicionar este campo no formulário!
+            ];
 
-        SendVerificationEmail::dispatch($user);
-        // Redirecionar para o dashboard
-        return redirect()->route('login')->withErrors([
-            'message' => 'Cadastrado com sucesso, por favor verificar seu email.',
-        ]);
+            // Endereço (também necessário)
+            $billingAddress = [
+                "street" => $request->street, // Adicionar campo no formulário
+                "number" => !empty($request->number) ? $request->number : "S/N", // Adicionar campo no formulário
+                "neighborhood" => $request->neighborhood, // Adicionar campo no formulário
+                "zipcode" => str_replace('-', '', $request->zipcode), // Adicionar campo no formulário
+                "city" => $request->city, // Adicionar campo no formulário
+                "state" => $request->state, // Adicionar campo no formulário
+            ];
 
-        // Redirecionar para o dashboard com mensagem de sucesso
-        return redirect()->route('dashboard')->with('success', 'Assinatura empresarial criada com sucesso!');
+
+
+            $body = [
+                "items" => $items,
+                "payment" => [
+                    "credit_card" => [
+                        "billing_address" => $billingAddress,
+                        "payment_token" => $request->paymentToken,
+                        "customer" => $customer
+                    ]
+                ]
+            ];
+
+            $response = $this->efi->createOneStepSubscription($params, $body);
+
+            // Aqui você deve:
+            // 1. Criar o usuário no seu banco de dados
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password,
+                'phone' => $request->phone,
+                'imagem' => $imagePath,
+            ]);
+
+            // 2. Vincular o ID da assinatura ao usuário
+            $assinatura = Assinatura::create([
+                'user_id' => $user->id,
+                'tipo_plano_id' => 2, // ID do plano Individual
+                'preco_base' => 129.90,
+                'emails_permitidos' => 5,
+                'emails_extra' => 0,
+                'preco_total' => 129.90, // Preço base sem e-mails extras
+                'status' => 'ativo',
+                'subscription_id' => $response['data']['subscription_id']
+            ]);
+
+            EmailAssinatura::create([
+                'assinatura_id' => $assinatura->id,
+                'email' => $user->email,
+                'user_id' => $user->id,
+                'is_administrador' => true, // Marca este e-mail como administrador
+            ]);
+
+
+            // Dispara o email
+            SendVerificationEmail::dispatch($user);
+
+            return response()->json([
+                'success' => true,
+                'data' => $response,
+                'redirect' => route('bemvindo', ['user' => $user->id])
+            ]);
+
+        } catch (EfiException $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->errorDescription,
+                'code' => $e->code
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
 

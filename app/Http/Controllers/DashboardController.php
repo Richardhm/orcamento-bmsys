@@ -207,6 +207,30 @@ class DashboardController extends Controller
             $pdf = PDFFile::loadHTML($view);
             return $pdf->stream("teste.pdf");
 
+//            $nome_img = "orcamento_". date('d') . "_" . date('m') . "_" . date("Y") . "_" . date('H') . "_" . date("i") . "_" . date("s")."_" . uniqid();
+//            $pdfPath = storage_path('app/temp/temp.pdf');
+//            PDFFile::loadHTML($view)->save($pdfPath);
+//            $imagemPath = storage_path("app/temp/{$nome_img}.png");
+//
+//            if (file_exists($imagemPath)) {
+//                unlink($imagemPath);  // Exclui a imagem anterior se ela existir
+//            }
+//
+//            $command = "gs -sDEVICE=pngalpha -r300 -o {$imagemPath} {$pdfPath}";  // -r150 é a resolução, pode ser ajustada
+//
+//            exec($command, $output, $status);
+//
+//
+//            if ($status !== 0 || !file_exists($imagemPath)) {
+//                return response()->json(['error' => 'Falha ao gerar a imagem.'], 500);
+//            }
+//
+//            return response()
+//                ->download($imagemPath)
+//                ->deleteFileAfterSend(true);
+
+
+
 
 
 

@@ -51,6 +51,34 @@
         .ajax_load_box_circle{border:16px solid #e3e3e3;border-top:16px solid #61DDBC;border-radius:50%;margin:auto;width:80px;height:80px;-webkit-animation:spin 1.2s linear infinite;-o-animation:spin 1.2s linear infinite;animation:spin 1.2s linear infinite}
         @-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg)}}
         @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+        @keyframes handClick {
+            0%, 100% { transform: translateX(0) scale(1); }
+            50% { transform: translateX(8px) scale(1.1); }
+        }
+
+        @keyframes textBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .animate-handClick {
+            animation: handClick 1s infinite ease-in-out;
+        }
+
+        .animate-textBlink {
+            animation: textBlink 1.5s infinite ease-in-out;
+        }
+
+        .switch {position: relative;display: flex;width: 40px;height: 20px;margin:0 0 0 10px;padding:0;justify-content: center;}
+        .switch input {opacity: 0;width: 0;height: 0;}
+        .slider {position: absolute;cursor: pointer;top: 0;left: 0;right: 0;bottom: 0;background-color: #ccc;transition: .4s;border-radius: 20px;}
+        .slider:before {position: absolute;content: "";height: 16px;width: 16px;left: 2px;bottom: 2px;background-color: white;transition: .4s;border-radius: 50%;}
+        input:checked + .slider {background-color: #4caf50;}
+        input:checked + .slider:before {transform: translateX(20px);}
+
+
+
     </style>
 </head>
 <body class="font-sans antialiased">

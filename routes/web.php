@@ -10,6 +10,7 @@ use App\Models\EmailAssinatura;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Jobs\SendSuggestionEmail;
+use App\Http\Controllers\BemvindoController;
 
 Route::post('/send-suggestion', function (Illuminate\Http\Request $request) {
     $request->validate([
@@ -33,6 +34,8 @@ Route::post('/send-suggestion', function (Illuminate\Http\Request $request) {
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/bem-vindo/{user}', [BemvindoController::class, 'index'])->name('bemvindo');
 
 
 Route::post('/buscar_planos',[DashboardController::class,'buscar_planos'])->middleware(['auth', 'verified'])->name('buscar_planos');
@@ -72,6 +75,7 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(callback: funct
     Route::post('/users/editar/manager', [UserController::class, 'getUser'])->name('users.get');
     Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
     Route::post('/users/deletar', [UserController::class, 'deletar'])->name('deletar.user');
+    Route::post('/users/alterar',[UserController::class,'alterar'])->name('users.alterar');
 
 
 });

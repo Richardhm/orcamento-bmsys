@@ -22,11 +22,8 @@
                         <img src="https://via.placeholder.com/150" alt="Default Profile Image" class="w-24 h-24 rounded-full shadow-lg">
                     </div>
                 @endif
-
-
             </div>
         </div>
-
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
@@ -56,8 +53,6 @@
                 <input id="imagem" name="imagem" type="file" class="mt-1 block w-full" accept="image/*" />
                 <x-input-error class="mt-2" :messages="$errors->get('imagem')" />
             </div>
-
-
 
             <div>
                 {{--            <x-input-label for="email" :value="__('Email')" />--}}
@@ -98,6 +93,5 @@
             </div>
         </form>
         <!-- Imagem de Perfil (lado direito) -->
-
     </div>
 </section>
