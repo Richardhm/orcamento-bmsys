@@ -231,7 +231,7 @@
             <!--Fim Lado Direito-->
 
 
-            <div class="w-full md:w-3/4 lg:w-1/2 mx-auto my-2">
+            <div class="w-full mx-auto my-2">
                 <button type="submit" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2.5 text-center me-2 mb-2 w-full rounded-lg">Cadastrar</button>
             </div>
         </form>
@@ -383,11 +383,6 @@
 
                 $(window).resize(adjustLayout);
                 adjustLayout();
-
-
-
-
-
 
                 // Atualiza o nome do titular
                 $("#nome_titular").on("input", function() {
