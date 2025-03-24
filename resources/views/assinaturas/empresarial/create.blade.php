@@ -6,7 +6,7 @@
         <form method="POST" name="cadastrar_individual" class="p-1 flex flex-wrap justify-between" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <!--Lado Esquerdo-->
-            <div class="w-[48%]">
+            <div class="w-full md:w-[48%]">
                 <fieldset class="border border-gray-300 p-3 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Dados Pessoais</legend>
                     <div class="mb-3">
@@ -17,12 +17,12 @@
                         <label for="email" class="block mb-1 font-medium text-white text-sm">Email</label>
                         <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" placeholder="Seu Email" required />
                     </div>
-                    <div class="flex justify-between">
-                        <div class="mb-4 w-[48%]">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="w-full md:w-1/2">
                             <label for="birth_date" class="block mb-1 font-medium text-white text-sm">Data de Nascimento</label>
                             <input type="date" name="birth_date" id="birth_date" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
                         </div>
-                        <div class="mb-4 w-[48%]">
+                        <div class="w-full md:w-1/2">
                             <label for="cpf" class="block mb-1 font-medium text-white text-sm">CPF</label>
                             <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" placeholder="XXX.XXX.XXX-XX" required />
                         </div>
@@ -53,7 +53,6 @@
                                 </svg>
                             </button>
                         </div>
-
                     </div>
                     <div class="mb-5">
                         <label for="password_confirmation" class="block mb-1 font-medium text-white text-sm">Confirmar Senha</label>
@@ -69,55 +68,49 @@
                                 </svg>
                             </button>
                         </div>
-
                     </div>
                 </fieldset>
-
-
-
-
-
             </div>
             <!--Fim Lado Esquerdo-->
 
             <!--Lado Direito-->
 
-            <div class="w-[49%]">
+            <div class="w-full md:w-[49%]">
 
                 <fieldset class="border border-gray-300 p-3 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Endereço</legend>
 
-                    <div class="flex justify-between">
-                        <div class="mb-2 w-[40%]">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="w-full md:w-1/3">
                             <label for="zipcode" class="block mb-1 font-medium text-white text-sm">CEP</label>
                             <input type="text" name="zipcode" id="zipcode" placeholder="XXXXX-XXX"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
                         </div>
 
-                        <div class="mb-2 w-[40%]">
+                        <div class="w-full md:w-1/2">
                             <label for="street" class="block mb-1 font-medium text-white text-sm">Rua</label>
                             <input type="text" name="street" id="street" placeholder="Rua"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
                         </div>
-                        <div class="mb-2 w-[15%]">
+                        <div class="w-full md:w-1/6">
                             <label for="number" class="block mb-1 font-medium text-white text-sm">Número</label>
                             <input type="text" name="number" id="number" placeholder="Nº"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg">
                         </div>
                     </div>
 
-                    <div class="flex justify-between">
-                        <div class="mb-2 w-[40%]">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="w-full md:w-1/3">
                             <label for="city" class="block mb-1 font-medium text-white text-sm">Cidade</label>
                             <input type="text" name="city" id="city" placeholder="Cidade"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
                         </div>
-                        <div class="mb-2 w-[40%]">
+                        <div class="w-full md:w-1/2">
                             <label for="neighborhood" class="block mb-1 font-medium text-white text-sm">Bairro</label>
                             <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
                         </div>
-                        <div class="mb-2 w-[15%]">
+                        <div class="w-full md:w-1/6">
                             <label for="state" class="block mb-1 font-medium text-white text-sm">Estado</label>
                             <input type="text" name="state" id="state" placeholder="UF"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
@@ -203,7 +196,7 @@
                     </div>
                 </fieldset>
 
-                <div id="cartao" class="relative w-full h-56 bg-gradient-to-r mt-4 from-blue-700 to-blue-900 rounded-xl shadow-lg transform transition-transform duration-500">
+                <div id="cartao" class="relative w-full max-w-md mx-auto md:max-w-full md:h-56 h-56 bg-gradient-to-r mt-4 from-blue-700 to-blue-900 rounded-xl shadow-lg transform transition-transform duration-500">
                     <!-- Frente do Cartão -->
                     <div id="cartao-frente" class="absolute inset-0 flex flex-col justify-between p-4 text-white">
                         <div class="flex justify-between">
@@ -495,8 +488,6 @@
                             if(error) {
                                 console.log(error);
                             } else {
-                                console.log(response);
-
                                 paymentToken = response.data.payment_token;
                                 mascaraCartao = response.data.card_mask;
 
