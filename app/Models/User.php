@@ -49,6 +49,11 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    public function isActive()
+    {
+        return $this->status == 1; // Retorna verdadeiro se status for 1 (ativo)
+    }
+
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail());

@@ -18,7 +18,16 @@
             @foreach($users as $user)
                 <tr class="bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                     <th scope="row" class="flex items-center px-2 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                        <img class="w-12 h-12 rounded-full" src="{{ asset('storage/'.$user['imagem']) }}" alt="{{ $user['name'] }}">
+                        @if(!empty($user['imagem']))
+                            <img class="w-12 h-12 rounded-full" src="{{ asset('storage/'.$user['imagem']) }}" alt="{{ $user['name'] }}">
+                        @else
+                            <div class="w-12 h-12 flex items-center justify-center bg-gray-300 rounded-full">
+                                <svg class="w-6 h-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A12.083 12.083 0 0112 15c2.5 0 4.847.735 6.879 2.002M15 11a3 3 0 11-6 0 3 3 0 016 0zm7 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                        @endif
+
                     </th>
                     <td class="px-2 py-1 text-white">{{ $user['name'] }}</td>
                     <td class="px-2 py-1 text-white">{{ $user['email'] }}</td>

@@ -69,6 +69,7 @@
                         <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
                         <input type="email" name="email" id="email" required
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+
                     </div>
 
                     <div class="mb-4">
@@ -316,6 +317,17 @@
                 if (userForm) {
                     userForm.addEventListener('submit', function (event) {
                         event.preventDefault();
+
+                        const phoneInput = document.getElementById('phone');
+                        const phonePattern = /^\(\d{2}\) \d \d{4}-\d{4}$/; // Regex para o formato (99) 9 9999-9999
+
+                        if (!phonePattern.test(phoneInput.value)) {
+                            toastr.error("Por favor, insira um telefone válido.", "Erro");
+                            event.preventDefault();
+                            return;
+                        }
+
+
                         let load = document.querySelector(".ajax_load");
                         load.style.display = "flex";
                         const formData = new FormData(userForm);
@@ -325,7 +337,6 @@
                         })
                             .then(response => response.json())
                             .then(data => {
-                                console.log(data);
                                 load.style.display = "none";
                                 if (data.success) {
                                     document.getElementById('user-table').innerHTML = data.html;
@@ -334,8 +345,6 @@
                                     if(data.emails_cobrados >= 1) {
                                         document.querySelector('.quantidade_emails').innerHTML  = `Pagando por ${data.emails_cobrados} e-mails extras`;
                                     }
-
-
                                     closeModal();
                                 } else {
                                     alert("Erro ao cadastrar o usuário");
@@ -359,6 +368,23 @@
                 const openModalButtonEdit = document.getElementById('openModal');
                 const closeModalButtonEdit = document.getElementById('closeModal');
                 const modalEdit = document.getElementById('editUserModal');
+
+
+                $('#email').on('input', function() {
+                    const emailInput = $(this).val();
+                    const emailError = $('#email-error');
+                    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+\.com$/; // Verifica se termina com .com
+
+                    if (!regex.test(emailInput)) {
+                        emailError.show(); // Exibe a mensagem de erro
+                    } else {
+                        emailError.hide(); // Esconde a mensagem de erro
+                    }
+                });
+
+
+
+
 
                 // Abrir a modal
                 $("body").on('click','#openModal',function(){
