@@ -52,7 +52,7 @@ Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('t
 
 Route::get('/csrf-token', function () {
     return response()->json(['token' => csrf_token()]);
-});
+})->name('csrf-token');
 
 
 Route::middleware(['auth','prevent-simultaneous-logins'])->group(callback: function () {
