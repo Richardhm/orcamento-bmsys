@@ -1,48 +1,48 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-1" :status="session('status')" />
-    <section style="width:100%;border-radius: 5px;">
-        <img src="{{asset('logo_bm_1.png')}}" class="mx-auto my-2 w-48" alt="">
-        <form method="POST" name="cadastrar_individual" class="p-1 flex flex-wrap justify-between" enctype="multipart/form-data">
+    <section class="w-full rounded-lg">
+        <img src="{{asset('logo_bm_1.png')}}" class="mx-auto my-1 w-32 md:w-32" alt="">
+        <form method="POST" name="cadastrar_individual" class="p-1 flex flex-wrap gap-4" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <!--Lado Esquerdo-->
-            <div class="w-[48%]">
-                <fieldset class="border border-gray-300 p-3 rounded-lg">
+            <div class="w-full md:w-[48%]">
+                <fieldset class="border border-gray-300 p-1 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Dados Pessoais</legend>
-                    <div class="mb-3">
+                    <div class="mb-2">
                         <label for="name" class="block mb-1 font-medium text-white text-sm">Nome</label>
-                        <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" placeholder="Seu Nome" required />
+                        <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" placeholder="Seu Nome" required />
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-2">
                         <label for="email" class="block mb-1 font-medium text-white text-sm">Email</label>
-                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" placeholder="Seu Email" required />
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" placeholder="Seu Email" required />
                     </div>
-                    <div class="flex justify-between">
-                        <div class="mb-4 w-[48%]">
+                    <div class="flex flex-col md:flex-row gap-4 mb-3">
+                        <div class="w-full md:w-1/2">
                             <label for="birth_date" class="block mb-1 font-medium text-white text-sm">Data de Nascimento</label>
-                            <input type="date" name="birth_date" id="birth_date" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
+                            <input type="date" name="birth_date" id="birth_date" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                         </div>
-                        <div class="mb-4 w-[48%]">
+                        <div class="w-full md:w-1/2">
                             <label for="cpf" class="block mb-1 font-medium text-white text-sm">CPF</label>
-                            <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" placeholder="XXX.XXX.XXX-XX" required />
+                            <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" placeholder="XXX.XXX.XXX-XX" required />
                         </div>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label for="phone" class="block mb-1 font-medium text-white text-sm">Telefone</label>
-                        <input type="text" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" placeholder="(XX) X XXXX-XXXX" required />
+                        <input type="text" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" placeholder="(XX) X XXXX-XXXX" required />
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-2">
                         <label for="imagem" class="block mb-1 font-medium text-white text-sm">Imagem</label>
-                        <input type="file" name="imagem" id="imagem" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 p-2.5" />
+                        <input type="file" name="imagem" id="imagem" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 p-1.5" />
                     </div>
                 </fieldset>
 
-                <fieldset class="border border-gray-300 p-3 rounded-lg mt-2">
+                <fieldset class="border border-gray-300 px-1 py-3 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Senha</legend>
                     <div class="mb-5">
                         <label for="password" class="block mb-1 font-medium text-white text-sm">Senha</label>
                         <div class="relative">
-                            <input type="password" name="password" id="password" class="bg-gray-50 border text-gray-950 border-gray-300 text-sm block w-full p-2.5 rounded-lg" placeholder="Sua Senha" required />
+                            <input type="password" name="password" id="password" class="bg-gray-50 border text-gray-950 border-gray-300 text-sm block w-full p-1.5 rounded-lg" placeholder="Sua Senha" required />
                             <button type="button" id="togglePassword" class="absolute right-2 top-2 cursor-pointer" style="color:black;">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" id="showIcon">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -58,7 +58,7 @@
                     <div class="mb-5">
                         <label for="password_confirmation" class="block mb-1 font-medium text-white text-sm">Confirmar Senha</label>
                         <div class="relative">
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="bg-gray-50 border text-gray-950 border-gray-300 text-sm block w-full p-2.5 rounded-lg" placeholder="Confirmar Senha" required />
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="bg-gray-50 border text-gray-950 border-gray-300 text-sm block w-full p-1.5 rounded-lg" placeholder="Confirmar Senha" required />
                             <button type="button" id="togglePasswordConfirmation" class="absolute right-2 top-2 cursor-pointer" style="color:black;">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" id="showIconConfirmation">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -82,88 +82,88 @@
 
             <!--Lado Direito-->
 
-            <div class="w-[49%]">
+            <div class="w-full md:w-[49%]">
 
-                <fieldset class="border border-gray-300 p-3 rounded-lg">
+                <fieldset class="border border-gray-300 p-1 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Endereço</legend>
 
-                        <div class="flex justify-between">
-                            <div class="mb-2 w-[40%]">
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div class="w-full md:w-1/3">
                                 <label for="zipcode" class="block mb-1 font-medium text-white text-sm">CEP</label>
                                 <input type="text" name="zipcode" id="zipcode" placeholder="XXXXX-XXX"
-                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
+                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                             </div>
 
-                            <div class="mb-2 w-[40%]">
+                            <div class="w-full md:w-1/2">
                                 <label for="street" class="block mb-1 font-medium text-white text-sm">Rua</label>
                                 <input type="text" name="street" id="street" placeholder="Rua"
-                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
+                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                             </div>
-                            <div class="mb-2 w-[15%]">
+                            <div class="w-full md:w-1/6">
                                 <label for="number" class="block mb-1 font-medium text-white text-sm">Número</label>
                                 <input type="text" name="number" id="number" placeholder="Nº"
-                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg">
+                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg">
                             </div>
                         </div>
 
-                        <div class="flex justify-between">
-                            <div class="mb-2 w-[40%]">
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div class="w-full md:w-1/3">
                                 <label for="city" class="block mb-1 font-medium text-white text-sm">Cidade</label>
                                 <input type="text" name="city" id="city" placeholder="Cidade"
-                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
+                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                             </div>
-                            <div class="mb-2 w-[40%]">
+                            <div class="w-full md:w-1/2">
                                 <label for="neighborhood" class="block mb-1 font-medium text-white text-sm">Bairro</label>
                                 <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro"
-                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
+                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                             </div>
-                            <div class="mb-2 w-[15%]">
+                            <div class="w-full md:w-1/6">
                                 <label for="state" class="block mb-1 font-medium text-white text-sm">Estado</label>
                                 <input type="text" name="state" id="state" placeholder="UF"
-                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg" required>
+                                       class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                             </div>
                         </div>
 
                 </fieldset>
 
-                <fieldset class="border border-gray-300 p-3 rounded-lg">
+                <fieldset class="border border-gray-300 p-1 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Dados Cartão</legend>
-                <div class="mb-2">
-                    <label for="numero_cartao" class="block mb-1 font-medium text-white text-sm">Número do Cartão</label>
-                    <input type="text" name="numero_cartao" required id="numero_cartao" placeholder="XXXX XXXX XXXX XXXX"
-                           class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
-                </div>
-
-                <div class="mb-2">
-                    <label for="nome_titular" class="block mb-1 font-medium text-white text-sm">Nome do Titular</label>
-                    <input type="text" name="nome_titular" required id="nome_titular" placeholder="Nome do Titular do Cartão"
-                           class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
-                </div>
-
-                <div class="flex justify-between gap-2">
-                    <div class="w-1/3">
-                        <label for="mes" class="block mb-1 font-medium text-white text-sm">Mês</label>
-                        <select name="mes" id="mes" required
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option value="">MM</option>
-                            <option value="01">01</option>
-                            <option value="02">02</option>
-                            <option value="03">03</option>
-                            <option value="04">04</option>
-                            <option value="05">05</option>
-                            <option value="06">06</option>
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                        </select>
+                    <div class="mb-2">
+                        <label for="numero_cartao" class="block mb-1 font-medium text-white text-sm">Número do Cartão</label>
+                        <input type="text" name="numero_cartao" required id="numero_cartao" placeholder="XXXX XXXX XXXX XXXX"
+                               class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
                     </div>
+
+                    <div class="mb-2">
+                        <label for="nome_titular" class="block mb-1 font-medium text-white text-sm">Nome do Titular</label>
+                        <input type="text" name="nome_titular" required id="nome_titular" placeholder="Nome do Titular do Cartão"
+                               class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
+                    </div>
+
+                    <div class="flex justify-between gap-2">
+                        <div class="w-1/3">
+                            <label for="mes" class="block mb-1 font-medium text-white text-sm">Mês</label>
+                            <select name="mes" id="mes" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
+                                <option value="">MM</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
 
                     <div class="w-1/3">
                         <label for="ano" class="block mb-1 font-medium text-white text-sm">Ano</label>
-                        <select name="ano" id="ano" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <select name="ano" id="ano" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
                             <option value="">ANO</option>
                             <option value="25">2025</option>
                             <option value="26">2026</option>
@@ -197,27 +197,27 @@
                     <div class="w-1/3">
                         <label for="cvv" class="block mb-1 font-medium text-white text-sm">CVV</label>
                         <input type="text" name="cvv" required id="cvv" placeholder="XXX"
-                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
                     </div>
 
                 </div>
                 </fieldset>
 
-                <div id="cartao" class="relative w-full h-56 bg-gradient-to-r mt-4 from-blue-700 to-blue-900 rounded-xl shadow-lg transform transition-transform duration-500">
+                <div id="cartao" class="relative w-full max-w-md mx-auto md:max-w-full md:h-52 h-42 bg-gradient-to-r mt-1 from-blue-700 to-blue-900 rounded-xl shadow-lg transform transition-transform duration-500">
                     <!-- Frente do Cartão -->
-                    <div id="cartao-frente" class="absolute inset-0 flex flex-col justify-between p-4 text-white">
+                    <div id="cartao-frente" class="absolute inset-0 flex flex-col justify-between p-2 text-white">
                         <div class="flex justify-between">
                             <span class="text-sm">Cartão de Crédito</span>
                             <span class="text-sm">💳</span>
                         </div>
-                        <div class="text-center text-2xl tracking-widest" id="cartao-numero">•••• •••• •••• ••••</div>
+                        <div class="text-center text-lg tracking-widest" id="cartao-numero">•••• •••• •••• ••••</div>
                         <div class="flex justify-between">
                             <span class="text-sm">Nome:</span>
                             <span class="text-sm">Validade:</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-lg uppercase" id="cartao-nome">SEU NOME</span>
-                            <span class="text-lg" id="cartao-validade">MM/AA</span>
+                            <span class="text-sm uppercase" id="cartao-nome">SEU NOME</span>
+                            <span class="text-sm" id="cartao-validade">MM/AA</span>
                         </div>
                     </div>
 
@@ -238,8 +238,8 @@
             <!--Fim Lado Direito-->
 
 
-            <div class="mx-auto my-2 w-full flex justify-center">
-                <button type="submit" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-2xl px-5 py-2.5 text-center me-2 mb-2 w-full">Cadastrar</button>
+            <div class="w-full mx-auto my-1">
+                <button type="submit" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2 text-center me-2 mb-1 w-full rounded-lg">Cadastrar</button>
             </div>
         </form>
     </section>
