@@ -28,14 +28,15 @@
     </script>
     <style>
         .container_formulario {
-            background:rgba(254,254,254,0.18);
-            backdrop-filter: blur(15px);
+
         }
         .container_formulario.login {
             width: 390px;
         }
         .container_formulario.cadastro {
             width:950px;
+            background:rgba(254,254,254,0.18);
+            backdrop-filter: blur(15px);
         }
         #toast-container {
             width: 500px !important; /* Ajuste conforme necessário */
@@ -94,7 +95,7 @@
         <p class="ajax_load_box_title">Aguarde, carregando...</p>
     </div>
 </div>
-<div id="app-container" class="min-h-screen flex flex-col sm:justify-center items-center sm:pt-0 bg-gray-100 dark:bg-gray-900">
+<div id="app-container" class="min-h-screen flex flex-col sm:justify-center items-center sm:pt-0">
     <div class="container_formulario {{ (request()->routeIs('login')) ? 'login' : ((request()->routeIs('assinaturas.individual.create') || request()->routeIs('assinaturas.empresarial.create')) ? 'cadastro' : '') }} w-full mt-1 px-2 py-1 dark:bg-[rgba(254,254,254,0.18)] bg-transparent dark:backdrop-blur-[15px] dark:border-white dark:border-2 shadow-md overflow-hidden sm:rounded-lg">
         {{ $slot }}
     </div>

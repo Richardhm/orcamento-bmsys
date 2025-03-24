@@ -25,17 +25,17 @@
             </button>
         </div>
     @endif
-    <section style="width:380px;border-radius: 5px;">
-        <img src="{{asset('logo_bm_1.png')}}" class="mx-auto my-2 w-10/12" alt="">
-        <form method="POST" action="{{ route('login') }}" class="p-2">
+    <section class="rounded-lg w-full min-h-screen flex items-center justify-center flex-col my-auto p-4">
+        <img src="{{ asset('logo_bm_1.png') }}" class="mx-auto my-2" alt="">
+        <form method="POST" action="{{ route('login') }}" class="p-4 rounded-lg w-full max-w-sm bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-            <div class="mb-2">
-                <label for="email" class="block mb-1 font-medium text-gray-950 dark:text-white text-white text-sm">Email</label>
-                <input type="email" name="email" id="email" style="color:black;" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" required />
+            <div class="mb-4">
+                <label for="email" class="block mb-1 font-medium text-white text-sm sm:text-base">Email</label>
+                <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none" required />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
-            <div class="mb-2">
-                <label for="password" class="block mb-1 font-medium dark:text-white text-white text-sm text-gray-950">Senha</label>
+            <div class="mb-4">
+                <label for="password" class="block mb-1 font-medium text-white text-sm sm:text-base">Senha</label>
                 <div class="relative">
                     <input type="password" name="password" id="password" style="color:black;" class="bg-gray-50 border text-gray-950 border-gray-300 text-sm block w-full p-2.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg" required />
                     <button type="button" id="togglePassword" class="absolute right-2 top-2 cursor-pointer" style="color:black;">
@@ -63,16 +63,6 @@
                 <button type="submit" style="background-color: rgb(9, 116, 122);color:white;margin:0 auto;" class="focus:outline-none font-medium mt-2 text-lg w-2/3 px-5 py-2 text-center focus:border-transparent focus:ring-0 focus:outline-none rounded-lg text-gray-950">LOGIN</button>
             </div>
         </form>
-{{--        <div class="flex justify-center mb-2">--}}
-{{--            <a href="{{route('register')}}" class="p-2 rounded-lg text-sm" style="color: #1a202c;border:1px solid black;"> CRIAR CONTA</a>--}}
-{{--        </div>--}}
-
-
-
-
-
-
-
 
         <script>
 
