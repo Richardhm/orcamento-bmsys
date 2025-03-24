@@ -50,6 +50,10 @@ Route::post('/assinaturas/empresarial', [AssinaturaController::class, 'storeEmpr
 
 Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('teste');
 
+Route::get('/csrf-token', function () {
+    return response()->json(['token' => csrf_token()]);
+});
+
 
 Route::middleware(['auth','prevent-simultaneous-logins'])->group(callback: function () {
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
