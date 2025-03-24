@@ -1,13 +1,13 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-1" :status="session('status')" />
-    <section style="width:100%;border-radius: 5px;">
-        <img src="{{asset('logo_bm_1.png')}}" class="mx-auto my-2 w-48" alt="">
-        <form method="POST" name="cadastrar_individual" class="p-1 flex flex-wrap justify-between" enctype="multipart/form-data">
+    <section class="w-full rounded-lg">
+        <img src="{{asset('logo_bm_1.png')}}" class="mx-auto my-2 w-32 md:w-48" alt="">
+        <form method="POST" name="cadastrar_individual" class="p-1 flex flex-wrap gap-4" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <!--Lado Esquerdo-->
             <div class="w-full md:w-[48%]">
-                <fieldset class="border border-gray-300 md:p-3 rounded-lg">
+                <fieldset class="border border-gray-300 p-3 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Dados Pessoais</legend>
                     <div class="mb-3">
                         <label for="name" class="block mb-1 font-medium text-white text-sm">Nome</label>
@@ -196,7 +196,7 @@
                     </div>
                 </fieldset>
 
-                <div id="cartao" class="relative w-full max-w-md mx-auto md:max-w-full md:h-56 h-56 bg-gradient-to-r mt-4 from-blue-700 to-blue-900 rounded-xl shadow-lg transform transition-transform duration-500">
+                <div id="cartao" class="relative w-full max-w-md mx-auto md:max-w-full md:h-56 h-48 bg-gradient-to-r mt-4 from-blue-700 to-blue-900 rounded-xl shadow-lg transform transition-transform duration-500">
                     <!-- Frente do Cartão -->
                     <div id="cartao-frente" class="absolute inset-0 flex flex-col justify-between p-4 text-white">
                         <div class="flex justify-between">
@@ -231,8 +231,8 @@
             <!--Fim Lado Direito-->
 
 
-            <div class="mx-auto my-2 w-full flex justify-center">
-                <button type="submit" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-2xl px-5 py-2.5 text-center me-2 mb-2 w-full">Cadastrar</button>
+            <div class="w-full md:w-3/4 lg:w-1/2 mx-auto my-2">
+                <button type="submit" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2.5 text-center me-2 mb-2 w-full rounded-lg">Cadastrar</button>
             </div>
         </form>
     </section>
@@ -248,6 +248,8 @@
             const showIconConfirmation = document.getElementById('showIconConfirmation');
             const hideIcon = document.getElementById('hideIcon');
             const hideIconConfirmation = document.getElementById('hideIconConfirmation');
+
+
 
             toggleButton.addEventListener('click', () => {
                 if (passwordInput.type === 'password') {
@@ -370,6 +372,22 @@
                         $("#bandeira").val(bandeira);
                     }
                 });
+
+                function adjustLayout() {
+                    if ($(window).width() < 768) {
+                        $('.container_formulario.cadastro').removeClass('container_formulario');
+                    } else {
+                        $('.container_formulario.cadastro').addClass('container_formulario');
+                    }
+                }
+
+                $(window).resize(adjustLayout);
+                adjustLayout();
+
+
+
+
+
 
                 // Atualiza o nome do titular
                 $("#nome_titular").on("input", function() {
