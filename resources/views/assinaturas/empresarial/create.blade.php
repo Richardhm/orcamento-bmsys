@@ -7,7 +7,7 @@
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <!--Lado Esquerdo-->
             <div class="w-full md:w-[48%]">
-                <fieldset class="border border-gray-300 p-3 rounded-lg">
+                <fieldset class="border border-gray-300 md:p-3 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Dados Pessoais</legend>
                     <div class="mb-3">
                         <label for="name" class="block mb-1 font-medium text-white text-sm">Nome</label>
