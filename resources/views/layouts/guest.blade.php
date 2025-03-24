@@ -57,6 +57,33 @@
             .ajax_load_box_circle{border:16px solid #e3e3e3;border-top:16px solid #61DDBC;border-radius:50%;margin:auto;width:80px;height:80px;-webkit-animation:spin 1.2s linear infinite;-o-animation:spin 1.2s linear infinite;animation:spin 1.2s linear infinite}
             @-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg)}}
             @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+            @media (max-width: 768px) {
+                .container_formulario.cadastro {
+                    width: 100% !important;
+                    margin: 0 10px;
+                    padding: 10px;
+                }
+
+                fieldset {
+                    margin-bottom: 1rem;
+                }
+
+                input, select {
+                    font-size: 14px !important;
+                    padding: 8px !important;
+                }
+
+                #cartao {
+                    height: 180px !important;
+                    margin-top: 1rem !important;
+                }
+            }
+
+
+
+
+
         </style>
         <script type='text/javascript'>var s=document.createElement('script');s.type='text/javascript';var v=parseInt(Math.random()*1000000);s.src='https://cobrancas-h.api.efipay.com.br/v1/cdn/3c8b1529ac6f42b8d524cce476dca9ab/'+v;s.async=false;s.id='3c8b1529ac6f42b8d524cce476dca9ab';if(!document.getElementById('3c8b1529ac6f42b8d524cce476dca9ab')){document.getElementsByTagName('head')[0].appendChild(s);};$gn={validForm:true,processed:false,done:{},ready:function(fn){$gn.done=fn;}};</script>
     </head>
