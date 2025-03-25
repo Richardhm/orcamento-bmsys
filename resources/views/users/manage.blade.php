@@ -93,7 +93,7 @@
 
     <div class="mt-7 w-full">
         <section class="flex md:justify-around flex-wrap w-full">
-            <div class="md:w-[28%] sm:w-full bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] dark:bg-gray-800 py-10 rounded-lg shadow-md flex flex-col justify-between h-full">
+            <div class="md:w-[28%] mx-2 sm:w-full bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] dark:bg-gray-800 py-10 rounded-lg shadow-md flex flex-col justify-between h-full">
                 <!-- 📌 Header do Card -->
                 <div class="border-b pb-3">
                     <h2 class="text-2xl font-bold text-white dark:text-white text-center">
@@ -133,7 +133,7 @@
                     @endif
                 </div>
             </div>
-            <div class="md:w-[70%] sm:w-full" id="user-table">
+            <div class="md:w-[70%] md:mx-0 w-full mt-5 md:mt-0 mx-2" id="user-table">
                 @include('partials.user-table', ['users' => $users])
             </div>
 
