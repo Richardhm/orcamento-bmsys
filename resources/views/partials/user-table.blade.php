@@ -4,7 +4,7 @@
     </div>
 @else
     <div class="relative overflow-x-auto rounded-lg shadow-md sm:rounded-lg w-full mx-auto">
-        <table class="min-w-full text-lg text-left rtl:text-right rounded-lg text-gray-500 dark:text-gray-400">
+        <table class="w-full text-lg text-left rtl:text-right rounded-lg text-gray-500 dark:text-gray-400">
             <thead class="text-lg uppercase bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] dark:bg-gray-700 rounded dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-2 py-1 text-white">Imagem</th>
@@ -49,4 +49,5 @@
             </tbody>
         </table>
     </div>
+
 @endif
