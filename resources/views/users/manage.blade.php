@@ -1,14 +1,21 @@
 <x-app-layout>
     <!-- Botão redondo -->
-    <div class="flex justify-end mt-4 mr-56 relative">
+    <div class="flex md:justify-end justify-center mt-4 md:mr-56 relative">
         <!-- Botão para abrir a modal -->
 
 
             <!-- Botão de Abrir Modal -->
-        <div class="flex items-center">
+        <div class="flex items-center flex-wrap">
+
+            <div class="w-full bg-yellow-500 rounded-full text-center mt-2 items-center border-black border-2 relative md:hidden">
+                    <span class="text-lg text-white">
+                        para cadastrar clique abaixo
+                    </span>
+            </div>
+
             <!-- Braço esquerdo -->
             <div class="flex items-center">
-                <div class="h-6 w-48 bg-yellow-500 rounded-l-full mt-8 border-black border-2 relative">
+                <div class="h-6 w-48 bg-yellow-500 rounded-l-full mt-8 border-black border-2 relative hidden md:block">
                     <span class="absolute -top-0 left-24 transform -translate-x-1/2 text-sm text-white whitespace-nowrap">
                         para cadastrar clique aqui
                     </span>
@@ -25,7 +32,7 @@
             <!-- Braço direito com texto -->
             <div class="flex items-center relative">
                 <div class="w-8 h-12 text-5xl">👈</div>
-                <div class="h-6 w-48 bg-yellow-500 ml-7 mt-8 rounded-r-full relative" style="border:3px solid black;">
+                <div class="h-6 w-48 bg-yellow-500 ml-7 mt-8 rounded-r-full relative hidden md:block" style="border:3px solid black;">
                     <span class="absolute -top-0 left-24 transform -translate-x-1/2 text-sm text-white whitespace-nowrap">
                         para cadastrar clique aqui
                     </span>
@@ -37,59 +44,66 @@
         <!-- Fundo de sobreposição (backdrop) -->
         <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
-        <!-- Modal centralizada -->
-        <div id="user-modal"
-             class="fixed inset-0 hidden flex items-center justify-center z-50">
-            <div class="bg-white shadow-lg rounded-lg p-6 w-96 max-h-[80vh] overflow-auto relative">
-                <!-- Cabeçalho da modal -->
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold">Cadastrar Usuário</h2>
-                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
-                </div>
 
-                <!-- Formulário -->
-                <form id="user-form" action="{{ route('storeUser') }}" method="POST">
-                    @csrf
-                    <div class="mb-4">
-                        <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
-                        <input type="text" name="name" id="name" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
-                        <input type="email" name="email" id="email" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
-                        <input type="text" name="phone" id="phone" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="image" class="block text-sm font-medium text-gray-700">Imagem do Usuário</label>
-                        <input type="file" name="image" id="image" accept="image/*"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="button" id="cancel-modal"
-                                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition mr-2">
-                            Cancelar
-                        </button>
-                        <button type="submit"
-                                class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
-                            Salvar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
     </div>
+
+    <!-- Modal centralizada -->
+    <div id="user-modal"
+         class="fixed inset-0 hidden flex items-center justify-center z-50">
+        <div class="bg-white shadow-lg rounded-lg p-6 w-96 max-h-[80vh] overflow-auto relative">
+            <!-- Cabeçalho da modal -->
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold">Cadastrar Usuário</h2>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+            </div>
+
+            <!-- Formulário -->
+            <form id="user-form" action="{{ route('storeUser') }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+                    <input type="text" name="name" id="name" required
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                    <input type="email" name="email" id="email" required
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+
+                </div>
+
+                <div class="mb-4">
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
+                    <input type="text" name="phone" id="phone" required
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                </div>
+
+                <div class="mb-4">
+                    <label for="image" class="block text-sm font-medium text-gray-700">Imagem do Usuário</label>
+                    <input type="file" name="image" id="image" accept="image/*"
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" id="cancel-modal"
+                            class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition mr-2">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
 
     <div class="mt-7 w-full">
         <section class="flex md:justify-around flex-wrap w-full">
