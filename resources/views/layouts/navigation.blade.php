@@ -110,7 +110,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'translate-x-0': open, '-translate-x-full': !open}"
+    <div :class="open ? 'block' : 'hidden'"
          class="fixed top-0 left-0 w-64 h-full bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] text-black shadow-lg transform transition-transform duration-300 sm:hidden z-50">
 
         <div class="flex flex-col h-full">
