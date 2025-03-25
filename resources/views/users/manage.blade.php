@@ -1,17 +1,8 @@
 <x-app-layout>
     <!-- Botão redondo -->
-    <div class="flex justify-end mt-4 mr-56 relative">
+    <div class="flex justify-end mt-4 mr-56 relative sm:mr-4 sm:justify-center sm:w-full">
         <!-- Botão para abrir a modal -->
-{{--        <div class="relative w-full">--}}
-            <!-- Braço com a frase e animação da mão -->
-{{--            <div id="hand-animation" class="flex items-center justify-center mt-4 space-x-2">--}}
-{{--                <!-- Mão animada -->--}}
-{{--                <div class="w-10 h-10 text-4xl animate-handClick">👉</div>--}}
-{{--                <!-- Braço com a frase -->--}}
-{{--                <div class="text-md font-semibold text-yellow-500 dark:text-yellow-400 animate-textBlink">--}}
-{{--                    Para cadastrar, clique aqui--}}
-{{--                </div>--}}
-{{--            </div>--}}
+
 
             <!-- Botão de Abrir Modal -->
         <div class="flex items-center">
@@ -49,7 +40,7 @@
         <!-- Modal centralizada -->
         <div id="user-modal"
              class="fixed inset-0 hidden flex items-center justify-center z-50">
-            <div class="bg-white shadow-lg rounded-lg p-6 w-96 max-h-[80vh] overflow-auto relative">
+            <div class="bg-white shadow-lg rounded-lg p-6 w-96 max-h-[80vh] overflow-auto relative sm:w-11/12 md:w-96 lg:w-96">
                 <!-- Cabeçalho da modal -->
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold">Cadastrar Usuário</h2>
@@ -101,8 +92,8 @@
     </div>
 
     <div class="mt-7">
-        <section class="flex justify-around">
-            <div class="w-[28%] bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] dark:bg-gray-800 py-10 rounded-lg shadow-md flex flex-col justify-between h-full">
+        <section class="flex flex-wrap justify-between sm:flex-col sm:items-center sm:w-full">
+            <div class="w-[28%] bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] dark:bg-gray-800 py-10 rounded-lg shadow-md flex flex-col justify-between h-full sm:w-full sm:mb-4">
                 <!-- 📌 Header do Card -->
                 <div class="border-b pb-3">
                     <h2 class="text-2xl font-bold text-white dark:text-white text-center">
@@ -142,7 +133,7 @@
                     @endif
                 </div>
             </div>
-            <div class="w-[70%]" id="user-table">
+            <div class="w-[70%] sm:w-full" id="user-table">
                 @include('partials.user-table', ['users' => $users])
             </div>
 
@@ -170,7 +161,8 @@
                 <!-- Formulário -->
                 <div class="flex-1">
                     <h2 class="text-xl font-semibold mb-4">Editar Usuário</h2>
-                    <form action="/update-user" method="POST" enctype="multipart/form-data" class="space-y-4" id="editUserForm">
+                    <form action="/update-user" method="POST" enctype="multipart/form-data" class="space-y-4 sm:space-y-3" id="editUserForm">
+
                         <!-- Nome -->
                         <input type="hidden" name="id_edit" id="id_edit">
                         <div>
@@ -179,7 +171,8 @@
                                 type="text"
                                 id="name_edit"
                                 name="name"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+{{--                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"--}}
+                                class="mt-1 block w-full sm:text-sm rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Digite o nome do usuário"
                                 required
                             />
@@ -192,7 +185,8 @@
                                 type="email"
                                 id="email_edit"
                                 name="email"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+{{--                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"--}}
+                                class="mt-1 block w-full sm:text-sm rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Digite o e-mail"
                                 required
                             />
@@ -206,6 +200,7 @@
                                 id="phone_edit"
                                 name="phone"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+
                                 placeholder="Digite o telefone"
                             />
                         </div>
