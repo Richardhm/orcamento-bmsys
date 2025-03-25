@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Botão redondo -->
-    <div class="flex justify-end mt-4 mr-56 relative sm:mr-4 sm:justify-center sm:w-full">
+    <div class="flex justify-end mt-4 mr-56 relative">
         <!-- Botão para abrir a modal -->
 
 
@@ -40,7 +40,7 @@
         <!-- Modal centralizada -->
         <div id="user-modal"
              class="fixed inset-0 hidden flex items-center justify-center z-50">
-            <div class="bg-white shadow-lg rounded-lg p-6 w-96 max-h-[80vh] overflow-auto relative sm:w-11/12 md:w-96 lg:w-96">
+            <div class="bg-white shadow-lg rounded-lg p-6 w-96 max-h-[80vh] overflow-auto relative">
                 <!-- Cabeçalho da modal -->
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold">Cadastrar Usuário</h2>
@@ -91,9 +91,9 @@
 
     </div>
 
-    <div class="mt-7">
-        <section class="flex flex-wrap justify-between sm:flex-col sm:items-center sm:w-full">
-            <div class="w-[28%] bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] dark:bg-gray-800 py-10 rounded-lg shadow-md flex flex-col justify-between h-full sm:w-full sm:mb-4">
+    <div class="mt-7 w-full">
+        <section class="flex md:justify-around flex-wrap w-full">
+            <div class="md:w-[28%] sm:w-full bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] dark:bg-gray-800 py-10 rounded-lg shadow-md flex flex-col justify-between h-full">
                 <!-- 📌 Header do Card -->
                 <div class="border-b pb-3">
                     <h2 class="text-2xl font-bold text-white dark:text-white text-center">
@@ -133,7 +133,7 @@
                     @endif
                 </div>
             </div>
-            <div class="w-[70%] sm:w-full" id="user-table">
+            <div class="md:w-[70%] sm:w-full" id="user-table">
                 @include('partials.user-table', ['users' => $users])
             </div>
 
@@ -161,8 +161,7 @@
                 <!-- Formulário -->
                 <div class="flex-1">
                     <h2 class="text-xl font-semibold mb-4">Editar Usuário</h2>
-                    <form action="/update-user" method="POST" enctype="multipart/form-data" class="space-y-4 sm:space-y-3" id="editUserForm">
-
+                    <form action="/update-user" method="POST" enctype="multipart/form-data" class="space-y-4" id="editUserForm">
                         <!-- Nome -->
                         <input type="hidden" name="id_edit" id="id_edit">
                         <div>
@@ -171,8 +170,7 @@
                                 type="text"
                                 id="name_edit"
                                 name="name"
-{{--                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"--}}
-                                class="mt-1 block w-full sm:text-sm rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                 placeholder="Digite o nome do usuário"
                                 required
                             />
@@ -185,8 +183,7 @@
                                 type="email"
                                 id="email_edit"
                                 name="email"
-{{--                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"--}}
-                                class="mt-1 block w-full sm:text-sm rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                 placeholder="Digite o e-mail"
                                 required
                             />
@@ -200,7 +197,6 @@
                                 id="phone_edit"
                                 name="phone"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-
                                 placeholder="Digite o telefone"
                             />
                         </div>

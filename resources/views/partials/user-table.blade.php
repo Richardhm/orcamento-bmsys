@@ -3,8 +3,8 @@
         <p class="font-bold text-sm">Sem usuários cadastrados para a sua assinatura.</p>
     </div>
 @else
-    <div class="relative overflow-x-auto rounded-lg shadow-md sm:rounded-lg w-[100%] mx-auto">
-        <table class="w-[100%] text-lg text-left rtl:text-right rounded-lg text-gray-500 dark:text-gray-400">
+    <div class="relative overflow-x-auto rounded-lg shadow-md sm:rounded-lg w-full mx-auto">
+        <table class="min-w-full text-lg text-left rtl:text-right rounded-lg text-gray-500 dark:text-gray-400">
             <thead class="text-lg uppercase bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] dark:bg-gray-700 rounded dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-2 py-1 text-white">Imagem</th>
@@ -27,7 +27,6 @@
                                 </svg>
                             </div>
                         @endif
-
                     </th>
                     <td class="px-2 py-1 text-white">{{ $user['name'] }}</td>
                     <td class="px-2 py-1 text-white">{{ $user['email'] }}</td>
@@ -44,8 +43,6 @@
                             <input type="checkbox" class="toggle-switch" data-id="{{$user['id']}}" {{$user['status'] == 1 ? "checked" : ''}}>
                             <span class="slider"></span>
                         </label>
-
-
                     </td>
                 </tr>
             @endforeach
