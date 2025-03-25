@@ -28,7 +28,7 @@
     <section class="rounded-lg w-full min-h-screen flex items-center justify-center flex-col my-auto p-4">
         <img src="{{ asset('logo_bm_1.png') }}" class="mx-auto my-2" alt="">
         <form method="POST" action="{{ route('login') }}" class="p-4 rounded-lg w-full max-w-sm bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+            @csrf
             <div class="mb-4">
                 <label for="email" class="block mb-1 font-medium text-white text-sm sm:text-base">Email</label>
                 <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-2.5 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none" required />
