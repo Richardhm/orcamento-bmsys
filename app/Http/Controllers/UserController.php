@@ -46,6 +46,8 @@ class UserController extends Controller
                 ->pluck('user_id')
         )->get();
 
+        dd($users);
+
         $assinatura = Assinatura::where("user_id",auth()->user()->id)->first();
 
         return view('users.manage', compact('users','assinatura'));
