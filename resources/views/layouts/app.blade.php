@@ -100,13 +100,13 @@
 
 <!-- Script para aplicar lógica de tema -->
 <script>
-    setInterval(() => {
-        fetch("{{ route('csrf-token') }}")
-            .then(response => response.json())
-            .then(data => {
-                document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.token);
-            });
-    }, 600000); // A cada 10 minutos (600000 ms)
+    {{--setInterval(() => {--}}
+    {{--    fetch("{{ route('csrf-token') }}")--}}
+    {{--        .then(response => response.json())--}}
+    {{--        .then(data => {--}}
+    {{--            document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.token);--}}
+    {{--        });--}}
+    {{--}, 600000); // A cada 10 minutos (600000 ms)--}}
 
 
 

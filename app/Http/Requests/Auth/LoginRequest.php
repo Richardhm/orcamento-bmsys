@@ -51,9 +51,9 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        if ($this->isXmlHttpRequestMobile()) {
-            \Config::set('session.driver', 'array');
-        }
+//        if ($this->isXmlHttpRequestMobile()) {
+//            \Config::set('session.driver', 'array');
+//        }
 
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
