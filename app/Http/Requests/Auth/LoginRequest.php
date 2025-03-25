@@ -51,6 +51,9 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        if ($this->isXmlHttpRequestMobile()) {
+            \Config::set('session.driver', 'array');
+        }
 
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
@@ -63,6 +66,14 @@ class LoginRequest extends FormRequest
 
         RateLimiter::clear($this->throttleKey());
     }
+
+    private function isXmlHttpRequestMobile()
+    {
+        $header = $this->header('sec-fetch-site');
+        return in_array($header, ['none', 'cross-site']);
+    }
+
+
 
     /**
      * Ensure the login request is not rate limited.
