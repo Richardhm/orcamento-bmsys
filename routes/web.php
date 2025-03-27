@@ -57,7 +57,7 @@ Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('t
 //})->name('csrf-token');
 
 
-Route::middleware(['auth','prevent-simultaneous-logins'])->group(callback: function () {
+Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
