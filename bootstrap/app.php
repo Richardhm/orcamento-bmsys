@@ -13,6 +13,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->validateCsrfTokens(except: [
+            'login',
+            'logout',
+            '/callback',
+            '/callback/*'
+        ]);
         $middleware->append(MobileSessionFix::class);
         $middleware->alias([
             'prevent-simultaneous-logins' => PreventSimultaneousLogins::class,
