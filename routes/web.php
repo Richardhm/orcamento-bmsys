@@ -37,7 +37,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/callback', [CallbackController::class,'index'])->name('callback.index');
+Route::post('/callback', [CallbackController::class,'index'])->name('callback.index');
 Route::get('/bem-vindo/{user}', [BemvindoController::class, 'index'])->name('bemvindo');
 
 Route::post('/buscar_planos',[DashboardController::class,'buscar_planos'])->middleware(['auth', 'verified'])->name('buscar_planos');

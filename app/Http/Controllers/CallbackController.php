@@ -39,6 +39,7 @@ class CallbackController extends Controller
             "token" => $token
         ];
         try {
+
             $response = $this->efi->getNotification($params);
             header("HTTP/1.1 200");
             if($response) {
