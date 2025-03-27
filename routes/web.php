@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CallbackController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\ProfileController;
@@ -35,8 +36,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/bem-vindo/{user}', [BemvindoController::class, 'index'])->name('bemvindo');
 
+Route::get('/callback', [CallbackController::class,'index'])->name('callback.index');
+Route::get('/bem-vindo/{user}', [BemvindoController::class, 'index'])->name('bemvindo');
 
 Route::post('/buscar_planos',[DashboardController::class,'buscar_planos'])->middleware(['auth', 'verified'])->name('buscar_planos');
 Route::post('/dashboard/orcamento',[DashboardController::class,'orcamento'])->middleware(['auth', 'verified'])->name('orcamento.montarOrcamento');
