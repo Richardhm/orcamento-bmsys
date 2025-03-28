@@ -503,10 +503,8 @@
                         },
                         function(error,response) {
                             if(error) {
-                                console.log(error);
+                                load.fadeOut(100).css("display", "none");
                             } else {
-                                console.log(response);
-
                                 paymentToken = response.data.payment_token;
                                 mascaraCartao = response.data.card_mask;
 
@@ -543,6 +541,7 @@
                                         }
                                     },
                                     error: function (xhr) {
+                                        load.fadeOut(100).css("display", "none");
                                         if (xhr.status === 422) {
                                             load.fadeOut(100).css("display", "none");
                                             let errors = xhr.responseJSON.errors;
