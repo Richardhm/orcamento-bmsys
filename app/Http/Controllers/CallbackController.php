@@ -40,14 +40,14 @@ class CallbackController extends Controller
             "token" => $token
         ];
         try {
-            Log::channel('gerencianet')->info("Iniciando processamento da notificação", [
+            \Log::channel('gerencianet')->info("Iniciando processamento da notificação", [
                 'token' => $token,
                 'ip' => request()->ip(),
                 'user_agent' => request()->userAgent()
             ]);
             $response = $this->efi->getNotification($params);
 
-            Log::channel('gerencianet')->debug("Resposta completa da API", [
+            \Log::channel('gerencianet')->debug("Resposta completa da API", [
                 'raw_response' => $response,
                 'memory_usage' => memory_get_usage(true) / 1024 / 1024 . " MB"
             ]);
@@ -57,7 +57,7 @@ class CallbackController extends Controller
             if ($response && isset($response['data'])) {
                 $this->processNotifications($response['data']);
 
-                Log::channel('gerencianet')->info("Notificação processada com sucesso", [
+                \Log::channel('gerencianet')->info("Notificação processada com sucesso", [
                     'subscription_id' => $response['data'][0]['identifiers']['subscription_id'] ?? null,
                     'event_count' => count($response['data'])
                 ]);
