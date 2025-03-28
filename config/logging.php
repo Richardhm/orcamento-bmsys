@@ -51,6 +51,16 @@ return [
     */
 
     'channels' => [
+        'gerencianet' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/gerencianet/notifications.log'),
+            'level' => 'debug',
+            'days' => 30,
+            'permission' => 0664
+
+        ],
+
+
 
         'stack' => [
             'driver' => 'stack',
