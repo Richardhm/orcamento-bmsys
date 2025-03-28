@@ -274,8 +274,8 @@
             </div>
 
             <!-- Right Column - Preview do GIF -->
-            <div class="relative group cursor-pointer scale-75" onclick="openVideoModal()">
-                <div class="relative rounded-xl overflow-hidden shadow-2xl transform group-hover:scale-105 transition-transform">
+            <div class="relative group cursor-pointer w-[70%] md:mt-10" onclick="openVideoModal()">
+                <div class="relative rounded-xl overflow-hidden shadow-2xl transform group-hover:scale-90 transition-transform">
                     <img src="{{asset('tela.png')}}" alt="Preview" class="object-cover">
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                         <svg class="w-14 h-14 text-white opacity-75 hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
