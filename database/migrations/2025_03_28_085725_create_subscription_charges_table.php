@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('subscription_charges', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('subscription_id');
+            $table->integer('subscription_id');
             $table->integer('charge_id')->unique();
             $table->decimal('value', 10, 2);
             $table->string('status');
@@ -22,7 +21,8 @@ return new class extends Migration
             $table->dateTime('event_date');
             $table->json('metadata')->nullable();
             $table->timestamps();
-            $table->foreign('subscription_id')->references('id')->on('assinaturas');
+            $table->index('subscription_id');
+
         });
     }
 

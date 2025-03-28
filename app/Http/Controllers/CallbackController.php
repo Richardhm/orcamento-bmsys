@@ -117,7 +117,7 @@ class CallbackController extends Controller
         );
     }
 
-    private function processCharge(array $chargeEvent)
+    public function processCharge(array $chargeEvent)
     {
         // Converter valores para decimal
         $value = isset($chargeEvent['value']) ? $chargeEvent['value'] / 100 : 0;
