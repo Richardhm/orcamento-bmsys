@@ -7,7 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Assinatura extends Model
 {
     protected $fillable = [
-        'user_id', 'tipo_plano_id', 'preco_base', 'emails_permitidos', 'emails_extra', 'preco_total','status','subscription_id'
+        'user_id',
+        'tipo_plano_id',
+        'preco_base',
+        'emails_permitidos',
+        'emails_extra',
+        'preco_total',
+        'status',
+        'subscription_id',
+        'last_updated',
+        'last_payment',
+        'next_charge'
     ];
 
 //    public function emails()

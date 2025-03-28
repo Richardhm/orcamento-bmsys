@@ -55,6 +55,7 @@ class CallbackController extends Controller
 
             header("HTTP/1.1 200");
             if ($response && isset($response['data'])) {
+
                 $this->processNotifications($response['data']);
 
                 \Log::channel('gerencianet')->info("Notificação processada com sucesso", [
@@ -62,7 +63,7 @@ class CallbackController extends Controller
                     'event_count' => count($response['data'])
                 ]);
 
-                //return response()->json(['success' => true]);
+                return response()->json(['success' => true]);
                 //return response()->json($response['data']);
 
 //                return response()->json([
@@ -122,24 +123,28 @@ class CallbackController extends Controller
         $value = isset($chargeEvent['value']) ? $chargeEvent['value'] / 100 : 0;
 
         // Gravar cobrança individual
-        SubscriptionCharge::updateOrCreate([
-            ['charge_id' => $chargeEvent['identifiers']['charge_id']],
+        SubscriptionCharge::updateOrCreate(
             [
+                'charge_id' => $chargeEvent['identifiers']['charge_id'],
                 'subscription_id' => $chargeEvent['identifiers']['subscription_id']
             ],
-            'status' => $chargeEvent['status']['current'],
-            'value' => $value,
-            'payment_date' => $chargeEvent['received_by_bank_at'] ?? null,
-            'event_date' => $chargeEvent['created_at'],
-            'metadata' => json_encode($chargeEvent)
-        ]);
+            [
+                'status' => $chargeEvent['status']['current'],
+                'value' => $value,
+                'payment_date' => isset($chargeEvent['received_by_bank_at'])
+                    ? Carbon::parse($chargeEvent['received_by_bank_at'])
+                    : null,
+                'event_date' => Carbon::parse($chargeEvent['created_at']),
+                'metadata' => json_encode($chargeEvent)
+            ]
+        );
 
-        // Atualizar status geral da assinatura se for pagamento
+        // Atualizar status geral se for pagamento
         if ($chargeEvent['status']['current'] === 'paid') {
             Assinatura::where('subscription_id', $chargeEvent['identifiers']['subscription_id'])
                 ->update([
-                    'last_payment' => $chargeEvent['received_by_bank_at'],
-                    'next_charge' => Carbon::parse($chargeEvent['created_at'])->addMonth() // Exemplo
+                    'last_payment' => Carbon::parse($chargeEvent['received_by_bank_at']),
+                    'next_charge' => Carbon::parse($chargeEvent['created_at'])->addMonth()
                 ]);
         }
     }
