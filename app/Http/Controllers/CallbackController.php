@@ -47,7 +47,14 @@ class CallbackController extends Controller
                 $this->processNotifications($response['data']);
 
                 //return response()->json(['success' => true]);
-                return response()->json($response['data']);
+                //return response()->json($response['data']);
+
+                return response()->json([
+                    'success' => true,
+                    'data' => $response
+                ], 200, [], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+
+
             }
             return response()->json(['error' => 'Resposta inválida'], 400);
         } catch (EfiException $e) {
