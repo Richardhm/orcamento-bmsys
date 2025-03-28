@@ -105,9 +105,6 @@ class AssinaturaController extends Controller
                     "value" => 2990 // R$29,90 em centavos
                 ]
             ];
-
-
-
             // Dados do cliente
             $customer = [
                 "name" => $request->name,
@@ -119,8 +116,8 @@ class AssinaturaController extends Controller
 
             // Endereço (também necessário)
             $billingAddress = [
-                "street" => $request->street, // Adicionar campo no formulário
-                "number" => !empty($request->number) ? $request->number : "S/N", // Adicionar campo no formulário
+                "street" => $request->street,
+                "number" => !empty($request->number) ? $request->number : "S/N",
                 "neighborhood" => $request->neighborhood, // Adicionar campo no formulário
                 "zipcode" => str_replace('-', '', $request->zipcode), // Adicionar campo no formulário
                 "city" => $request->city, // Adicionar campo no formulário
@@ -137,6 +134,9 @@ class AssinaturaController extends Controller
                         "payment_token" => $request->paymentToken,
                         "customer" => $customer
                     ]
+                ],
+                "metadata" => [
+                    "notification_url" => "https://cotacao.bmsys.com.br/callback"
                 ]
             ];
 
@@ -254,6 +254,9 @@ class AssinaturaController extends Controller
                         "payment_token" => $request->paymentToken,
                         "customer" => $customer
                     ]
+                ],
+                "metadata" => [
+                    "notification_url" => "https://cotacao.bmsys.com.br/callback"
                 ]
             ];
 

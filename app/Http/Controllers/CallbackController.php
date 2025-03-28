@@ -23,7 +23,6 @@ class CallbackController extends Controller
         $client_secret = config("gerencianet.{$mode}.client_secret");
         $certificate_path = base_path("certs/{$certificate}");
 
-
         $options = [
             'client_id' => $client_id,
             'client_secret' => $client_secret,
