@@ -45,7 +45,9 @@ class CallbackController extends Controller
             header("HTTP/1.1 200");
             if ($response && isset($response['data'])) {
                 $this->processNotifications($response['data']);
-                return response()->json(['success' => true]);
+
+                //return response()->json(['success' => true]);
+                return response()->json($response['data']);
             }
             return response()->json(['error' => 'Resposta inválida'], 400);
         } catch (EfiException $e) {
