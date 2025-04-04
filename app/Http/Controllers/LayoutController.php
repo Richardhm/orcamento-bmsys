@@ -18,10 +18,17 @@ class LayoutController extends Controller
 
     public function select(Request $request)
     {
+        
+        
         $user = auth()->user();
-        $user->layout_id = $request->input('layout_id');
-        $user->save();
-        return redirect()->back()->with('success', 'Layout selecionado com sucesso!');
+        $user->layout_id = $request->input('valor');
+        
+        if($user->save()) {
+            return "sucesso";
+        } else {
+            return "error";
+        }
+        
     }
 
 
