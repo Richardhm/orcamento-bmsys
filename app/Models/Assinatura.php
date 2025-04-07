@@ -35,6 +35,13 @@ class Assinatura extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function cidades()
+    {
+
+        return $this->belongsToMany(TabelaOrigens::class, 'assinatura_cidade','assinatura_id','tabela_origem_id');
+    }
+
+
     public function emailAssinatura()
     {
         return $this->hasOne(EmailAssinatura::class, 'assinatura_id');

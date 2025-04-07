@@ -16,14 +16,38 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
 
-                @if(Auth::user()->isAdmin()) <!-- Somente para administradores -->
-                    <a class="text-white" title="Gerenciar Usuarios" alt="Gerenciar Usuarios" href="{{route('users.manage')}}">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+
+
+                @if(Auth::user()->isAdmin())
+                    <a class="text-white relative flex items-center gap-1 {{ !Auth::user()->primeiro_acesso ? 'blink-border shake-arrow' : '' }}"
+                       title="Gerenciar Usuários"
+                       alt="Gerenciar Usuários"
+                       href="{{ route('users.manage') }}">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15 19.128a9.38 9.38 0 0 0 2.625.372
+                  9.337 9.337 0 0 0 4.121-.952
+                  4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106
+                  A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109
+                  a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0
+                  3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0
+                  2.625 2.625 0 0 1 5.25 0Z" />
                         </svg>
+
+                        @if(!Auth::user()->primeiro_acesso)
+                            <span class="animated-arrow text-yellow-400 font-bold text-xl">⬅</span>
+                        @endif
 
                     </a>
                 @endif
+
+
+
+
+
+
 
                     <a class="text-white ml-2" title="Editar Seu Perfil" alt="Editar Seu Perfil" href="{{route('profile.edit')}}">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -38,29 +62,34 @@
                     </a>
 
                     <a class="text-white ml-2" title="Tabela Completa" alt="Tabela Completa" href="{{route('tabela_completa.index')}}">
-
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0 1 12 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5" />
                         </svg>
+                    </a>
 
-
-
+                    <a class="text-white ml-2" title="Editar Seu Perfil" alt="Editar Seu Perfil" href="{{route('configuracoes.index')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
 
                     </a>
 
 
-                <div class="flex items-center">
-                    <button id="theme-toggle" title="Mudar Cor" class="p-2 rounded-full focus:outline-none">
-                        <!-- Ícone para modo claro -->
-                        <svg id="theme-toggle-light-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8-8h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
-                        </svg>
-                        <!-- Ícone para modo escuro -->
-                        <svg id="theme-toggle-dark-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hidden text-white dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657A8 8 0 1112 4v1a7 7 0 001.657 4.657A7 7 0 0017.657 16.657z" />
-                        </svg>
-                    </button>
-                </div>
+
+
+{{--                <div class="flex items-center">--}}
+{{--                    <button id="theme-toggle" title="Mudar Cor" class="p-2 rounded-full focus:outline-none">--}}
+{{--                        <!-- Ícone para modo claro -->--}}
+{{--                        <svg id="theme-toggle-light-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">--}}
+{{--                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8-8h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />--}}
+{{--                        </svg>--}}
+{{--                        <!-- Ícone para modo escuro -->--}}
+{{--                        <svg id="theme-toggle-dark-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hidden text-white dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">--}}
+{{--                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657A8 8 0 1112 4v1a7 7 0 001.657 4.657A7 7 0 0017.657 16.657z" />--}}
+{{--                        </svg>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
 
 
 

@@ -8,6 +8,7 @@ use App\Models\User;
 use Efi\EfiPay;
 use Efi\Exception\EfiException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -37,8 +38,13 @@ class UserController extends Controller
 
     public function index()
     {
-        $assinatura_id = Assinatura::where("user_id",auth()->user()->id)->first()->id;
 
+        $user = Auth::user();
+        if($user->primeiro_acesso == 0) {
+            $user->primeiro_acesso = 1;
+            $user->save();
+        }
+        $assinatura_id = Assinatura::where("user_id",auth()->user()->id)->first()->id;
         $users = User::whereIn(
             'id',
             EmailAssinatura::where('assinatura_id', $assinatura_id)

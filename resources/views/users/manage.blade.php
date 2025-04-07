@@ -1,44 +1,35 @@
 <x-app-layout>
     <!-- Botão redondo -->
-    <div class="flex md:justify-end justify-center mt-4 md:mr-56 relative">
+    <div class="flex mt-2 justify-between items-center w-full md:mx-auto md:w-[99%] bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] rounded">
         <!-- Botão para abrir a modal -->
 
 
             <!-- Botão de Abrir Modal -->
         <div class="flex items-center flex-wrap">
 
-            <div class="w-full bg-yellow-500 rounded-full text-center mt-2 items-center border-black border-2 relative md:hidden">
-                    <span class="text-lg text-white">
-                        para cadastrar clique abaixo
-                    </span>
-            </div>
 
-            <!-- Braço esquerdo -->
-            <div class="flex items-center">
-                <div class="h-6 w-48 bg-yellow-500 rounded-l-full mt-8 border-black border-2 relative hidden md:block">
-                    <span class="absolute -top-0 left-24 transform -translate-x-1/2 text-sm text-white whitespace-nowrap">
-                        para cadastrar clique aqui
-                    </span>
-                </div>
-                <div class="w-8 h-12 text-5xl -ml-1.5 mr-8">👉</div>
-            </div>
 
             <!-- Botão -->
             <button id="toggle-modal"
-                    class="w-16 h-16 flex items-center justify-center rounded-full bg-yellow-500 border-black border-4 text-white text-4xl font-bold shadow-lg transition">
+                    class="w-14 h-14 flex items-center justify-center rounded-full bg-yellow-500 border-black border-4 text-white text-4xl font-bold shadow-lg transition">
                 +
             </button>
 
-            <!-- Braço direito com texto -->
-            <div class="flex items-center relative">
-                <div class="w-8 h-12 text-5xl">👈</div>
-                <div class="h-6 w-48 bg-yellow-500 ml-7 mt-8 rounded-r-full relative hidden md:block" style="border:3px solid black;">
-                    <span class="absolute -top-0 left-24 transform -translate-x-1/2 text-sm text-white whitespace-nowrap">
-                        para cadastrar clique aqui
-                    </span>
-                </div>
-            </div>
+
         </div>
+
+        <p class="text-sm text-white dark:text-gray-400 text-center">
+            Sua assinatura inclui <strong class="text-blue-200 font-bold">{{ $assinatura->emails_permitidos }}</strong> e-mails. Acima disso, é cobrado <strong class="text-yellow-600 text-lg">R$ 25</strong> por e-mail.
+        </p>
+
+
+
+        <p>
+            <span class="text-white">📈 Preço Total:</span>
+            <strong class="text-red-500 text-sm preco_total">R$ {{ number_format($assinatura->preco_total, 2, ',', '.') }}</strong>
+        </p>
+
+
 
 
         <!-- Fundo de sobreposição (backdrop) -->
@@ -51,44 +42,47 @@
     <!-- Modal centralizada -->
     <div id="user-modal"
          class="fixed inset-0 hidden flex items-center justify-center z-50">
-        <div class="bg-white shadow-lg rounded-lg p-6 w-96 max-h-[80vh] overflow-auto relative">
+        <div class="bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] shadow-lg border-white border-4 rounded-lg p-6 w-96 max-h-[80vh] overflow-auto relative">
             <!-- Cabeçalho da modal -->
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold">Cadastrar Usuário</h2>
-                <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+                <h2 class="text-lg font-semibold text-white">Cadastrar Usuário</h2>
+
+                <svg id="close-modal" xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6 border-white border-4 rounded hover:cursor-pointer text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
             </div>
 
             <!-- Formulário -->
             <form id="user-form" action="{{ route('storeUser') }}" method="POST">
                 @csrf
                 <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+                    <label for="name" class="block text-sm font-medium text-white">Nome</label>
                     <input type="text" name="name" id="name" required
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                 </div>
 
                 <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                    <label for="email" class="block text-sm font-medium text-white">E-mail</label>
                     <input type="email" name="email" id="email" required
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
 
                 </div>
 
                 <div class="mb-4">
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
+                    <label for="phone" class="block text-sm font-medium text-white">Telefone</label>
                     <input type="text" name="phone" id="phone" required
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                 </div>
 
                 <div class="mb-4">
-                    <label for="image" class="block text-sm font-medium text-gray-700">Imagem do Usuário</label>
+                    <label for="image" class="block text-sm font-medium text-white">Imagem do Usuário</label>
                     <input type="file" name="image" id="image" accept="image/*"
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                 </div>
 
                 <div class="flex justify-end">
                     <button type="button" id="cancel-modal"
-                            class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition mr-2">
+                            class="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition mr-2">
                         Cancelar
                     </button>
                     <button type="submit"
@@ -105,54 +99,8 @@
 
 
 
-    <div class="mt-7 w-full">
-        <section class="flex md:justify-around flex-wrap w-full">
-            <div class="md:w-[28%] mx-2 sm:w-full bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] dark:bg-gray-800 py-10 rounded-lg shadow-md flex flex-col justify-between h-full">
-                <!-- 📌 Header do Card -->
-                <div class="border-b pb-3">
-                    <h2 class="text-2xl font-bold text-white dark:text-white text-center">
-                        📩 Sua Assinatura
-                    </h2>
-                    <p class="text-lg text-white dark:text-gray-400 text-center mt-2">
-                        Sua assinatura inclui <strong class="text-blue-200 font-bold">{{ $assinatura->emails_permitidos }}</strong> e-mails. Acima disso, é cobrado <strong class="text-red-500">R$ 25</strong> por e-mail.
-                    </p>
-                </div>
-
-                <!-- 📌 Corpo Centralizado -->
-                <div class="flex flex-col items-center justify-center flex-1 text-lg font-medium text-gray-700 dark:text-gray-300 space-y-3">
-                    <p>
-                        <span class="text-white">📧 Emails Atuais:</span>
-                        <strong class="text-blue-200 text-2xl email_atuais">{{ $assinatura->emails_extra }}</strong>
-                    </p>
-                    <p>
-                        <span class="text-white">💰 Preço Base:</span>
-                        <strong class="text-green-500 text-2xl">R$ 129,90</strong>
-                    </p>
-                    <p>
-                        <span class="text-white">📈 Preço Total:</span>
-                        <strong class="text-red-500 text-2xl preco_total">R$ {{ number_format($assinatura->preco_total, 2, ',', '.') }}</strong>
-                    </p>
-                </div>
-
-                <!-- 📌 Footer do Card -->
-                <div class="mt-4 text-center border-t pt-3">
-                    @if($assinatura->emails_extra > $assinatura->emails_permitidos)
-                        <span class="bg-red-500 text-white text-sm font-semibold px-4 py-2 rounded-full quantidade_emails">
-                Pagando por {{ $assinatura->emails_extra - $assinatura->emails_permitidos }} e-mails extras
-            </span>
-                    @else
-                        <span class="bg-green-500 text-white text-sm font-semibold px-4 py-2 rounded-full">
-                Dentro do limite gratuito
-            </span>
-                    @endif
-                </div>
-            </div>
-            <div class="md:w-[70%] md:mx-0 w-full mt-5 md:mt-0 mx-2" id="user-table">
-                @include('partials.user-table', ['users' => $users])
-            </div>
-
-        </section>
-
+    <div class="w-full md:mx-auto md:w-[90%] mt-2" id="user-table">
+        @include('partials.user-table', ['users' => $users])
     </div>
 
     <!--Modal Editar-->
@@ -344,21 +292,24 @@
                             .then(data => {
                                 load.style.display = "none";
                                 if (data.success) {
+                                    console.log(data);
                                     document.getElementById('user-table').innerHTML = data.html;
-                                    document.querySelector('.email_atuais').textContent  = data.emails_extra;
-                                    document.querySelector('.preco_total').textContent  = data.preco_total;
+
+
                                     if(data.emails_cobrados >= 1) {
-                                        document.querySelector('.quantidade_emails').innerHTML  = `Pagando por ${data.emails_cobrados} e-mails extras`;
+                                        document.querySelector('.preco_total').textContent  = data.preco_total;
+                                        //document.querySelector('.quantidade_emails').innerHTML  = `Pagando por ${data.emails_cobrados} e-mails extras`;
                                     }
                                     closeModal();
                                 } else {
-                                    alert("Erro ao cadastrar o usuário");
+                                    console.log(data);
+                                    //alert("Erro ao cadastrar o usuário");
                                 }
                             })
                             .catch(error => {
                                 load.style.display = "none";
                                 console.error('Error:', error);
-                                alert('Erro ao enviar os dados.');
+                                //alert('Erro ao enviar os dados.');
                             });
                     });
                 }
@@ -453,9 +404,9 @@
                        },
                        success:function(res) {
                            load.fadeOut(100).css("display", "none");
-                           document.querySelector('.email_atuais').textContent  = res.emails_extra;
+                           //document.querySelector('.email_atuais').textContent  = res.emails_extra;
                            document.querySelector('.preco_total').textContent  = res.preco_total;
-                           document.querySelector('.quantidade_emails').textContent  = `Pagando por ${res.emails_cobrados} e-mails extras`;
+                           //document.querySelector('.quantidade_emails').textContent  = `Pagando por ${res.emails_cobrados} e-mails extras`;
                        }
                     });
                 });
@@ -475,14 +426,14 @@
                         success: function (response) {
                             console.log(response);
                             if (response.success) {
-                                alert(response.message);
+                                //alert(response.message);
                                 // Atualiza os dados na interface ou fecha a modal
                                 location.reload(); // Recarrega a página para refletir as alterações
                             }
                         },
                         error: function (xhr) {
                             console.error("Erro ao atualizar os dados:", xhr.responseJSON);
-                            alert("Erro ao atualizar os dados.");
+                            //alert("Erro ao atualizar os dados.");
                         },
                     });
                 });

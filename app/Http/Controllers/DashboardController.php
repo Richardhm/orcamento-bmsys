@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administradora;
+use App\Models\Desconto;
 use App\Models\Layout;
 use App\Models\Plano;
 use App\Models\Tabela;
@@ -59,6 +60,11 @@ class DashboardController extends Controller
         $plano_nome = Plano::find($plano)->nome;
         $imagem_plano = Administradora::find($operadora)->logo;
         $cidade_nome = TabelaOrigens::find($cidade)->nome;
+
+
+
+
+
         if($ambulatorial == 0) {
             $dados = Tabela::select('tabelas.*')
                 ->selectRaw("CASE $sql END AS quantidade")
@@ -109,8 +115,8 @@ class DashboardController extends Controller
         $sem_coparticipacao = request()->semcoparticipacao  == "true" ? 1 : 0;
         $apenasvalores      = request()->apenasvalores     == "true" ? 1 : 0;
         $tipo_documento     = request()->tipo_documento;
-        
-        
+
+
         $ambulatorial = request()->ambulatorial;
         $cidade = request()->tabela_origem;
         $plano = request()->plano;
@@ -119,7 +125,7 @@ class DashboardController extends Controller
         $sql = "";
         $chaves = [];
         $linhas = 0;
-        
+
         foreach(request()->faixas[0] as $k => $v) {
             if($v != null AND $v != 0) {
                 $sql .= " WHEN tabelas.faixa_etaria_id = {$k} THEN ${v} ";
@@ -130,6 +136,10 @@ class DashboardController extends Controller
 
         $linhas = count($chaves);
         $cidade_nome = TabelaOrigens::find($cidade)->nome;
+
+
+
+
         $plano_nome = Plano::find($plano)->nome;
         $linha_01 = "";
         $linha_02 = "";
@@ -147,14 +157,14 @@ class DashboardController extends Controller
                 $pdf_copar = Pdf::where('plano_id', $plano)
                     ->where('tabela_origens_id',$cidade)
                     ->first();
-                    
+
                 $itens = explode('|', $pdf_copar->linha02);
                 $itensFormatados = array_map(function($item) {
                     return trim($item); // Remove espaços extras
                 }, $itens);
                 $linha_01 = $itensFormatados[0];
                 $linha_02 = $itensFormatados[1];
-                    
+
             } else {
                 $pdf_copar = Pdf::where('plano_id', $plano)->first();
                 $itens = explode('|', $pdf_copar->linha02);
@@ -193,11 +203,26 @@ class DashboardController extends Controller
             $layout = auth()->user()->layout_id;
             $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
 
+            $desconto = Desconto::where('plano_id', $plano)
+                ->where('tabela_origens_id', $cidade)
+                ->first();
+
+            $valor_desconto = "";
+            $status_desconto = 0;
+            if($desconto) {
+                $valor_desconto = $desconto->valor;
+                $status_desconto = 1;
+            }
+
+
+
+
+
 
 
             $viewName = "cotacao.modelo{$layout_user}";
 
-            
+
 
             if($apenasvalores == 0) {
                 $view = \Illuminate\Support\Facades\View::make($viewName,[
@@ -206,6 +231,8 @@ class DashboardController extends Controller
                     'apenas_valores' => $apenasvalores,
                     'linha_01' => $linha_01,
                     'linha_02' => $linha_02,
+                    'valor_desconto' => $valor_desconto,
+                    'desconto' => $status_desconto,
                     //'carencias' => $carencias,
                     'image' => $imagem_user,
                     'dados' => $dados,
@@ -226,17 +253,17 @@ class DashboardController extends Controller
                 ]);
             } else {
                 //cabecalhos
-                
+
                 $cabecalho = auth()->user()->layout_id;
                 $cabecalho_user = in_array($cabecalho, [1, 2, 3, 4]) ? $cabecalho : 1;
                 $cabecalhoName = "cotacao.cabecalho{$cabecalho_user}";
-                
-                
+
+
                 $view = \Illuminate\Support\Facades\View::make($cabecalhoName,[
                     'com_coparticipacao' => $com_coparticipacao,
                     'sem_coparticipacao' => $sem_coparticipacao,
                     'apenas_valores' => $apenasvalores,
-                    'cabecalho' => $cabecalho, 
+                    'cabecalho' => $cabecalho,
                     //'carencias' => $carencias,
                     'dados' => $dados,
                     'pdf' => $pdf_copar,
@@ -263,24 +290,24 @@ class DashboardController extends Controller
                 } else {
                     $altura = 535;
                 }
-            
+
             if($tipo_documento == "pdf") {
-                
+
                 if ($apenasvalores == 1) {
                     $pdf = PDFFile::loadHTML($view)
                         //->setPaper('A3', 'portrait');
                         ->setPaper([0, 0, 595, $altura]); // Redimensiona o PDF
-                    return $pdf->download($nome_img.".pdf"); 
+                    return $pdf->download($nome_img.".pdf");
                 } else {
                   $pdf = PDFFile::loadHTML($view)
                     ->setPaper('A3', 'portrait');
-                    return $pdf->download($nome_img.".pdf");  
-                    
+                    return $pdf->download($nome_img.".pdf");
+
                 }
             } else {
-            
+
                 $pdfPath = storage_path('app/temp/temp.pdf');
-                
+
                 if($apenasvalores == 1) {
                     $pdf = PDFFile::loadHTML($view)
                         ->setPaper([0, 0, 595, $altura]);
@@ -306,7 +333,7 @@ class DashboardController extends Controller
                 }
 
                 return response()->download($imagemPath)->deleteFileAfterSend(true);
-                
+
             }
         } else {
             $frase = "Ambulatorial ".$odonto_frase;
@@ -348,31 +375,51 @@ class DashboardController extends Controller
                 'linhas' => $linhas,
                 'corretora' => $corretora
             ]);
-            //$pdf = PDFFile::loadHTML($view);
-            //return $pdf->stream("teste.pdf");
-
-
             $nome_img = "orcamento_". date('d') . "_" . date('m') . "_" . date("Y") . "_" . date('H') . "_" . date("i") . "_" . date("s")."_" . uniqid();
-            $pdfPath = storage_path('app/temp/temp.pdf');
-            PDFFile::loadHTML($view)->save($pdfPath);
-            $imagemPath = storage_path("app/temp/{$nome_img}.png");
+            if($tipo_documento == "pdf") {
 
-            if (file_exists($imagemPath)) {
-                unlink($imagemPath);  // Exclui a imagem anterior se ela existir
+                $pdf = PDFFile::loadHTML($view)
+                    ->setPaper('A3', 'portrait');
+                return $pdf->download($nome_img.".pdf");
+
+            } else {
+
+                $pdfPath = storage_path('app/temp/temp.pdf');
+                PDFFile::loadHTML($view)->save($pdfPath);
+                $imagemPath = storage_path("app/temp/{$nome_img}.png");
+
+                if (file_exists($imagemPath)) {
+                    unlink($imagemPath);  // Exclui a imagem anterior se ela existir
+                }
+
+                $command = "gs -sDEVICE=pngalpha -r300 -o {$imagemPath} {$pdfPath}";  // -r150 é a resolução, pode ser ajustada
+
+                exec($command, $output, $status);
+
+
+                if ($status !== 0 || !file_exists($imagemPath)) {
+                    return response()->json(['error' => 'Falha ao gerar a imagem.'], 500);
+                }
+
+                return response()
+                    ->download($imagemPath)
+                    ->deleteFileAfterSend(true);
+
+
+
+
+
+
             }
 
-            $command = "gs -sDEVICE=pngalpha -r300 -o {$imagemPath} {$pdfPath}";  // -r150 é a resolução, pode ser ajustada
-
-            exec($command, $output, $status);
 
 
-            if ($status !== 0 || !file_exists($imagemPath)) {
-                return response()->json(['error' => 'Falha ao gerar a imagem.'], 500);
-            }
 
-            return response()
-                ->download($imagemPath)
-                ->deleteFileAfterSend(true);
+
+
+
+
+
 
 
 

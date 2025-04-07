@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CallbackController;
+use App\Http\Controllers\ConfiguracoesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\ProfileController;
@@ -78,6 +79,44 @@ Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('t
 
 
 Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
+
+    /********* Configurações **************/
+
+    Route::get("/configuracoes", [ConfiguracoesController::class, 'index'])->name('configuracoes.index');
+
+    Route::post('/configuracoes/cidades/', [ConfiguracoesController::class, 'cidadeStore'])->name('cidades.store');
+    Route::delete('/configuracoes/cidades/{id}', [ConfiguracoesController::class, 'cidadeDestroy'])->name('cidades.destroy');
+
+    Route::post('/administradoras/store', [ConfiguracoesController::class, 'storeAdministradora'])->name('administradoras.store');
+    Route::delete('/administradoras/{administradora}', [ConfiguracoesController::class, 'administradoraDestroy'])->name('administradoras.destroy');
+
+    Route::post('/planos', [ConfiguracoesController::class, 'storePlanos'])->name('planos.store');
+    Route::delete('/planos/{plano}', [ConfiguracoesController::class, 'planosDestroy'])->name('planos.destroy');
+
+    Route::get('/assinaturas-cidades/{assinatura}/cidades', [ConfiguracoesController::class, 'getCidades'])->name('assinaturas.cidades');
+    Route::post('/assinaturas-cidades/vincular', [ConfiguracoesController::class, 'vincular'])->name('assinaturas.vincular');
+    Route::post('/assinaturas-cidades/desvincular', [ConfiguracoesController::class, 'desvincular'])->name('assinaturas.desvincular');
+
+
+    Route::post('/pdf/store', [ConfiguracoesController::class, 'storePdf'])->name('pdf.store');
+    Route::delete('/pdf/{pdf}', [ConfiguracoesController::class, 'destroyPdf'])->name('pdf.destroy');
+
+    Route::get('/pdf/{pdf}/edit', [ConfiguracoesController::class, 'editPdf'])->name('pdf.edit');
+    Route::put('/pdf/{pdf}', [ConfiguracoesController::class, 'updatePdf'])->name('pdf.update');
+
+    Route::post('/verificar/tabela', [ConfiguracoesController::class, 'verificar'])->name('tabelas.verificar');
+    Route::post('/tabelas/salvar', [ConfiguracoesController::class, 'salvarTabela'])->name('tabelas.salvar');
+
+    Route::post('/desconto', [ConfiguracoesController::class, 'storeDesconto'])->name('descontos.store');
+    Route::delete('/desconto/{desconto}', [ConfiguracoesController::class, 'destroyDesconto'])->name('descontos.destroy');
+
+
+
+    /********* Fim Configurações **************/
+
+
+
+
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -93,11 +132,11 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
     Route::get('/tabela',[TabelaController::class,'tabela_preco'])->name('tabela.config');
     Route::post('/corretora/select/planos/administradoras',[TabelaController::class,'planosAdministradoraSelect'])->name('planos.administradora.select');
     Route::post('/corretora/mudar/valor/tabela',[TabelaController::class,'mudarValorTabela'])->name('corretora.mudar.valor.tabela');
-    Route::post("/tabela/verificar/valores",[TabelaController::class,'verificarValoresTabela'])->name("verificar.valores.tabela");
-    Route::post("/tabela/cadastrar/valores",[TabelaController::class,'cadastrarValoresTabela'])->name("cadastrar.valores.tabela");
-    Route::post("/coparticipacao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacao'])->name("cadastrar.coparticipacao.tabela");
-    Route::post("/coparticipacao/excecao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacaoExcecao'])->name("cadastrar.excecao.coparticipacao.tabela");
-    Route::post("/coparticipacao/existe/valores",[TabelaController::class,'coparticipacaoJaExiste'])->name("coparticipacao.ja.existe");
+    //Route::post("/tabela/verificar/valores",[TabelaController::class,'verificarValoresTabela'])->name("verificar.valores.tabela");
+    //Route::post("/tabela/cadastrar/valores",[TabelaController::class,'cadastrarValoresTabela'])->name("cadastrar.valores.tabela");
+    //Route::post("/coparticipacao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacao'])->name("cadastrar.coparticipacao.tabela");
+    //Route::post("/coparticipacao/excecao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacaoExcecao'])->name("cadastrar.excecao.coparticipacao.tabela");
+    //Route::post("/coparticipacao/existe/valores",[TabelaController::class,'coparticipacaoJaExiste'])->name("coparticipacao.ja.existe");
     Route::post('/users/editar/manager', [UserController::class, 'getUser'])->name('users.get');
     Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
     Route::post('/users/deletar', [UserController::class, 'deletar'])->name('deletar.user');
@@ -105,25 +144,25 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
 
 
 });
-Route::get('/configuracoes', function () {
-    $assinatura_id = \App\Models\Assinatura::where("user_id",auth()->user()->id)->first()->id;
-
-    $users = User::whereIn(
-        'id',
-        EmailAssinatura::where('assinatura_id', $assinatura_id)
-            ->where('is_administrador', 0)
-            ->pluck('user_id')
-    )->get();
-
-
-
-
-
-    //$users = \App\Models\User::all(); // Carrega os usuários para a tabela de gerenciamento
-
-    $user = auth()->user();
-    return view('configuracoes', compact('users','user'));
-})->middleware('auth')->name('configuracoes');
+//Route::get('/configuracoes', function () {
+//    $assinatura_id = \App\Models\Assinatura::where("user_id",auth()->user()->id)->first()->id;
+//
+//    $users = User::whereIn(
+//        'id',
+//        EmailAssinatura::where('assinatura_id', $assinatura_id)
+//            ->where('is_administrador', 0)
+//            ->pluck('user_id')
+//    )->get();
+//
+//
+//
+//
+//
+//    //$users = \App\Models\User::all(); // Carrega os usuários para a tabela de gerenciamento
+//
+//    $user = auth()->user();
+//    return view('configuracoes', compact('users','user'));
+//})->middleware('auth')->name('configuracoes');
 Route::post('/dashboard/tabela/orcamento',[TabelaController::class,'orcamento'])->middleware(['auth', 'verified'])->name('orcamento.tabela.montarOrcamento');
 
 require __DIR__.'/auth.php';

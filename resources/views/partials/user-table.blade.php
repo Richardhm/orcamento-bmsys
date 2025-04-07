@@ -8,10 +8,10 @@
             <thead class="text-xs md:text-lg bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
             <tr class="hidden md:table-row">
                 <th scope="col" class="px-2 py-1 text-white">Imagem</th>
-                <th scope="col" class="px-2 py-1 text-white">Nome</th>
-                <th scope="col" class="px-2 py-1 text-white">Email</th>
-                <th scope="col" class="px-2 py-1 text-white">Telefone</th>
-                <th scope="col" class="px-2 py-1 text-center text-white">Ações</th>
+                <th scope="col" class="py-1 text-white">Nome</th>
+                <th scope="col" class="py-1 text-white">Email</th>
+                <th scope="col" class="py-1 text-white">Telefone</th>
+                <th scope="col" class="py-1 text-center text-white">Ações</th>
             </tr>
             <tr class="md:hidden">
                 <!-- Cabeçalho simplificado para mobile -->
@@ -32,10 +32,10 @@
                             </div>
                         @endif
                     </td>
-                    <td class="px-2 py-1 text-white md:table-cell block text-center before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none">{{ $user['name'] }}</td>
-                    <td class="px-2 py-1 text-white md:table-cell block text-center before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none">{{ $user['email'] }}</td>
-                    <td class="px-2 py-1 text-white md:table-cell block text-center before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none">{{ $user['phone'] }}</td>
-                    <td class="px-2 py-1 flex flex-col md:flex-row items-center justify-center space-y-1 md:space-y-0 md:space-x-2">
+                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none">{{ $user['name'] }}</td>
+                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none">{{ $user['email'] }}</td>
+                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none">{{ $user['phone'] }}</td>
+                    <td class="py-1 flex flex-col md:flex-row items-center justify-center space-y-1 md:space-y-0 md:space-x-2">
                         <button type="button" id="openModal" data-id="{{ $user['id'] }}"
                                 class="edit focus:outline-none text-white bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] focus:ring-2 focus:ring-purple-300 font-medium rounded-md p-1 md:p-1.5 text-xs md:text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
