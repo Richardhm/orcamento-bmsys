@@ -419,7 +419,8 @@ class DashboardController extends Controller
             } else {
 
                 $pdfPath = storage_path('app/temp/temp.pdf');
-                PDFFile::loadHTML($view)->save($pdfPath)->setPaper('A3', 'portrait');;
+                $pdf = PDFFile::loadHTML($view)->setPaper('A3', 'portrait');
+                $pdf->save($pdfPath);
                 $imagemPath = storage_path("app/temp/{$nome_img}.png");
 
                 if (file_exists($imagemPath)) {
