@@ -654,11 +654,11 @@
 
     $widths = [
 
-        1 => '50%',
+       1 => '32%',
 
-        2 => '38%',
+        2 => '32%',
 
-        3 => '38%'
+        3 => '32%'
 
     ];
 
@@ -690,7 +690,7 @@
 
             <!-- Bloco 1 - Faixa Etária -->
 
-            <td class="bloco" style="width: 22%;{{$totalBlocos <= 2 ? 'margin-left:20%;' : 'margin-left:0%;'}}">
+            <td class="bloco" style="width: 22%;{{$totalBlocos <= 2 ? 'margin-left:20%;' : 'margin-left:8%;'}}">
 
                 <table width="100%">
 
