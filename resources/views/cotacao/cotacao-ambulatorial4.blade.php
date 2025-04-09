@@ -1,12 +1,23 @@
 <!doctype html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport"
+
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
     <title>Document</title>
+
     <style>
+
+
+
         @font-face {
 
             font-family: 'Roboto';
@@ -177,7 +188,7 @@
 
             margin: 0px;
 
-            color:#FFFFFF;
+            color:rgb(12,77,193);
 
             font-weight: bold;
 
@@ -379,15 +390,14 @@
 
             text-align:center;
 
-
-
         }
 
 
 
         .valor-copart {
-            box-sizing: border-box;
+
             background: rgb(254,199,72);
+
             padding: 12px !important;
 
             margin: 5px 3px;
@@ -403,7 +413,6 @@
             font-size:1.6em;
 
             text-align:center;
-
 
         }
 
@@ -538,18 +547,31 @@
         .valor-procedimento {
 
             background: #FFF3CD;
+
+
+
             border-radius: 20px;
+
             display: inline-block;
+
             margin-left: 10px;
 
         }
 
     </style>
+
 </head>
 
-<img style="position: absolute;top: 0;left: 0;height: 100%;width: 100%;object-fit: cover;" src="layouts/modelo1.png" alt="Orçamento">
-<p class="cidade_container">{{$cidade}}</p>
-<p class="frase_container">{{$frase}}</p>
+<body>
+
+<img style="position: absolute;top: 0;left: 0;height: 100%;width: 100%;object-fit: cover;" src="layouts/modelo4.png" alt="Orçamento">
+
+<p class="cidade_container" style="text-transform:uppercase;">{{$cidade}}</p>
+
+<p class="frase_container" style="text-transform:uppercase;">{{$frase}}</p>
+
+
+
 @php
 
     $dadosComOdontoComCopar = [];
@@ -574,7 +596,7 @@
 
         $faixaEtaria = $dado->faixaEtaria->nome;
 
-        $acomodacao = 3;
+        $acomodacao = $dado->acomodacao_id;
 
         $valor = $dado->valor;
 
@@ -632,11 +654,11 @@
 
     $widths = [
 
-        1 => '32%',
+        1 => '50%',
 
-        2 => '32%',
+        2 => '38%',
 
-        3 => '32%'
+        3 => '38%'
 
     ];
 
@@ -668,13 +690,13 @@
 
             <!-- Bloco 1 - Faixa Etária -->
 
-            <td class="bloco" style="width: 22%;{{$totalBlocos <= 2 ? 'margin-left:20%;' : 'margin-left:8%;'}}">
+            <td class="bloco" style="width: 22%;{{$totalBlocos <= 2 ? 'margin-left:20%;' : 'margin-left:0%;'}}">
 
                 <table width="100%">
 
                     <tr>
 
-                        <td class="header-orange" style="text-align:center;">NOSSO PLANO</td>
+                        <td class="header-orange" style="text-align:center;font-size: 1.2em;">NOSSO PLANO</td>
 
                     </tr>
 
@@ -700,38 +722,15 @@
 
                     @endforeach
 
+                    <tr>
 
+                        <td>
 
+                            <div class="valor-copart-laranja">TOTAL</div>
 
+                        </td>
 
-
-
-                    @if($desconto == 1)
-                        <tr>
-                            <td>
-                                <div class="valor-copart">TOTAL</div>
-                            </td>
-
-                        </tr>
-                        <tr>
-
-                            <td>
-                                <div class="valor-copart-laranja">Desc.15%</div>
-                            </td>
-
-                        </tr>
-                    @else
-                        <tr>
-                            <td>
-                                <div class="valor-copart-laranja">TOTAL</div>
-                            </td>
-
-                        </tr>
-                    @endif
-
-
-
-
+                    </tr>
 
                 </table>
 
@@ -741,7 +740,7 @@
 
                 <!-- Bloco 2 - Com Coparticipação -->
 
-                <td class="bloco" style="width: 30%; margin: {{ $margins[$totalBlocos] }};">
+                <td class="bloco" style="width: {{ $widths[$totalBlocos] }}; margin: {{ $margins[$totalBlocos] }};">
 
                     <table width="100%">
 
@@ -756,62 +755,37 @@
                         @foreach($dadosComOdonto as $faixaEtaria => $valores)
 
                             <tr>
-
                                 <td colspan="2">
-
                                     <div class="valor-copart">
-
                                         @php
-
-                                            $totalEnfermaria_com_copar += $valores['3_com_copar'];
-
+                                            $totalApartamento_com_copar += $valores['3_com_copar'];
                                         @endphp
-
                                         {{ number_format($valores['3_com_copar'], 2, ",", ".") }}
-
                                     </div>
-
                                 </td>
-
-
-
                             </tr>
 
                         @endforeach
 
                         <tfoot>
 
-
-
-                        @if($desconto == 1)
-                            <tr>
-                                <td colspan="2">
-                                    <div class="valor-copart">
-                                        {{number_format($totalEnfermaria_com_copar,2,",",".")}}
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="valor-copart-laranja">
-                                        {{ number_format($totalEnfermaria_com_copar * (1 - ($valor_desconto / 100)), 2, ",", ".") }}
-                                    </div>
-                                </td>
+                        <tr>
 
 
 
-                            </tr>
-                        @else
-                            <tr>
-                                <td colspan="2">
-                                    <div class="valor-copart-laranja">
-                                        {{number_format($totalEnfermaria_com_copar,2,",",".")}}
-                                    </div>
-                                </td>
+                            <td colspan="2">
 
-                            </tr>
-                        @endif
+                                <div class="valor-copart-laranja">
+
+                                    {{number_format($totalApartamento_com_copar,2,",",".")}}
+
+                                </div>
+
+                            </td>
+
+
+
+                        </tr>
 
                         </tfoot>
 
@@ -829,17 +803,23 @@
 
                 <!-- Bloco 3 - Sem Coparticipação -->
 
-                <td class="bloco" style="width: 30%;{{$totalBlocos <= 2 ? 'margin-left:1%;' : 'margin-left:0%;'}} ">
+                <td class="bloco" style="width: {{ $widths[$totalBlocos] }};{{$totalBlocos <= 2 ? 'margin-left:1%;' : 'margin-left:0%;'}} ">
 
                     <table width="100%">
 
                         <tr>
-                            <td colspan="2" class="header-orange" style="text-align:center;font-size:1.4em;">SEM COPARTICIPAÇÃO *</td>
+
+                            <td colspan="2" class="header-orange" style="text-align:center;font-size:1.2em;">SEM COPARTICIPAÇÃO *</td>
+
                         </tr>
+
+
+
+
 
                         @foreach($dadosComOdonto as $faixaEtaria => $valores)
 
-                            <tr>
+                            <tr >
 
                                 <td colspan="2">
 
@@ -865,47 +845,30 @@
 
                         <tfoot>
 
-
-
-                        @if($desconto == 1)
-                            <tr>
-                                <td colspan="2">
-                                    <div class="valor-copart">
-                                        {{number_format($totalEnfermaria_sem_copar,2,",",".")}}
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="valor-copart-laranja">
-                                        {{ number_format($totalEnfermaria_sem_copar * (1 - ($valor_desconto / 100)), 2, ",", ".") }}
-                                    </div>
-                                </td>
+                        <tr>
 
 
 
-                            </tr>
-                        @else
-                            <tr>
-                                <td colspan="2">
-                                    <div class="valor-copart-laranja">
-                                        {{number_format($totalEnfermaria_sem_copar,2,",",".")}}
-                                    </div>
-                                </td>
+                            <td colspan="2">
 
-                            </tr>
-                        @endif
+                                <div class="valor-copart-laranja">
+
+                                    {{number_format($totalEnfermaria_sem_copar,2,",",".")}}
+
+                                </div>
+
+                            </td>
+                        </tr>
 
                         </tfoot>
 
                     </table>
 
+        <tr>
 
 
-        </td>
 
-        @endif
+            @endif
 
         </tr>
 
@@ -1613,32 +1576,35 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="footer">
+
+
+
+
+
+
+
+
+
+
 
     <div class="middle">
 
@@ -1653,6 +1619,12 @@
         </p>
 
     </div>
+
+
+
+
+
+
 
     @if($image != "")
 
@@ -1670,6 +1642,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
+
 </html>
+
+
 

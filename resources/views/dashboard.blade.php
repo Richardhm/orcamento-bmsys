@@ -422,11 +422,15 @@
                    let odonto = "";
                    let status_carencia = $("input[name='status_carencia_ambulatorial']").is(':checked');
                    let status_desconto = $("input[name='status_desconto_ambulatorial']").is(':checked');
+
+                   let tipo_documento = $("input[name='tipo_cotacao']:checked").val();
+
+
                    cidade = $("#cidade").val();
                    plano = $("input[name='planos-radio']:checked").val();
                    operadora = $("input[name='operadoras']:checked").val();
                    // Exibe o valor booleano no console
-                   odonto = $(this).attr('data-odonto');
+                   odonto = $("#odonto_resultado").val();
                    faixas = [{
                        '1' : $("body").find("#input_0_18").val(),
                        '2' : $("body").find('#input_19_23').val(),
@@ -450,7 +454,8 @@
                            "odonto" : odonto,
                            "status_carencia" : status_carencia,
                            "status_desconto" : status_desconto,
-                           "ambulatorial": 1
+                           "ambulatorial": 1,
+                           "tipo_documento": tipo_documento
                            //"cliente" : cliente,
                            //"_token": "{{ csrf_token() }}"
                        },

@@ -116,12 +116,12 @@ class DashboardController extends Controller
         $apenasvalores      = request()->apenasvalores     == "true" ? 1 : 0;
         $tipo_documento     = request()->tipo_documento;
 
-
         $ambulatorial = request()->ambulatorial;
         $cidade = request()->tabela_origem;
         $plano = request()->plano;
         $operadora = request()->operadora;
         $odonto = request()->odonto;
+
         $sql = "";
         $chaves = [];
         $linhas = 0;
@@ -200,8 +200,7 @@ class DashboardController extends Controller
                 ->get();
 
 
-            $layout = auth()->user()->layout_id;
-            $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
+
 
             $desconto = Desconto::where('plano_id', $plano)
                 ->where('tabela_origens_id', $cidade)
@@ -218,8 +217,8 @@ class DashboardController extends Controller
 
 
 
-
-
+            $layout = auth()->user()->layout_id;
+            $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
             $viewName = "cotacao.modelo{$layout_user}";
 
 
@@ -267,6 +266,7 @@ class DashboardController extends Controller
                     //'carencias' => $carencias,
                     'dados' => $dados,
                     'pdf' => $pdf_copar,
+
                     'nome' => $nome,
                     'cidade' => $cidade_nome,
                     'plano_nome' => $plano_nome,
@@ -336,6 +336,13 @@ class DashboardController extends Controller
 
             }
         } else {
+
+            $layout = auth()->user()->layout_id;
+            $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
+            $viewName = "cotacao.modelo-ambulatorial{$layout_user}";
+
+
+
             $frase = "Ambulatorial ".$odonto_frase;
             $imagem_user = auth()->user()->imagem;
             $dados = Tabela::select('tabelas.*')
@@ -348,6 +355,11 @@ class DashboardController extends Controller
                 ->where("acomodacao_id","=",3)
                 ->whereIn('tabelas.faixa_etaria_id', explode(',',$keys))
                 ->get();
+
+
+
+
+
             $hasTabelaOrigens = Pdf::where('plano_id', $plano)
                 ->where('tabela_origens_id',$cidade)
                 ->exists();
@@ -358,11 +370,34 @@ class DashboardController extends Controller
             } else {
                 $pdf_copar = Pdf::where('plano_id', $plano)->first();
             }
-            $view = \Illuminate\Support\Facades\View::make("cotacao.cotacao-ambulatorial-pdf",[
+
+            $layout = auth()->user()->layout_id;
+            $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
+            $viewName = "cotacao.cotacao-ambulatorial{$layout_user}";
+
+            $desconto = Desconto::where('plano_id', $plano)
+                ->where('tabela_origens_id', $cidade)
+                ->first();
+
+            $valor_desconto = "";
+            $status_desconto = 0;
+            if($desconto) {
+                $valor_desconto = $desconto->valor;
+                $status_desconto = 1;
+            }
+
+            $view = \Illuminate\Support\Facades\View::make($viewName,[
+                'com_coparticipacao' => 1,
+                'sem_coparticipacao' => 1,
                 'image' => $imagem_user,
                 'dados' => $dados,
                 'pdf' => $pdf_copar,
+                'plano_nome' => "Individual",
+                'linha_01' => $linha_01,
+                'linha_02' => $linha_02,
                 'nome' => $nome,
+                'desconto' => $status_desconto,
+                'valor_desconto' => $valor_desconto,
                 'cidade' => $cidade_nome,
                 'plano' => $plano_nome,
                 'odonto_frase' => $odonto_frase,
@@ -375,6 +410,7 @@ class DashboardController extends Controller
                 'linhas' => $linhas,
                 'corretora' => $corretora
             ]);
+
             $nome_img = "orcamento_". date('d') . "_" . date('m') . "_" . date("Y") . "_" . date('H') . "_" . date("i") . "_" . date("s")."_" . uniqid();
             if($tipo_documento == "pdf") {
 
