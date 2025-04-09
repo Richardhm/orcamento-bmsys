@@ -341,8 +341,6 @@ class DashboardController extends Controller
             $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
             $viewName = "cotacao.modelo-ambulatorial{$layout_user}";
 
-
-
             $frase = "Ambulatorial ".$odonto_frase;
             $imagem_user = auth()->user()->imagem;
             $dados = Tabela::select('tabelas.*')
@@ -421,7 +419,7 @@ class DashboardController extends Controller
             } else {
 
                 $pdfPath = storage_path('app/temp/temp.pdf');
-                PDFFile::loadHTML($view)->save($pdfPath);
+                PDFFile::loadHTML($view)->save($pdfPath)->setPaper('A3', 'portrait');;
                 $imagemPath = storage_path("app/temp/{$nome_img}.png");
 
                 if (file_exists($imagemPath)) {
