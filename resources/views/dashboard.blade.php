@@ -60,11 +60,11 @@
                     <legend class="text-lg font-semibold px-2 mx-auto">Tipo Documento</legend>
                     <div class="flex justify-between items-center">
                         <label class="flex items-center space-x-2">
-                            <input type="radio" name="tipo_cotacao" value="imagem" checked>
+                            <input type="radio" name="tipo_cotacao_ambulatorial" value="imagem" checked>
                             <span class="font-semibold">Imagem</span>
                         </label>
                         <label class="flex items-center space-x-2">
-                            <input type="radio" name="tipo_cotacao" value="pdf">
+                            <input type="radio" name="tipo_cotacao_ambulatorial" value="pdf">
                             <span class="font-semibold">PDF</span>
                         </label>
                     </div>
@@ -339,7 +339,6 @@
                        status_carencia = $("input[name='status_carencia']:checked").val();
                        status_carencia = status_carencia === 'true'
                        faixas = [{
-
                            '1' : $("body").find("#input_0_18").val(),
                            '2' : $("body").find('#input_19_23').val(),
                            '3' : $("body").find('#input_24_28').val(),
@@ -350,7 +349,6 @@
                            '8' : $("body").find('#input_49_53').val(),
                            '9' : $("body").find('#input_54_58').val(),
                            '10' : $("body").find('#input_59').val()
-
                        }];
 
                        $.ajax({
@@ -367,19 +365,12 @@
                                "ambulatorial" : ambulatorial
                            },
                            success: function(res) {
-
                                $("#resultado").removeClass('hidden').slideDown('slow').html(res);
-                               // //interacaoContador++;
                                return false;
                            }
                        });
-
-
                    },0.1);
-
-
                    return false;
-
                }
 
                $("body").on('click',"input[name='planos-radio']",function(){
@@ -422,10 +413,7 @@
                    let odonto = "";
                    let status_carencia = $("input[name='status_carencia_ambulatorial']").is(':checked');
                    let status_desconto = $("input[name='status_desconto_ambulatorial']").is(':checked');
-
-                   let tipo_documento = $("input[name='tipo_cotacao']:checked").val();
-
-
+                   let tipo_documento = $("input[name='tipo_cotacao_ambulatorial']:checked").val();
                    cidade = $("#cidade").val();
                    plano = $("input[name='planos-radio']:checked").val();
                    operadora = $("input[name='operadoras']:checked").val();

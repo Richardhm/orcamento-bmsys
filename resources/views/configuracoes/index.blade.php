@@ -72,12 +72,19 @@
     @section('scripts')
         <script>
             $(document).ready(function() {
+
+                $('input[name*="valor_apartamento"]').mask("#.##0,00", {reverse: true});
+                $('input[name*="valor_enfermaria"]').mask("#.##0,00", {reverse: true});
+                $('input[name*="valor_ambulatorial"]').mask("#.##0,00", {reverse: true});
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
                 // Ativa aba inicial
                 $('.tab-button:first').addClass('active');
-
                 $('.tab-button').click(function (e) {
                     e.preventDefault();
-
                     // Remove todas as classes ativas
                     $('.tab-button').removeClass('active');
                     $('.tab-content').hide();
@@ -93,11 +100,7 @@
                 var valores = [];
 
                 $("body").on('change', 'select[class^="tabela"]', function (e) {
-                    e.preventDefault();
                     let todosPreenchidos = true;
-
-
-
                     if ($('select[name="administradora"]').val() == '' ||
                         $('select[name="planos"]').val() == '' ||
                         $('select[name="tabela_origem"]').val() == '' ||
@@ -117,109 +120,115 @@
                         };
                         //valores.push($(this).val());
                         $(".alert-danger").remove();
-                    }
 
-                    if (todosPreenchidos) {
-                        $('input[name*="valor_apartamento"]').prop('disabled',false);
-                        $('input[name*="valor_enfermaria"]').prop('disabled',false);
-                        $('input[name*="valor_ambulatorial"]').prop('disabled',false);
-                        $('#overlay').removeClass("ocultar");
+                        if(todosPreenchidos) {
+                                $('input[name*="valor_apartamento"]').prop('disabled',false);
+                                $('input[name*="valor_enfermaria"]').prop('disabled',false);
+                                $('input[name*="valor_ambulatorial"]').prop('disabled',false);
+                                $('#overlay').removeClass("ocultar");
 
-                        let administradora = $('select[name="administradora"]').val();
-                        let planos  = $('select[name="planos"]').val()
-                        let tabela_origem = $('select[name="tabela_origem"]').val();
-                        let coparticipacao = $('select[name="coparticipacao"]').val();
-                        let odonto = $('select[name="odonto"]').val();
+                                let administradora = $('select[name="administradora"]').val();
+                                let planos  = $('select[name="planos"]').val()
+                                let tabela_origem = $('select[name="tabela_origem"]').val();
+                                let coparticipacao = $('select[name="coparticipacao"]').val();
+                                let odonto = $('select[name="odonto"]').val();
 
-                        console.log("administradora ",administradora);
-                        console.log("planos ",planos);
-                        console.log("tabela_origem ",tabela_origem);
-                        console.log("coparticipacao ",coparticipacao);
-                        console.log("odonto ",odonto);
+                                //let plano = $("#planos").val();
+                                //let cidade = $("#tabela_origem").val();
+                                $('.valor').removeAttr('disabled');
 
+                                $.ajax({
+                                    url:"{{route('tabelas.verificar')}}",
+                                    method:"POST",
+                                    data: {
+                                        "administradora" : administradora,
+                                        "planos" : planos,
+                                        "tabela_origem" : tabela_origem,
+                                        "coparticipacao" : coparticipacao,
+                                        "odonto" : odonto,
 
+                                    },
+                                    success:function(res) {
 
-                        //let plano = $("#planos").val();
-                        //let cidade = $("#tabela_origem").val();
-                        $('.valor').removeAttr('disabled');
+                                        // $('#overlay').addClass('ocultar');
+                                        if(res != "empty") {
 
-                        $.ajax({
-                            url:"{{route('tabelas.verificar')}}",
-                            method:"POST",
-                            data: {
-                                "administradora" : administradora,
-                                "planos" : planos,
-                                "tabela_origem" : tabela_origem,
-                                "coparticipacao" : coparticipacao,
-                                "odonto" : odonto,
+                                            $('input[name="valor_apartamento[]"]').each(function(index) {
+                                                $(this).addClass('valor');
+                                                if (res[index] && res[index].acomodacao_id == 1) {
+                                                    $(this).val(res[index].valor_formatado).attr('data-id',res[index].id);
+                                                }
+                                            });
+                                            $('input[name="valor_enfermaria[]"]').each(function(index) {
+                                                $(this).addClass('valor');
+                                                if (res[index+10] && res[index+10].acomodacao_id == 2) {
+                                                    $(this).val(res[index+10].valor_formatado).attr('data-id',res[index+10].id);
+                                                }
+                                            });
+                                            $('input[name="valor_ambulatorial[]"]').each(function(index) {
+                                                $(this).addClass('valor');
+                                                if (res[index+20] && res[index+20].acomodacao_id == 3) {
+                                                    $(this).val(res[index+20].valor_formatado).attr('data-id',res[index+20].id)
+                                                }
+                                            });
+                                            $("#container_btn_cadastrar").slideUp('slow').html('');
+                                        } else {
+                                            $('input[name="valor_apartamento[]"]')
+                                                .val('')
+                                                .removeClass('valor');
 
-                            },
-                            success:function(res) {
-                                console.log(res);
-                                // $('#overlay').addClass('ocultar');
-                                // if(res != "empty") {
-                                //
-                                //     $('input[name="valor_apartamento[]"]').each(function(index) {
-                                //         $(this).addClass('valor');
-                                //         if (res[index] && res[index].acomodacao_id == 1) {
-                                //             $(this).val(res[index].valor_formatado).attr('data-id',res[index].id);
-                                //         }
-                                //     });
-                                //     $('input[name="valor_enfermaria[]"]').each(function(index) {
-                                //         $(this).addClass('valor');
-                                //         if (res[index+10] && res[index+10].acomodacao_id == 2) {
-                                //             $(this).val(res[index+10].valor_formatado).attr('data-id',res[index+10].id);
-                                //         }
-                                //     });
-                                //     $('input[name="valor_ambulatorial[]"]').each(function(index) {
-                                //         $(this).addClass('valor');
-                                //         if (res[index+20] && res[index+20].acomodacao_id == 3) {
-                                //             $(this).val(res[index+20].valor_formatado).attr('data-id',res[index+20].id)
-                                //         }
-                                //     });
-                                //     $("#container_btn_cadastrar").slideUp('slow').html('');
-                                // } else {
-                                //     $('input[name="valor_apartamento[]"]')
-                                //         .val('')
-                                //         .removeClass('valor');
-                                //
-                                //     $('input[name="valor_enfermaria[]"]')
-                                //         .val('')
-                                //         .removeClass('valor');
-                                //
-                                //     $('input[name="valor_ambulatorial[]"]')
-                                //         .val('')
-                                //         .removeClass('valor');
-                                //
-                                //     $("#container_btn_cadastrar")
-                                //         .html(`<button type="button" class="btn_cadastrar text-white w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Cadastrar</button>`)
-                                //         .hide()
-                                //         .slideDown('slow');
-                                //
-                                //     $("#container_alert_cadastrar")
-                                //         .html(`<div class="bg-blue-100 border border-blue-300 text-blue-800 text-2xl px-4 py-3 rounded">
-                                //             <h4 class="font-semibold">Essa tabela não existe, para inserir os dados clicar no botão cadastrar abaixo, após preencher todos os campos.</h4>
-                                //         </div>`)
-                                //         .hide()
-                                //         .slideDown('slow');
-                                // }
-                            }
-                        });
+                                            $('input[name="valor_enfermaria[]"]')
+                                                .val('')
+                                                .removeClass('valor');
 
+                                            $('input[name="valor_ambulatorial[]"]')
+                                                .val('')
+                                                .removeClass('valor');
 
+                                            $("#container_btn_cadastrar")
+                                                .html(`<button type="button" class="btn_cadastrar text-white w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Cadastrar</button>`)
+                                                .hide()
+                                                .slideDown('slow');
 
+                                            $("#container_alert_cadastrar")
+                                                .html(`<div class="bg-blue-100 border border-blue-300 text-blue-800 text-2xl px-4 py-3 rounded">
+                                                    <h4 class="font-semibold">Essa tabela não existe, para inserir os dados clicar no botão cadastrar abaixo, após preencher todos os campos.</h4>
+                                                </div>`)
+                                                .hide()
+                                                .slideDown('slow');
+                                        }
+                                    }
+                                });
+                                return false;
+                        }
                         return false;
-
-
-
-
                     }
-
-
-
                     return false;
-
                 });
+
+
+                $('body').on('change','.valor',function(){
+                    let valor = $(this).val();
+                    let id = $(this).attr('data-id');
+
+
+
+                    $.ajax({
+                        url:"{{route('corretora.mudar.valor.tabela')}}",
+                        method:"POST",
+                        data:"id="+id+"&valor="+valor,
+                        success:function(res) {
+                            console.log(res);
+                        }
+                    });
+                });
+
+
+
+
+
+
+
             });
 
             let itemAtivo = null;

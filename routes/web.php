@@ -106,6 +106,7 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
 
     Route::post('/verificar/tabela', [ConfiguracoesController::class, 'verificar'])->name('tabelas.verificar');
     Route::post('/tabelas/salvar', [ConfiguracoesController::class, 'salvarTabela'])->name('tabelas.salvar');
+    Route::post('/mudar/valor/tabela', [ConfiguracoesController::class, 'mudarTabela'])->name('corretora.mudar.valor.tabela');
 
     Route::post('/desconto', [ConfiguracoesController::class, 'storeDesconto'])->name('descontos.store');
     Route::delete('/desconto/{desconto}', [ConfiguracoesController::class, 'destroyDesconto'])->name('descontos.destroy');
@@ -131,12 +132,8 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
     Route::get('/tabela_completa',[TabelaController::class,'index'])->name('tabela_completa.index');
     Route::get('/tabela',[TabelaController::class,'tabela_preco'])->name('tabela.config');
     Route::post('/corretora/select/planos/administradoras',[TabelaController::class,'planosAdministradoraSelect'])->name('planos.administradora.select');
-    Route::post('/corretora/mudar/valor/tabela',[TabelaController::class,'mudarValorTabela'])->name('corretora.mudar.valor.tabela');
-    //Route::post("/tabela/verificar/valores",[TabelaController::class,'verificarValoresTabela'])->name("verificar.valores.tabela");
-    //Route::post("/tabela/cadastrar/valores",[TabelaController::class,'cadastrarValoresTabela'])->name("cadastrar.valores.tabela");
-    //Route::post("/coparticipacao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacao'])->name("cadastrar.coparticipacao.tabela");
-    //Route::post("/coparticipacao/excecao/cadastrar/valores",[TabelaController::class,'cadastrarCoparticipacaoExcecao'])->name("cadastrar.excecao.coparticipacao.tabela");
-    //Route::post("/coparticipacao/existe/valores",[TabelaController::class,'coparticipacaoJaExiste'])->name("coparticipacao.ja.existe");
+    //Route::post('/corretora/mudar/valor/tabela',[TabelaController::class,'mudarValorTabela'])->name('corretora.mudar.valor.tabela');
+
     Route::post('/users/editar/manager', [UserController::class, 'getUser'])->name('users.get');
     Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
     Route::post('/users/deletar', [UserController::class, 'deletar'])->name('deletar.user');

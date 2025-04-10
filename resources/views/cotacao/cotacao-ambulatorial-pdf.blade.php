@@ -671,7 +671,6 @@
             <td class="bloco" style="width: 22%;{{$totalBlocos <= 2 ? 'margin-left:20%;' : 'margin-left:8%;'}}">
 
                 <table width="100%">
-
                     <tr>
 
                         <td class="header-orange" style="text-align:center;">NOSSO PLANO</td>

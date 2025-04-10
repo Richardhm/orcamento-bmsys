@@ -10,6 +10,7 @@ use App\Models\Plano;
 use App\Models\Tabela;
 use App\Models\TabelaOrigens;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ConfiguracoesController extends Controller
@@ -255,14 +256,23 @@ class ConfiguracoesController extends Controller
     }
 
 
+    public function mudarTabela(Request $request)
+    {
+        $ta = Tabela::find($request->id);
+        $ta->valor = str_replace([".",","],["","."],$request->valor);
+        $ta->save();
+    }
+
+
     public function verificar(Request $request)
     {
-        return $request->all();
+
         $administradora_id = $request->administradora;
         $plano_id = $request->planos;
         $tabela_origem_id = $request->tabela_origem;
         $coparticipacao = $request->coparticipacao == "sim" ? 1 : 0;
         $odonto = $request->odonto == "sim" ? 1 : 0;
+
 
 
         $tabela = DB::table('tabelas')
