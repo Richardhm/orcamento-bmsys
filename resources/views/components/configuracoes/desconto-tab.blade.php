@@ -13,7 +13,7 @@
                 <h2 class="text-xl font-semibold mb-4 text-white">Novo Desconto</h2>
                 <form id="formDesconto" method="POST">
                     @csrf
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-3 gap-3">
                         <!-- Planos -->
                         <div>
                             <h3 class="text-white mb-2 font-medium">Planos</h3>
@@ -37,6 +37,20 @@
                                         <input type="checkbox" name="cidades[]" value="{{ $cidade->id }}"
                                                class="rounded border-gray-300">
                                         <span>{{ $cidade->nome }} - {{ $cidade->uf }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Administradoras -->
+                        <div>
+                            <h3 class="text-white mb-2 font-medium">Administradoras</h3>
+                            <div class="space-y-2 max-h-60 overflow-y-auto">
+                                @foreach($administradoras as $adm)
+                                    <label class="flex items-center space-x-2 text-white">
+                                        <input type="checkbox" name="administradora[]" value="{{ $adm->id }}"
+                                               class="rounded border-gray-300">
+                                        <span>{{ $adm->nome }}</span>
                                     </label>
                                 @endforeach
                             </div>

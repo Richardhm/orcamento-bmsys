@@ -81,48 +81,46 @@ Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('t
 Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
 
     /********* Configurações **************/
+    Route::middleware(['apenasDesenvolvedores'])->group(function () {
+        Route::get("/configuracoes", [ConfiguracoesController::class, 'index'])->name('configuracoes.index');
 
-    Route::get("/configuracoes", [ConfiguracoesController::class, 'index'])->name('configuracoes.index');
+        Route::post('/configuracoes/cidades/', [ConfiguracoesController::class, 'cidadeStore'])->name('cidades.store');
+        Route::delete('/configuracoes/cidades/{id}', [ConfiguracoesController::class, 'cidadeDestroy'])->name('cidades.destroy');
 
-    Route::post('/configuracoes/cidades/', [ConfiguracoesController::class, 'cidadeStore'])->name('cidades.store');
-    Route::delete('/configuracoes/cidades/{id}', [ConfiguracoesController::class, 'cidadeDestroy'])->name('cidades.destroy');
+        Route::post('/administradoras/store', [ConfiguracoesController::class, 'storeAdministradora'])->name('administradoras.store');
+        Route::delete('/administradoras/{administradora}', [ConfiguracoesController::class, 'administradoraDestroy'])->name('administradoras.destroy');
 
-    Route::post('/administradoras/store', [ConfiguracoesController::class, 'storeAdministradora'])->name('administradoras.store');
-    Route::delete('/administradoras/{administradora}', [ConfiguracoesController::class, 'administradoraDestroy'])->name('administradoras.destroy');
+        Route::post('/planos', [ConfiguracoesController::class, 'storePlanos'])->name('planos.store');
+        Route::delete('/planos/{plano}', [ConfiguracoesController::class, 'planosDestroy'])->name('planos.destroy');
 
-    Route::post('/planos', [ConfiguracoesController::class, 'storePlanos'])->name('planos.store');
-    Route::delete('/planos/{plano}', [ConfiguracoesController::class, 'planosDestroy'])->name('planos.destroy');
-
-    Route::get('/assinaturas-cidades/{assinatura}/cidades', [ConfiguracoesController::class, 'getCidades'])->name('assinaturas.cidades');
-    Route::post('/assinaturas-cidades/vincular', [ConfiguracoesController::class, 'vincular'])->name('assinaturas.vincular');
-    Route::post('/assinaturas-cidades/desvincular', [ConfiguracoesController::class, 'desvincular'])->name('assinaturas.desvincular');
-
-
-    Route::post('/pdf/store', [ConfiguracoesController::class, 'storePdf'])->name('pdf.store');
-    Route::delete('/pdf/{pdf}', [ConfiguracoesController::class, 'destroyPdf'])->name('pdf.destroy');
-
-    Route::get('/pdf/{pdf}/edit', [ConfiguracoesController::class, 'editPdf'])->name('pdf.edit');
-    Route::put('/pdf/{pdf}', [ConfiguracoesController::class, 'updatePdf'])->name('pdf.update');
-
-    Route::post('/verificar/tabela', [ConfiguracoesController::class, 'verificar'])->name('tabelas.verificar');
-    Route::post('/tabelas/salvar', [ConfiguracoesController::class, 'salvarTabela'])->name('tabelas.salvar');
-    Route::post('/mudar/valor/tabela', [ConfiguracoesController::class, 'mudarTabela'])->name('corretora.mudar.valor.tabela');
-
-    Route::post('/desconto', [ConfiguracoesController::class, 'storeDesconto'])->name('descontos.store');
-    Route::delete('/desconto/{desconto}', [ConfiguracoesController::class, 'destroyDesconto'])->name('descontos.destroy');
+        Route::get('/assinaturas-cidades/{assinatura}/cidades', [ConfiguracoesController::class, 'getCidades'])->name('assinaturas.cidades');
+        Route::post('/assinaturas-cidades/vincular', [ConfiguracoesController::class, 'vincular'])->name('assinaturas.vincular');
+        Route::post('/assinaturas-cidades/desvincular', [ConfiguracoesController::class, 'desvincular'])->name('assinaturas.desvincular');
 
 
+        Route::post('/store/pdf', [ConfiguracoesController::class, 'storePdf'])->name('pdf.store');
+        Route::delete('/pdf/{pdf}', [ConfiguracoesController::class, 'destroyPdf'])->name('pdf.destroy');
 
+        Route::get('/pdf/{pdf}/edit', [ConfiguracoesController::class, 'editPdf'])->name('pdf.edit');
+        Route::put('/pdf/{pdf}', [ConfiguracoesController::class, 'updatePdf'])->name('pdf.update');
+
+        Route::post('/verificar/tabela', [ConfiguracoesController::class, 'verificar'])->name('tabelas.verificar');
+        Route::post('/tabelas/salvar', [ConfiguracoesController::class, 'salvarTabela'])->name('tabelas.salvar');
+        Route::post('/mudar/valor/tabela', [ConfiguracoesController::class, 'mudarTabela'])->name('corretora.mudar.valor.tabela');
+
+        Route::post('/desconto', [ConfiguracoesController::class, 'storeDesconto'])->name('descontos.store');
+        Route::delete('/desconto/{desconto}', [ConfiguracoesController::class, 'destroyDesconto'])->name('descontos.destroy');
+    });
     /********* Fim Configurações **************/
 
-
+    Route::get('/users/manage', [UserController::class, 'index'])->name('users.manage')->middleware('apenasAdministradores');
+    Route::post('/users/manage', [UserController::class, 'storeUser'])->name('storeUser')->middleware('apenasAdministradores');
 
 
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/users/manage', [UserController::class, 'index'])->name('users.manage');
-    Route::post('/users/manage', [UserController::class, 'storeUser'])->name('storeUser');
+
     Route::get('/dashboard', [DashboardController::class,"index"])
         ->middleware(['verified'])
         ->name('dashboard');

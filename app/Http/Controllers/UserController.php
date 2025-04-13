@@ -106,6 +106,7 @@ class UserController extends Controller
             ]);
 
             $user->email_verified_at = now(); // Define o usuário como verificado
+            $user->primeiro_acesso = 1;
             $user->save();
 
             // Passo 2: Obter a Assinatura do Administrador

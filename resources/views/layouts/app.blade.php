@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{asset('toastr.min.css')}}">
     <script src="{{asset('toastr.min.js')}}"></script>
     <script src="{{asset('jquery.inputmask.min.js')}}"></script>
+    <script src="{{asset('jquery.mask.min.js')}}"></script>
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

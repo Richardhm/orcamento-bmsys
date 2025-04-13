@@ -15,10 +15,81 @@ use Illuminate\Support\Facades\Storage;
 
 class ConfiguracoesController extends Controller
 {
+
+
+
+
     public function index()
     {
         return view('configuracoes.index');
     }
+
+    public function salvarTabela(Request $request)
+    {
+        foreach($request->valoresApartamento as $k => $v) {
+            $tabela = new Tabela();
+
+            $tabela->administradora_id = $request->administradora;
+            $tabela->plano_id = $request->planos;
+            $tabela->tabela_origens_id = $request->tabela_origem;
+            $tabela->acomodacao_id = 1;
+
+            $tabela->coparticipacao = ($request->coparticipacao == "sim" ? true : false);
+            $tabela->odonto = ($request->odonto == "sim" ? true : false);
+            $tabela->faixa_etaria_id = $k + 1;
+            $tabela->valor = str_replace([".",","],["","."],$request->valoresApartamento[$k]);
+
+            if(!$tabela->save()) {
+                return "error";
+            }
+        }
+
+        foreach($request->valoresEnfermaria as $k => $v) {
+            $tabela = new Tabela();
+
+            $tabela->administradora_id = $request->administradora;
+            $tabela->plano_id = $request->planos;
+            $tabela->tabela_origens_id = $request->tabela_origem;
+            $tabela->acomodacao_id = 2;
+
+            $tabela->coparticipacao = ($request->coparticipacao == "sim" ? true : false);
+            $tabela->odonto = ($request->odonto == "sim" ? true : false);
+
+            $tabela->faixa_etaria_id = $k + 1;
+            $tabela->valor = str_replace([".",","],["","."],$request->valoresEnfermaria[$k]);
+
+            if(!$tabela->save()) {
+                return "error";
+            }
+        }
+
+        foreach($request->valoresAmbulatorial as $k => $v) {
+            $tabela = new Tabela();
+
+            $tabela->administradora_id = $request->administradora;
+            $tabela->plano_id = $request->planos;
+            $tabela->tabela_origens_id = $request->tabela_origem;
+            $tabela->acomodacao_id = 3;
+
+            $tabela->coparticipacao = ($request->coparticipacao == "sim" ? true : false);
+            $tabela->odonto = ($request->odonto == "sim" ? true : false);
+
+            $tabela->faixa_etaria_id = $k + 1;
+            $tabela->valor = str_replace([".",","],["","."],$request->valoresAmbulatorial[$k]);
+
+
+            if(!$tabela->save()) {
+                return "error";
+            }
+        }
+
+        return "sucesso";
+
+    }
+
+
+
+
 
     public function cidadeStore(Request $request)
     {
@@ -314,19 +385,24 @@ class ConfiguracoesController extends Controller
             'planos.*' => 'exists:planos,id',
             'cidades' => 'required|array|min:1',
             'cidades.*' => 'exists:tabela_origens,id',
-            'valor' => 'nullable|numeric|min:0'
+            'valor' => 'nullable|numeric|min:0',
+            'administradora' => 'required|array|min:1',
+            'administradora.*' => 'exists:administradoras,id',
         ]);
 
         try {
             foreach ($request->planos as $planoId) {
                 foreach ($request->cidades as $cidadeId) {
-                    Desconto::updateOrCreate(
-                        [
-                            'plano_id' => $planoId,
-                            'tabela_origens_id' => $cidadeId
-                        ],
-                        ['valor' => $request->valor]
-                    );
+                    foreach ($request->administradora as $administradoraId) {
+                        Desconto::updateOrCreate(
+                            [
+                                'plano_id' => $planoId,
+                                'tabela_origens_id' => $cidadeId,
+                                'administradora_id' => $administradoraId
+                            ],
+                            ['valor' => $request->valor]
+                        );
+                    }
                 }
             }
 

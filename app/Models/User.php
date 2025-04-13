@@ -64,22 +64,39 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Assinatura::class);
     }
 
-    // Verificar se o usuário logado é administrador
+    // Verificar se o usuário logado é administrador da assinatura vai ter acesso ao users/manage
     public function isAdmin()
     {
         $emailAssinatura = EmailAssinatura::whereHas('assinatura', function ($query) {
             $query->where('user_id', $this->id);
         })->first();
-
         if ($emailAssinatura && $emailAssinatura->is_administrador == 1) {
             return true;
         }
-
         return false;
+    }
 
+    public function isDesenvolvedor()
+    {
+        $emailsPermitidos = [
+            'richardjonhshm@gmail.com',
+            // ...
+        ];
 
+        return in_array($this->email, $emailsPermitidos);
+    }
 
+    public function isFolder()
+    {
+        $assinaturaId = \App\Models\EmailAssinatura::where('email', $this->email)->first()?->assinatura_id;
 
+        if (!$assinaturaId) {
+            return false;
+        }
+
+        $folder = \App\Models\Assinatura::find($assinaturaId)?->folder;
+
+        return $folder ?: false;
     }
 
 

@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administradora;
+use App\Models\Assinatura;
 use App\Models\Desconto;
+use App\Models\EmailAssinatura;
 use App\Models\Layout;
 use App\Models\Plano;
 use App\Models\Tabela;
 use App\Models\Pdf;
 use App\Models\TabelaOrigens;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as PDFFile;
 
@@ -17,7 +20,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-
         $cidades = TabelaOrigens::all();
         $administradoras = Administradora::all();
         $planos = Plano::all();
@@ -213,21 +215,19 @@ class DashboardController extends Controller
                 $status_desconto = 1;
             }
 
-
-
-
-
             $layout = auth()->user()->layout_id;
             $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
+
+            $layout_folder = auth()->user()->isFolder() ?: '';
+
             $viewName = "cotacao.modelo{$layout_user}";
-
-
 
             if($apenasvalores == 0) {
                 $view = \Illuminate\Support\Facades\View::make($viewName,[
                     'com_coparticipacao' => $com_coparticipacao,
                     'sem_coparticipacao' => $sem_coparticipacao,
                     'apenas_valores' => $apenasvalores,
+                    'folder' => $layout_folder,
                     'linha_01' => $linha_01,
                     'linha_02' => $linha_02,
                     'valor_desconto' => $valor_desconto,

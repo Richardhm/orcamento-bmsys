@@ -73,14 +73,18 @@
         <script>
             $(document).ready(function() {
 
-                $('input[name*="valor_apartamento"]').mask("#.##0,00", {reverse: true});
-                $('input[name*="valor_enfermaria"]').mask("#.##0,00", {reverse: true});
-                $('input[name*="valor_ambulatorial"]').mask("#.##0,00", {reverse: true});
+
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+
+
+                $('input[name*="valor_apartamento"]').mask("#.##0,00", {reverse: true});
+                $('input[name*="valor_enfermaria"]').mask("#.##0,00", {reverse: true});
+                $('input[name*="valor_ambulatorial"]').mask("#.##0,00", {reverse: true});
+
                 // Ativa aba inicial
                 $('.tab-button:first').addClass('active');
                 $('.tab-button').click(function (e) {
@@ -206,6 +210,130 @@
                     return false;
                 });
 
+                function verificarCamposPreenchidos(tipoCampo) {
+                    var todosPreenchidos = true;
+                    $("input[name='" + tipoCampo + "']").each(function () {
+                        if ($(this).val() === "") {
+                            todosPreenchidos = false;
+                            return false; // Encerra o loop se encontrar um campo não preenchido
+                        }
+                    });
+                    return todosPreenchidos;
+                }
+
+                // Função para obter os valores dos campos de um determinado tipo
+                function obterValoresDosCampos(tipoCampo) {
+                    var valores = [];
+                    $("input[name='" + tipoCampo + "']").each(function () {
+                        valores.push($(this).val());
+                    });
+                    return valores;
+                }
+
+
+
+
+
+                $("body").on('click','.btn_cadastrar',function(){
+
+                    let load = $(".ajax_load");
+                    let camposApartamentoPreenchidos  = verificarCamposPreenchidos("valor_apartamento[]");
+                    let camposEnfermariaPreenchidos   = verificarCamposPreenchidos("valor_enfermaria[]");
+                    let camposAmbulatorialPreenchidos = verificarCamposPreenchidos("valor_ambulatorial[]");
+
+                    if (camposApartamentoPreenchidos && camposEnfermariaPreenchidos && camposAmbulatorialPreenchidos) {
+
+                        let valoresApartamento = obterValoresDosCampos("valor_apartamento[]");
+                        let valoresEnfermaria = obterValoresDosCampos("valor_enfermaria[]");
+                        let valoresAmbulatorial = obterValoresDosCampos("valor_ambulatorial[]");
+
+                        // Preparar os dados para enviar ao backend (você pode ajustar de acordo com suas necessidades)
+                        let dados = {
+                            valoresApartamento: valoresApartamento,
+                            valoresEnfermaria: valoresEnfermaria,
+                            valoresAmbulatorial: valoresAmbulatorial,
+                            administradora : $('select[name="administradora"]').val(),
+                            planos : $('select[name="planos"]').val(),
+                            tabela_origem : $('select[name="tabela_origem"]').val(),
+                            coparticipacao : $('select[name="coparticipacao"]').val(),
+                            odonto : $('select[name="odonto"]').val(),
+                        };
+
+                        $.ajax({
+                            url:"{{route('tabelas.salvar')}}",
+                            method:"POST",
+                            data:dados,
+                            beforeSend: function () {
+                                load.fadeIn(100).css("display", "flex");
+                            },
+                            success:function(res) {
+                                if(res == "sucesso") {
+                                    load.fadeOut(300);
+                                    toastr["success"]("Tabela cadastrada com sucesso")
+                                    toastr.options = {
+                                        "closeButton": false,
+                                        "debug": false,
+                                        "newestOnTop": false,
+                                        "progressBar": false,
+                                        "positionClass": "toast-top-right",
+                                        "preventDuplicates": false,
+                                        "onclick": null,
+                                        "showDuration": "300",
+                                        "hideDuration": "1000",
+                                        "timeOut": "5000",
+                                        "extendedTimeOut": "1000",
+                                        "showEasing": "swing",
+                                        "hideEasing": "linear",
+                                        "showMethod": "fadeIn",
+                                        "hideMethod": "fadeOut"
+                                    }
+                                    $("#container_btn_cadastrar").html('');
+                                    $("#container_alert_cadastrar").html('');
+
+
+
+
+
+                                } else {
+                                    alert("Erro ao cadastrar a tabela")
+
+                                }
+                            }
+                        });
+
+
+                    } else {
+                        toastr["error"]("Todos os campos são obrigatório")
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+                        return false; // Impede o envio do formulário se algum campo estiver em branco
+                    }
+                    return false; // Isso impede o envio do formulário para evitar que a página seja recarregada
+                });
+
+
+
+
+
+
+
+
+
 
                 $('body').on('change','.valor',function(){
                     let valor = $(this).val();
@@ -280,69 +408,69 @@
                     });
             }
 
-            let editMode = false;
-
-            async function editarConfig(id) {
-                try {
-                    const response = await fetch(`/pdf/${id}/edit`);
-                    const data = await response.json();
-                    console.log(data);
-                    // Preencher formulário
-                    document.getElementById('config_id').value = data.id;
-                    document.querySelector('[name="plano_id"]').value = data.plano_id;
-                    document.querySelector('[name="tabela_origens_id"]').value = data.tabela_origens_id || '';
-                    document.querySelector('[name="linha01"]').value = data.linha01 || '';
-
-                    // Split linha02
-                    const parts = data.linha02?.split('|') || [];
-                    document.querySelector('[name="linha02_part1"]').value = parts[0] || '';
-                    document.querySelector('[name="linha02_part2"]').value = parts[1] || '';
-
-                    document.querySelector('[name="linha03"]').value = data.linha03 || '';
-
-                    // Preencher campos dinâmicos
-                    const campos = ['consultas_eletivas', 'consultas_de_urgencia', 'exames_simples',
-                        'exames_complexos', 'terapias_especiais', 'demais_terapias',
-                        'internacoes', 'cirurgia'];
-
-                    campos.forEach(campo => {
-                        document.querySelector(`[name="${campo}_total"]`).value = data[`${campo}_total`] || '';
-                        document.querySelector(`[name="${campo}_parcial"]`).value = data[`${campo}_parcial`] || '';
-                    });
-
-                    // Alterar para modo edição
-                    editMode = true;
-                    document.getElementById('submit-button').textContent = 'Atualizar Configuração';
-                    document.getElementById('cancel-edit').classList.remove('hidden');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                } catch (error) {
-                    console.error('Erro:', error);
-                    alert('Erro ao carregar dados para edição');
-                }
-            }
-
-            function cancelarEdicao() {
-                editMode = false;
-                document.getElementById('config_id').value = '';
-                document.getElementById('submit-button').textContent = 'Salvar Configuração';
-                document.getElementById('cancel-edit').classList.add('hidden');
-                document.querySelector('form[name="store_edit_pdf"]').reset();
-            }
-
-            // Atualizar o formulário para enviar para a rota correta
-            document.querySelector('form[name="store_edit_pdf"]').addEventListener('submit', function(e) {
-                if (editMode) {
-                    const id = document.getElementById('config_id').value;
-                    this.action = `/pdf/${id}`;
-                    this.method = 'POST'; // Usaremos method spoofing
-                    const methodInput = document.createElement('input');
-                    methodInput.type = 'hidden';
-                    methodInput.name = '_method';
-                    methodInput.value = 'PUT';
-                    this.appendChild(methodInput);
-                }
-            });
+            // let editMode = false;
+            //
+            // async function editarConfig(id) {
+            //     try {
+            //         const response = await fetch(`/pdf/${id}/edit`);
+            //         const data = await response.json();
+            //         console.log(data);
+            //         // Preencher formulário
+            //         document.getElementById('config_id').value = data.id;
+            //         document.querySelector('[name="plano_id"]').value = data.plano_id;
+            //         document.querySelector('[name="tabela_origens_id"]').value = data.tabela_origens_id || '';
+            //         document.querySelector('[name="linha01"]').value = data.linha01 || '';
+            //
+            //         // Split linha02
+            //         const parts = data.linha02?.split('|') || [];
+            //         document.querySelector('[name="linha02_part1"]').value = parts[0] || '';
+            //         document.querySelector('[name="linha02_part2"]').value = parts[1] || '';
+            //
+            //         document.querySelector('[name="linha03"]').value = data.linha03 || '';
+            //
+            //         // Preencher campos dinâmicos
+            //         const campos = ['consultas_eletivas', 'consultas_de_urgencia', 'exames_simples',
+            //             'exames_complexos', 'terapias_especiais', 'demais_terapias',
+            //             'internacoes', 'cirurgia'];
+            //
+            //         campos.forEach(campo => {
+            //             document.querySelector(`[name="${campo}_total"]`).value = data[`${campo}_total`] || '';
+            //             document.querySelector(`[name="${campo}_parcial"]`).value = data[`${campo}_parcial`] || '';
+            //         });
+            //
+            //         // Alterar para modo edição
+            //         editMode = true;
+            //         document.getElementById('submit-button').textContent = 'Atualizar Configuração';
+            //         document.getElementById('cancel-edit').classList.remove('hidden');
+            //         window.scrollTo({ top: 0, behavior: 'smooth' });
+            //
+            //     } catch (error) {
+            //         console.error('Erro:', error);
+            //         alert('Erro ao carregar dados para edição');
+            //     }
+            // }
+            //
+            // function cancelarEdicao() {
+            //     editMode = false;
+            //     document.getElementById('config_id').value = '';
+            //     document.getElementById('submit-button').textContent = 'Salvar Configuração';
+            //     document.getElementById('cancel-edit').classList.add('hidden');
+            //     document.querySelector('form[name="store_edit_pdf"]').reset();
+            // }
+            //
+            // // Atualizar o formulário para enviar para a rota correta
+            // document.querySelector('form[name="store_edit_pdf"]').addEventListener('submit', function(e) {
+            //     if (editMode) {
+            //         const id = document.getElementById('config_id').value;
+            //         this.action = `/pdf/${id}`;
+            //         this.method = 'POST'; // Usaremos method spoofing
+            //         const methodInput = document.createElement('input');
+            //         methodInput.type = 'hidden';
+            //         methodInput.name = '_method';
+            //         methodInput.value = 'PUT';
+            //         this.appendChild(methodInput);
+            //     }
+            // });
 
             function updateCharCounter(input, counterId) {
                 const counter = document.getElementById(counterId);
