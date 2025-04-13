@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('assinaturas', function (Blueprint $table) {
-            $table->string('folder')->after('id');
+            $table->string('folder')->nullable()->after('id');
         });
     }
 
