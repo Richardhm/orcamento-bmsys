@@ -232,7 +232,7 @@
 
 
             <div class="w-full mx-auto my-1">
-                <button type="submit" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2 text-center me-2 mb-1 w-full rounded-lg">Cadastrar</button>
+                <button type="submit" class="btn_cadastrar_assinatura text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2 text-center me-2 mb-1 w-full rounded-lg">Cadastrar</button>
             </div>
         </form>
     </section>
@@ -441,6 +441,7 @@
 
                 $("form[name='cadastrar_individual']").on('submit',function(e){
                     e.preventDefault();
+                    $('.btn_cadastrar_assinatura').attr('disabled');
                     let load = $(".ajax_load");
                     if(!TestaCPF($("#cpf").val().replace(/[^0-9]/g,''))) {
                         toastr.error("O CPF informado é inválido. Verifique e tente novamente.", "Error",{

@@ -48,9 +48,11 @@ class UserController extends Controller
         $users = User::whereIn(
             'id',
             EmailAssinatura::where('assinatura_id', $assinatura_id)
-                ->where('is_administrador', 0)
+
                 ->pluck('user_id')
         )->get();
+
+
 
 
 
@@ -117,7 +119,7 @@ class UserController extends Controller
             }
 
             // Definir valores do plano
-            $preco_base = 129.90;
+            $preco_base = 250.00;
             $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
             $preco_extra_por_email = 25.00;
 

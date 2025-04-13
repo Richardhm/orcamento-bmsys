@@ -219,7 +219,7 @@ class AssinaturaController extends Controller
                 [
                     "name" => "Plano Multiusuário",
                     "amount" => 1,
-                    "value" => 12990 // R$29,90 em centavos
+                    "value" => 25000 // R$250,00 em centavos
                 ]
             ];
 
@@ -276,10 +276,10 @@ class AssinaturaController extends Controller
             $assinatura = Assinatura::create([
                 'user_id' => $user->id,
                 'tipo_plano_id' => 2, // ID do plano Individual
-                'preco_base' => 129.90,
+                'preco_base' => 250.00,
                 'emails_permitidos' => 5,
                 'emails_extra' => 0,
-                'preco_total' => 129.90, // Preço base sem e-mails extras
+                'preco_total' => 250.00, // Preço base sem e-mails extras
                 'status' => 'ativo',
                 'subscription_id' => $response['data']['subscription_id']
             ]);
