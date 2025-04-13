@@ -1,11 +1,11 @@
 <x-guest-layout>
-    <div class="w-[70%] mx-auto bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+    <div class="w-[70%] mx-auto bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] p-5 rounded">
+        <div class="mb-4 text-sm text-white dark:text-white">
             {{ __('Obrigado por se cadastrar! Antes de começar, você pode verificar seu endereço de e-mail clicando no link que acabamos de enviar para você? Se você não recebeu o e-mail, teremos o prazer de enviar outro.') }}
         </div>
 
         @if (session('status') == 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
+            <div class="mb-4 font-medium text-sm text-white dark:text-white">
                 {{ __('Um novo link de verificação foi enviado para o endereço de e-mail que você forneceu durante o cadastro.') }}
             </div>
         @endif
