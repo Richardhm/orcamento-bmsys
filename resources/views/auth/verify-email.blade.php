@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="w-[70%] mx-auto bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] p-5 rounded">
+    <div class="w-[70%] mx-auto bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] p-7 rounded">
         <div class="mb-4 text-sm text-white dark:text-white text-center">
             {{ __('Obrigado por se cadastrar! Antes de começar, você pode verificar seu endereço de e-mail clicando no link que acabamos de enviar para você? Se você não recebeu o e-mail, teremos o prazer de enviar outro.') }}
         </div>
@@ -14,7 +14,7 @@
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
 
-                <div>
+                <div class="ml-2">
                     <x-primary-button>
                         {{ __('Reenviar e-mail de verificação') }}
                     </x-primary-button>
