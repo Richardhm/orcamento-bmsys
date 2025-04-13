@@ -120,7 +120,15 @@ class CallbackController extends Controller
     public function processCharge(array $chargeEvent)
     {
         // Converter valores para decimal
-        $value = isset($chargeEvent['total']) ? $chargeEvent['total'] / 100 : 0;
+        try {
+            $params = ['id' => $chargeEvent['identifiers']['charge_id']];
+            $chargeDetails = $this->efi->detailCharge($params);
+
+            $value = $chargeDetails['data']['value'] / 100; // Valor em decimal
+        } catch (\Exception $e) {
+            \Log::error("Erro ao buscar detalhes da cobrança: " . $e->getMessage());
+            $value = 0;
+        }
 
         // Gravar cobrança individual
         SubscriptionCharge::updateOrCreate(
