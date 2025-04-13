@@ -121,7 +121,7 @@ class CallbackController extends Controller
     {
         // Converter valores para decimal
         try {
-            $params = ['id' => $chargeEvent['identifiers']['charge_id']];
+            $params = ['id' => $chargeEvent['identifiers']['subscription_id']];
             $chargeDetails = $this->efi->detailSubscription($params);
 
             $value = $chargeDetails['data']['value'] / 100; // Valor em decimal
