@@ -120,7 +120,7 @@ class CallbackController extends Controller
     public function processCharge(array $chargeEvent)
     {
         // Converter valores para decimal
-        $value = isset($chargeEvent['value']) ? $chargeEvent['value'] / 100 : 0;
+        $value = isset($chargeEvent['total']) ? $chargeEvent['total'] / 100 : 0;
 
         // Gravar cobrança individual
         SubscriptionCharge::updateOrCreate(
