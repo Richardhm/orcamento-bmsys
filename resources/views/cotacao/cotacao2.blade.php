@@ -16,7 +16,7 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-white">
    Com Odonto
 </div>
 
-<table class="min-w-full bg-gray-300 bg-opacity-20 rounded-lg bordered" id="tabela_aqui">
+<table class="min-w-full bg-gray-300 bg-opacity-20 rounded-lg bordered">
     <thead>
     <tr>
         <td rowspan="2" class="text-center text-sm border dark:border-white border-r border-b border-white text-white dark:text-white" style="vertical-align:middle;">Faixa Etária</td>
@@ -73,29 +73,30 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-white">
 
     @foreach($dadosComOdonto as $faixaEtaria => $valores)
         @for($i=0;$i<$valores['quantidade'];$i++)
-            <tr>
+            <tr style="margin: 0;padding:0;">
                 <td class="dark:text-white text-white text-center text-xs">{{ $faixaEtaria }}</td>
-                <td class="dark:text-white text-white text-right mr-1">
-                    <span class="mr-2 text-xs">{{ number_format($valores['1_com_copar'], 2, ",", ".") }}</span>
+                <td class="dark:text-white text-white text-xs text-right">
+                    <span class="mr-2">{{ number_format($valores['1_com_copar'], 2, ",", ".") }}</span>
                     @php
                         $totalApartamento_com_copar += $valores['1_com_copar'];
                     @endphp
                 </td>
-                <td class="dark:text-white text-white text-right">
-                    <span class="mr-2 text-xs">{{ number_format($valores['2_com_copar'], 2, ",", ".") }}</span>
+
+                <td class="dark:text-white text-white text-xs text-right">
+                    <span class="mr-2">{{ number_format($valores['2_com_copar'], 2, ",", ".") }}</span>
                     @php
                         $totalEnfermaria_com_copar += $valores['2_com_copar'];
                     @endphp
                 </td>
 
-                <td class="dark:text-white text-white text-right mr-1">
-                    <span class="mr-2 text-xs">{{ number_format($valores['1_sem_copar'], 2, ",", ".") }}</span>
+                <td class="dark:text-white text-white text-xs text-right">
+                    <span class="mr-2">{{ number_format($valores['1_sem_copar'], 2, ",", ".") }}</span>
                     @php
                         $totalApartamento_sem_copar += $valores['1_sem_copar'];
                     @endphp
                 </td>
-                <td class="dark:text-white text-white text-right mr-1">
-                    <span class="mr-2 text-xs">{{ number_format($valores['2_sem_copar'], 2, ",", ".") }}</span>
+                <td class="dark:text-white text-white text-xs text-right">
+                    <span class="mr-2">{{ number_format($valores['2_sem_copar'], 2, ",", ".") }}</span>
                     @php
                         $totalEnfermaria_sem_copar += $valores['2_sem_copar'];
                     @endphp
@@ -107,6 +108,7 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-white">
 
 
     </tbody>
+</table>
     <table class="dark:bg-gray-700 w-full dark:bg-opacity-20 rounded-lg bordered mt-2 py-0.5">
 
         <tfoot>
@@ -131,7 +133,7 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-white">
 
     </table>
 
-</table>
+
 
 
 

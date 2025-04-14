@@ -20,14 +20,24 @@ class Assinatura extends Model
         'next_charge'
     ];
 
-//    public function emails()
-//    {
-//        return $this->hasMany(EmailAssinatura::class);
-//    }
+    public function emails()
+    {
+        return $this->hasMany(EmailAssinatura::class);
+    }
 //
     public function emailsAssinatura()
     {
         return $this->hasMany(EmailAssinatura::class,'assinatura_id');
+    }
+
+    public function tabelasOrigens()
+    {
+        return $this->belongsToMany(
+            TabelaOrigens::class,
+            'assinatura_cidade',
+            'assinatura_id',
+            'tabela_origem_id'
+        );
     }
 
     public function user()

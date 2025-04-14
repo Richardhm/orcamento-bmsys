@@ -8,6 +8,7 @@ use App\Models\EmailAssinatura;
 use App\Models\User;
 use App\Notifications\CustomVerifyEmail;
 use App\Notifications\WelcomeNotification;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -278,7 +279,7 @@ class AssinaturaController extends Controller
                 'tipo_plano_id' => 2, // ID do plano Individual
                 'preco_base' => 250.00,
                 'emails_permitidos' => 5,
-                'emails_extra' => 0,
+                'emails_extra' => 1,
                 'preco_total' => 250.00, // Preço base sem e-mails extras
                 'status' => 'ativo',
                 'subscription_id' => $response['data']['subscription_id']
@@ -317,7 +318,57 @@ class AssinaturaController extends Controller
 
 
 
+    public function historicoPagamentos()
+    {
+        try {
+            $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
+            $params = ['id' => $assinatura->subscription_id];
 
+            // Buscar detalhes da assinatura
+            $response = $this->efi->detailSubscription($params);
+
+            $dados = [
+                'proxima_fatura' => [
+                    'data' => Carbon::parse($response['data']['next_execution'])->format('d/m/Y'),
+                    'valor' => number_format($response['data']['value'] / 100, 2, ',', '.')
+                ],
+                'historico' => []
+            ];
+
+            foreach ($response['data']['history'] as $evento) {
+                // Buscar detalhes completos da cobrança
+                $chargeResponse = $this->efi->detailCharge(['id' => $evento['charge_id']]);
+
+                // Formatar dados conforme nova estrutura
+                $dados['historico'][] = [
+                    'charge_id' => $chargeResponse['data']['charge_id'],
+                    'status' => $chargeResponse['data']['status'],
+                    'valor_total' => number_format($chargeResponse['data']['total'] / 100, 2, ',', '.'),
+                    'data_criacao' => Carbon::parse($chargeResponse['data']['created_at'])->format('d/m/Y H:i'),
+                    'metodo_pagamento' => $chargeResponse['data']['payment']['method'] ?? 'N/A',
+                    'ultima_mensagem' => end($chargeResponse['data']['history'])['message'] ?? 'Sem informações',
+                    'cliente' => [
+                        'nome' => $chargeResponse['data']['customer']['name'],
+                        'email' => $chargeResponse['data']['customer']['email']
+                    ],
+                    'items' => array_map(function($item) {
+                        return [
+                            'nome' => $item['name'],
+                            'valor_unitario' => number_format($item['value'] / 100, 2, ',', '.'),
+                            'quantidade' => $item['amount']
+                        ];
+                    }, $chargeResponse['data']['items'])
+                ];
+            }
+
+            return view('assinaturas.historico', compact('dados'));
+
+        } catch (\Exception $e) {
+            \Log::error("Erro ao buscar histórico: " . $e->getMessage());
+            dd($e->getMessage());
+            //return redirect()->back()->withErrors('Erro ao carregar histórico de pagamentos');
+        }
+    }
 
 
 

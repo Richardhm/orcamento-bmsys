@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
+    <form method="POST" action="{{ route('password.store') }}" class="w-[70%] mx-auto bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] p-7 rounded">
         @csrf
 
         <!-- Password Reset Token -->

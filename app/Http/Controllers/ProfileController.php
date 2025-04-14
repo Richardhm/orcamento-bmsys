@@ -41,16 +41,18 @@ class ProfileController extends Controller
                     $user->imagem = $request->file('imagem')->store('users', 'public');
                 }
                 $user->save();
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Atualizado com sucesso',
-                    'imagem' => $user->imagem ? Storage::url($user->imagem) : null
-                ]);
+//                return response()->json([
+//                    'success' => true,
+//                    'message' => 'Atualizado com sucesso',
+//                    'imagem' => $user->imagem ? Storage::url($user->imagem) : null
+//                ]);
+                return redirect()->back()->with('success', 'Atualizado com sucesso!');
             } catch (\Exception $e) {
-                return response()->json([
-                    'error' => true,
-                    'message' => 'Erro ao atualizar: ' . $e->getMessage()
-                ], 500);
+//                return response()->json([
+//                    'error' => true,
+//                    'message' => 'Erro ao atualizar: ' . $e->getMessage()
+//                ], 500);
+                return redirect()->back()->with('error', 'Erro ao atualizar: ' . $e->getMessage());
             }
         }
     }

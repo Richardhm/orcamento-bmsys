@@ -35,6 +35,38 @@
         };
     </script>
     <style>
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            background-color: #25d366;
+            border-radius: 50%;
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .whatsapp-button:hover {
+            background-color: #128C7E;
+            transform: scale(1.1);
+        }
+
+        .whatsapp-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+
+
+
+
+
+
+
         #user-modal {
             opacity: 0; /* Inicialmente invisível */
             transform: translateX(100%);

@@ -154,7 +154,6 @@ class UserController extends Controller
             $users = User::whereIn(
                 'id',
                 EmailAssinatura::where('assinatura_id', $assinatura->id)
-                    ->where('is_administrador', 0)
                     ->pluck('user_id')
             )
             ->where('status', 1)

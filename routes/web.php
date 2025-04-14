@@ -68,6 +68,8 @@ Route::post("/pdf",[DashboardController::class,'criarPDF'])->middleware(['auth',
 Route::get('/assinaturas/individual', [AssinaturaController::class, 'createIndividual'])->name('assinaturas.individual.create');
 Route::post('/assinaturas/individual', [AssinaturaController::class, 'storeIndividual'])->name('assinaturas.individual.store');
 
+Route::get('/assinatura/historico', [AssinaturaController::class, 'historicoPagamentos'])->middleware(['auth', 'verified'])->name('assinatura.historico');
+
 Route::get('/assinaturas/empresarial', [AssinaturaController::class, 'createEmpresarial'])->name('assinaturas.empresarial.create');
 Route::post('/assinaturas/empresarial', [AssinaturaController::class, 'storeEmpresarial'])->name('assinaturas.empresarial.store');
 

@@ -64,6 +64,34 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Assinatura::class);
     }
 
+    public function assinaturas()
+    {
+        return $this->hasOneThrough(
+            Assinatura::class,
+            EmailAssinatura::class,
+            'user_id',       // Foreign key na tabela emails_assinatura
+            'id',            // Foreign key na tabela assinaturas
+            'id',            // Local key na tabela users
+            'assinatura_id'  // Local key na tabela emails_assinatura
+        );
+    }
+
+    // Relação direta com tabelas_origens via assinatura
+    public function tabelasOrigens()
+    {
+        return $this->hasManyThrough(
+            TabelaOrigens::class,
+            AssinaturaCidade::class,
+            'assinatura_id',    // Foreign key na tabela assinaturas_cidade
+            'id',               // Foreign key na tabela tabela_origens
+            'id',               // Local key na tabela users (não direto, precisa do through)
+            'tabela_origem_id'  // Local key na tabela assinaturas_cidade
+        )->through('assinatura');
+    }
+
+
+
+
     // Verificar se o usuário logado é administrador da assinatura vai ter acesso ao users/manage
     public function isAdmin()
     {

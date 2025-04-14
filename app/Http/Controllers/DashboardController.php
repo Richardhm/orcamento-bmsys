@@ -20,7 +20,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $cidades = TabelaOrigens::all();
+        $user = auth()->user()->load([
+            'assinaturas.tabelasOrigens'
+        ]);
+
+        $cidades = $user->assinaturas->tabelasOrigens;
+        //$cidades = $tabelasOrigens;
         $administradoras = Administradora::all();
         $planos = Plano::all();
         return view('dashboard',[

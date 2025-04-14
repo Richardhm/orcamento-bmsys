@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="w-[70%] mx-auto bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] p-7 rounded">
-        <div class="mb-4 text-sm text-white dark:text-white text-center">
+        <div class="mb-4 text-lg text-white dark:text-white text-center">
             {{ __('Obrigado por se cadastrar! Antes de começar, você pode verificar seu endereço de e-mail clicando no link que acabamos de enviar para você? Se você não recebeu o e-mail, teremos o prazer de enviar outro.') }}
         </div>
 

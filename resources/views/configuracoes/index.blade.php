@@ -13,6 +13,7 @@
                         <a href="#tab5" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Administradora</a>
                         <a href="#tab6" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Planos</a>
                         <a href="#tab7" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Desconto</a>
+                        <a href="#tab8" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Assinaturas/User</a>
                     </nav>
                 </div>
 
@@ -39,6 +40,9 @@
                     </div>
                     <div id="tab7" class="tab-content hidden">
                         <x-configuracoes.desconto-tab />
+                    </div>
+                    <div id="tab8" class="tab-content hidden">
+                        <x-configuracoes.assinaturas-user :perPage="15" />
                     </div>
                 </div>
             </div>
