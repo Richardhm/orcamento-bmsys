@@ -440,39 +440,9 @@ class DashboardController extends Controller
                     return response()->json(['error' => 'Falha ao gerar a imagem.'], 500);
                 }
 
-                return response()
-                    ->download($imagemPath)
-                    ->deleteFileAfterSend(true);
-
-
-
-
-
-
+                return response()->download($imagemPath)->deleteFileAfterSend(true);
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
-
-
-
-
-
     }
 
 

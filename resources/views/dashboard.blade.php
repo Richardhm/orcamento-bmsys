@@ -302,7 +302,7 @@
                incrementButton.click(function() {
                    let inputField = $(this).siblings("input[type='text']");
                    let currentValue = parseInt(inputField.val()) || 0;
-                   if (getTotal() < 8) {
+                   if (getTotal() <= 7) {
                        inputField.val(currentValue + 1);
                        inputField.trigger('input'); // Dispara o evento 'input' no campo de texto
                    }
