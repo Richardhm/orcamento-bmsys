@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Document</title>
     <style>
-    
-       
+
+
        	@font-face {
         	font-family: 'Roboto';
         	src: url('{{ public_path("fonts/Roboto-Regular.ttf") }}') format('truetype');
@@ -22,7 +22,7 @@
         	font-weight: bold;
         	font-style: normal;
     	}
-    
+
         html, body {
             width: 100%;
             height: 100%;
@@ -36,7 +36,7 @@
             vertical-align: top;
         }
 
-        
+
         .container {
             position: absolute;
             top: 350px;
@@ -79,8 +79,8 @@
         .footer .middle, .footer .right {
             position: absolute;
             bottom:0px;
-            
-            
+
+
         }
 
         .footer .middle {
@@ -132,10 +132,10 @@
             font-size: 1.5em;
             color:white;
         }
-        
-        
-        
-        
+
+
+
+
         /**********************/
         .bloco-container {
             width: 100%;
@@ -165,7 +165,7 @@
             border-radius: 55px 55px 0 0;
             font-weight: bold;
             font-size: 1em;
-            
+
         }
 
         .subheader-blue {
@@ -209,7 +209,7 @@
             font-size:1.2em;
             text-align:center;
         }
-        
+
         .valor-copart-laranja {
             background: #F88058;
             padding: 12px !important;
@@ -221,19 +221,19 @@
             font-size:1.2em;
             text-align:center;
         }
-       
+
         .lista-coparticipacao {
             color: white;
             font-size: 1.2em;
             margin:0;
         }
-    
+
         .lista-coparticipacao strong {
             display: block;
             margin: 10px 0;
             font-size:1.5em;
         }
-    
+
         .procedimentos-container {
             width: 70%;
             margin-top: 1px;
@@ -241,7 +241,7 @@
             background-color: white;
             border-radius: 55px;
             padding: 15px;
-            min-height: 480px; 
+            min-height: 480px;
         }
 
         .procedimento-left {
@@ -255,13 +255,13 @@
             width: 35%;
             vertical-align: top;
         }
-        
-    
+
+
         .linha-procedimento {
              margin: 0;
              padding:0;
         }
-        
+
         .linha-procedimento span {
              font-size:1.3em;
              color: rgb(8,73,189);
@@ -269,13 +269,13 @@
              font-weight:bold;
              margin:0px;
              padding:0 0 0 30px;
-             
+
         }
-        
-    
+
+
         .valor-procedimento {
             background: #FFF3CD;
-            
+
             border-radius: 20px;
             display: inline-block;
             margin-left: 10px;
@@ -286,7 +286,7 @@
 <body>
     <div class="header-container">
         <img style="position: absolute;top: 0;width:100%;height:300px;left: 0;object-fit: cover;" src="cabecalhos/cabecalho{{$cabecalho}}.png" alt="Orçamento">
-    </div>    
+    </div>
     <p class="cidade_container">{{$cidade}}</p>
     <p class="frase_container">{{$frase}}</p>
 
@@ -329,14 +329,14 @@
     $totalBlocos = 1; // Bloco Faixa Etária sempre existe
     if($com_coparticipacao == 1) $totalBlocos++;
     if($sem_coparticipacao == 1) $totalBlocos++;
-    
+
     // Definir larguras baseado no número de blocos
     $widths = [
         1 => '50%',
         2 => '38%',
         3 => '38%'
     ];
-    
+
     $margins = [
         1 => '0 auto',
         2 => '0 1%',
@@ -358,8 +358,9 @@
                     <tr>
                         <td class="subheader-blue">FAIXA ETÁRIA</td>
                     </tr>
-                    
+
                     @foreach($dadosComOdonto as $faixaEtaria => $valores)
+                        @for($i=0;$i<$valores['quantidade'];$i++)
                     <tr>
                         <td>
                             <div class="valor-copart">
@@ -367,6 +368,7 @@
                             </div>
                         </td>
                     </tr>
+                        @endfor
                     @endforeach
                     <tr>
                         <td>
@@ -415,22 +417,22 @@
                            	@php
                                     $totalEnfermaria_com_copar += $valores['2_com_copar'];
                                 @endphp
-                                {{ number_format($valores['2_com_copar'], 2, ",", ".") }}   
-                           </div> 
+                                {{ number_format($valores['2_com_copar'], 2, ",", ".") }}
+                           </div>
                         </td>
                         <td>
                            <div class="valor-copart">
                            	@php
                                     $totalApartamento_com_copar += $valores['1_com_copar'];
                                 @endphp
-                                {{ number_format($valores['1_com_copar'], 2, ",", ".") }}   
-                           </div>   
+                                {{ number_format($valores['1_com_copar'], 2, ",", ".") }}
+                           </div>
                         </td>
                     </tr>
                     @endforeach
                     <tfoot>
             	    <tr>
-                
+
                 	<td>
                 	     	<div class="valor-copart-laranja">
                         	{{number_format($totalEnfermaria_com_copar,2,",",".")}}
@@ -438,16 +440,16 @@
                 	</td>
                 	<td>
                     	<div class="valor-copart-laranja">
-                        	{{number_format($totalApartamento_com_copar,2,",",".")}}                    
+                        	{{number_format($totalApartamento_com_copar,2,",",".")}}
                         </div>
                        </td>
             </tr>
         </tfoot>
                 </table>
-                
+
             </td>
             @endif
-            
+
             @if($sem_coparticipacao == 1)
             <!-- Bloco 3 - Sem Coparticipação -->
             <td class="bloco" style="width: {{ $widths[$totalBlocos] }};{{$totalBlocos <= 2 ? 'margin-left:1%;' : 'margin-left:0%;'}} ">
@@ -481,30 +483,32 @@
                             @endif
                         </td>
                     </tr>
-                    
+
                     @foreach($dadosComOdonto as $faixaEtaria => $valores)
+                        @for($i=0;$i<$valores['quantidade'];$i++)
                     <tr >
                         <td>
                            <div class="valor-copart">
                            	@php
                                     $totalEnfermaria_sem_copar += $valores['2_sem_copar'];
                                 @endphp
-                                {{ number_format($valores['2_sem_copar'], 2, ",", ".") }}   
-                           </div> 
+                                {{ number_format($valores['2_sem_copar'], 2, ",", ".") }}
+                           </div>
                         </td>
                         <td>
                            <div class="valor-copart">
                            	@php
                                     $totalApartamento_sem_copar += $valores['1_sem_copar'];
                                 @endphp
-                                {{ number_format($valores['1_sem_copar'], 2, ",", ".") }}   
-                           </div>   
+                                {{ number_format($valores['1_sem_copar'], 2, ",", ".") }}
+                           </div>
                         </td>
                     </tr>
+                        @endfor
                     @endforeach
                     <tfoot>
             <tr>
-                
+
                 <td>
                     <div class="valor-copart-laranja">
                         {{number_format($totalEnfermaria_sem_copar,2,",",".")}}
@@ -512,18 +516,18 @@
                 </td>
                 <td>
                     <div class="valor-copart-laranja">
-                        {{number_format($totalApartamento_sem_copar,2,",",".")}}                    
+                        {{number_format($totalApartamento_sem_copar,2,",",".")}}
                      </div>
                 </td>
             </tr>
-        </tfoot>	
+        </tfoot>
                 </table>
                 <tr>
-              </tr>  
-            </td> 
+              </tr>
+            </td>
             @endif
         </tr>
-    </table> 
+    </table>
 
 </div>
 
