@@ -307,49 +307,49 @@
 
         <div class="flex flex-col md:flex-row gap-6 justify-center items-stretch">
             <!-- Plano Individual -->
-            <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-full md:w-[320px] rounded-xl shadow-lg p-4 md:p-6 border border-blue-100 transition-all hover:bg-gray-100">
-                <div>
-                    <div>
-                        <p class="text-purple-900 text-center font-bold text-lg">INDIVIDUAL</p>
-                        <p class="text-purple-900 text-center">Ideal para uma única pessoa</p>
-                    </div>
-                    <div class="bg-purple-950 text-white text-center py-3 rounded-full mt-6">
-                        Começar Agora
-                    </div>
-                    <div class="my-6 text-center flex items-center justify-center">
-                        <p class="flex flex-col items-start relative">
-                            <span class="text-lg font-bold text-purple-900 leading-none">R$</span>
-                            <span class="text-7xl font-bold text-purple-900">29,90</span>
-                            <span class="text-sm text-purple-900 self-end">/mês</span>
-                        </p>
-                    </div>
+{{--            <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-full md:w-[320px] rounded-xl shadow-lg p-4 md:p-6 border border-blue-100 transition-all hover:bg-gray-100">--}}
+{{--                <div>--}}
+{{--                    <div>--}}
+{{--                        <p class="text-purple-900 text-center font-bold text-lg">INDIVIDUAL</p>--}}
+{{--                        <p class="text-purple-900 text-center">Ideal para uma única pessoa</p>--}}
+{{--                    </div>--}}
+{{--                    <div class="bg-purple-950 text-white text-center py-3 rounded-full mt-6">--}}
+{{--                        Começar Agora--}}
+{{--                    </div>--}}
+{{--                    <div class="my-6 text-center flex items-center justify-center">--}}
+{{--                        <p class="flex flex-col items-start relative">--}}
+{{--                            <span class="text-lg font-bold text-purple-900 leading-none">R$</span>--}}
+{{--                            <span class="text-7xl font-bold text-purple-900">29,90</span>--}}
+{{--                            <span class="text-sm text-purple-900 self-end">/mês</span>--}}
+{{--                        </p>--}}
+{{--                    </div>--}}
 
-                    <ul class="space-y-2 text-gray-600 text-sm">
-                        <li class="flex items-center">
-                            ✅ Acesso ao sistema
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Cotações ilimitadas
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Fácil de usar
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Apenas um e-mail
-                        </li>
-                    </ul>
-                </div>
+{{--                    <ul class="space-y-2 text-gray-600 text-sm">--}}
+{{--                        <li class="flex items-center">--}}
+{{--                            ✅ Acesso ao sistema--}}
+{{--                        </li>--}}
+{{--                        <li class="flex items-center">--}}
+{{--                            ✅ Cotações ilimitadas--}}
+{{--                        </li>--}}
+{{--                        <li class="flex items-center">--}}
+{{--                            ✅ Fácil de usar--}}
+{{--                        </li>--}}
+{{--                        <li class="flex items-center">--}}
+{{--                            ✅ Apenas um e-mail--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
+{{--                </div>--}}
 
-                <div>
-                    <p class="text-center text-gray-500 flex justify-center items-center text-sm">
-                        Saiba Mais, clique aqui
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                        </svg>
-                    </p>
-                </div>
+{{--                <div>--}}
+{{--                    <p class="text-center text-gray-500 flex justify-center items-center text-sm">--}}
+{{--                        Saiba Mais, clique aqui--}}
+{{--                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">--}}
+{{--                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />--}}
+{{--                        </svg>--}}
+{{--                    </p>--}}
+{{--                </div>--}}
 
-            </a>
+{{--            </a>--}}
 
             <!-- Plano Empresarial -->
             <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-full md:w-[320px] rounded-xl shadow-lg p-4 md:p-6 border-4 border-orange-400 transition-all hover:bg-gray-100">
@@ -364,7 +364,7 @@
                     <div class="my-6 text-center flex items-center justify-center">
                         <p class="flex flex-col items-start relative">
                             <span class="text-lg font-bold text-purple-900 leading-none">R$</span>
-                            <span class="text-7xl font-bold text-purple-900">129,90</span>
+                            <span class="text-7xl font-bold text-purple-900">250,00</span>
                             <span class="text-sm text-purple-900 self-end">/mês</span>
                         </p>
                     </div>
