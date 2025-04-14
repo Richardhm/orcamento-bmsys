@@ -287,14 +287,13 @@ class DashboardController extends Controller
             }
 
             $nome_img = "orcamento_". date('d') . "_" . date('m') . "_" . date("Y") . "_" . date('H') . "_" . date("i") . "_" . date("s")."_" . uniqid();
-            $altura = 400;
-                if($linhas <= 3) {
-                    $altura = 400;
-                } else if($linhas >= 4 && $linhas <= 5) {
-                    $altura = 470;
-                } else {
-                    $altura = 535;
-                }
+            $altura = match (true) {
+                $linhas === 1 => 350,
+                $linhas === 2 => 380,
+                $linhas === 3 => 420,
+                $linhas >= 4 && $linhas <= 5 => 500,
+                default => 580,
+            };
 
             if($tipo_documento == "pdf") {
 
