@@ -184,7 +184,7 @@ class UserController extends Controller
             $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
 
             // Definir valores do plano
-            $preco_base = 129.90;
+            $preco_base = 250.00;
             $limite_gratuito = $assinatura->emails_permitidos; // Exemplo: 5 usuários gratuitos
             $preco_extra_por_email = 25.00;
 
