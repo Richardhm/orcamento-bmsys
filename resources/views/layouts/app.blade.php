@@ -114,6 +114,15 @@
         input:checked + .slider {background-color: #4caf50;}
         input:checked + .slider:before {transform: translateX(20px);}
 
+        .toast {
+            min-width: 400px !important;
+            max-width: 90vw;
+            width: auto !important;
+            font-size: 14px;
+        }
+
+
+
 
 
     </style>
