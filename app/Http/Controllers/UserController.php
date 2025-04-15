@@ -32,6 +32,7 @@ class UserController extends Controller
         ];
 
         $this->efi = new EfiPay($options);
+
     }
 
 
