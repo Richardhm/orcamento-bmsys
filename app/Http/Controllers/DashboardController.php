@@ -134,11 +134,12 @@ class DashboardController extends Controller
         $sql = "";
         $chaves = [];
         $linhas = 0;
-
+        $somar_linhas = 0;
         foreach(request()->faixas[0] as $k => $v) {
             if($v != null AND $v != 0) {
                 $sql .= " WHEN tabelas.faixa_etaria_id = {$k} THEN ${v} ";
                 $chaves[] = $k;
+                $somar_linhas += (int) $v;
             }
         }
 
@@ -296,11 +297,11 @@ class DashboardController extends Controller
 
             $nome_img = "orcamento_". date('d') . "_" . date('m') . "_" . date("Y") . "_" . date('H') . "_" . date("i") . "_" . date("s")."_" . uniqid();
             $altura = match (true) {
-                $linhas === 1 => 350,
-                $linhas === 2 => 380,
-                $linhas === 3 => 420,
-                $linhas >= 4 && $linhas <= 5 => 500,
-                default => 580,
+                $somar_linhas === 1 => 350,
+                $somar_linhas === 2 => 380,
+                $somar_linhas === 3 => 420,
+                $somar_linhas >= 4 && $linhas <= 5 => 500,
+                default => 620,
             };
 
             if($tipo_documento == "pdf") {
