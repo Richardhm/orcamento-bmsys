@@ -353,6 +353,9 @@
 
             <!-- Plano Empresarial -->
             <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-full md:w-[320px] rounded-xl shadow-lg p-4 md:p-6 border-4 border-orange-400 transition-all hover:bg-gray-100">
+                <!-- Observação -->
+
+
                 <div>
                     <div>
                         <p class="text-purple-900 text-center font-bold text-lg">MULTIUSUÁRIO</p>
@@ -369,6 +372,9 @@
                         </p>
                     </div>
                     <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-center">
+                            ✅ Taxa implantação R$ 150,00 (PIX)
+                        </li>
                         <li class="flex items-center">
                             ✅ Acesso ao sistema
                         </li>
@@ -391,7 +397,7 @@
                             ✅ Cadastrar até 5 e-mails
                         </li>
                         <li class="flex items-center">
-                            ✅ Acima de 5 e-mails é cobrado 25 reais
+                            ✅ Acima de 5 e-mails é cobrado 50 reais
                         </li>
                     </ul>
                 </div>

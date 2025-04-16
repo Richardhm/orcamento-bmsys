@@ -1,33 +1,37 @@
 <x-app-layout>
     @if(Auth::user()->isAdmin() && !Auth::user()->primeiro_acesso)
-        <div  class="bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] flex items-center justify-center text-center w-full text-white rounded py-2">
-            <strong>Bem-vindo!</strong> Para cadastrar usuários da sua equipe, acesse o link:
-            <a href="{{ route('users.manage') }}" style="border: 2px solid #ffcc00;border-radius: 5px;" class="inline-flex ml-2 p-1 items-center gap-1 underline text-white font-bold">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                     class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M15 19.128a9.38 9.38 0 0 0 2.625.372
-                  9.337 9.337 0 0 0 4.121-.952
-                  4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106
-                  A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109
-                  a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0
-                  3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0
-                  2.625 2.625 0 0 1 5.25 0Z" />
-                </svg>
-            </a>
-            , ou clique acima
-            <div class="relative bottom-5 left-4 text-white text-3xl rotate-[15deg] bg-transparent scale-x-[2.5] scale-y-[3.2]">
-                &#8599;
+        <div class="bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] flex flex-col items-center justify-center text-center w-full text-white rounded py-2 mb-4 relative">
+            <div class="mb-2">
+                <strong>Bem-vindo!</strong> Para cadastrar usuários da sua equipe, acesse o link:
+                <a href="{{ route('users.manage') }}" style="border: 2px solid #ffcc00;border-radius: 5px;"
+                   class="inline-flex ml-2 p-1 items-center gap-1 underline text-white font-bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                    </svg>
+                </a>
+                , ou clique acima
             </div>
+
+            <!-- Nova linha de texto -->
+            <p class="text-sm text-yellow-200 mt-1 px-4">
+                Por favor entre em contato com o suporte para configurar a sua região
+                e também configurar a sua logo na cotação
+            </p>
+
+
         </div>
     @endif
 
-        <a href="https://wa.me/5562993581475" target="_blank" class="whatsapp-button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40">
-                <path fill="white" d="M19.077 4.928C17.191 3.041 14.683 2.001 12.011 2c-5.506 0-9.987 4.479-9.989 9.985-.001 1.76.459 3.478 1.333 4.992L2 22l5.233-1.237c1.37.751 2.945 1.148 4.565 1.148h.004c5.505 0 9.986-4.48 9.989-9.985.001-2.677-1.057-5.215-2.964-7.062zm-7.066 14.31h-.004c-1.37 0-2.697-.37-3.84-1.075l-.275-.163-2.865.758.764-2.853-.18-.278a8.3 8.3 0 0 1-1.274-4.383c.002-4.584 3.735-8.317 8.317-8.317 2.223 0 4.313.866 5.885 2.437a8.284 8.284 0 0 1 2.433 5.89c-.002 4.583-3.735 8.316-8.317 8.316zm4.538-6.213c-.246-.123-1.457-.719-1.684-.8-.226-.084-.392-.123-.557.123-.166.247-.643.8-.788.968-.145.164-.29.185-.538.062-.247-.123-1.043-.384-1.987-1.226-.734-.654-1.23-1.462-1.374-1.71-.144-.247-.015-.381.108-.504.112-.112.247-.289.37-.434.124-.145.165-.247.247-.412.082-.164.041-.309-.009-.434-.05-.123-.557-1.345-.763-1.84-.204-.495-.408-.428-.557-.433-.144-.005-.31-.005-.476-.005-.164 0-.431.061-.657.308-.226.246-.864.845-.864 2.058 0 1.213.883 2.387 1.006 2.55.123.164 1.746 2.666 4.236 3.727.59.255 1.05.409 1.407.522.59.185 1.126.159 1.551.097.473-.069 1.457-.594 1.662-1.168.204-.574.204-1.066.143-1.168-.062-.102-.226-.164-.472-.287z"/>
-            </svg>
-        </a>
+        <div class="whatsapp-container">
+            <span class="suporte-texto">Suporte</span>
+            <a href="https://wa.me/5562982686918" target="_blank" class="whatsapp-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40">
+                    <path fill="white" d="M19.077 4.928C17.191 3.041 14.683 2.001 12.011 2c-5.506 0-9.987 4.479-9.989 9.985-.001 1.76.459 3.478 1.333 4.992L2 22l5.233-1.237c1.37.751 2.945 1.148 4.565 1.148h.004c5.505 0 9.986-4.48 9.989-9.985.001-2.677-1.057-5.215-2.964-7.062zm-7.066 14.31h-.004c-1.37 0-2.697-.37-3.84-1.075l-.275-.163-2.865.758.764-2.853-.18-.278a8.3 8.3 0 0 1-1.274-4.383c.002-4.584 3.735-8.317 8.317-8.317 2.223 0 4.313.866 5.885 2.437a8.284 8.284 0 0 1 2.433 5.89c-.002 4.583-3.735 8.316-8.317 8.316zm4.538-6.213c-.246-.123-1.457-.719-1.684-.8-.226-.084-.392-.123-.557.123-.166.247-.643.8-.788.968-.145.164-.29.185-.538.062-.247-.123-1.043-.384-1.987-1.226-.734-.654-1.23-1.462-1.374-1.71-.144-.247-.015-.381.108-.504.112-.112.247-.289.37-.434.124-.145.165-.247.247-.412.082-.164.041-.309-.009-.434-.05-.123-.557-1.345-.763-1.84-.204-.495-.408-.428-.557-.433-.144-.005-.31-.005-.476-.005-.164 0-.431.061-.657.308-.226.246-.864.845-.864 2.058 0 1.213.883 2.387 1.006 2.55.123.164 1.746 2.666 4.236 3.727.59.255 1.05.409 1.407.522.59.185 1.126.159 1.551.097.473-.069 1.457-.594 1.662-1.168.204-.574.204-1.066.143-1.168-.062-.102-.226-.164-.472-.287z"/>
+                </svg>
+            </a>
+        </div>
 
     <input type="hidden" id="odonto_resultado" />
     <div class="max-w-full mx-auto sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-x-4 px-4">
@@ -312,7 +316,7 @@
                    $plusBtn.on('click', function(e) {
                        e.preventDefault();
                        const currentTotal = getTotal();
-                       if (currentTotal < 7) {
+                       if (currentTotal < 30) {
                            $input.val((i, val) => {
                                const newVal = parseInt(val) + 1;
                                return isNaN(newVal) ? 1 : newVal;
@@ -344,8 +348,8 @@
 
                        // Verifica o total global
                        const currentTotal = getTotal();
-                       if (currentTotal > 7) {
-                           value -= (currentTotal - 7);
+                       if (currentTotal > 30) {
+                           value -= (currentTotal - 30);
                            toastr.error(`Limitado a 7 pessoas.`, 'Limite Atingido', {
                                timeOut: 3000,
                                progressBar: true,

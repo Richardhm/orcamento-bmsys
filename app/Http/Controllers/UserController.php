@@ -122,7 +122,7 @@ class UserController extends Controller
             // Definir valores do plano
             $preco_base = 250.00;
             $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
-            $preco_extra_por_email = 25.00;
+            $preco_extra_por_email = 50.00;
 
             // Aumenta emails_extra
             $assinatura->emails_extra += 1;
@@ -187,7 +187,7 @@ class UserController extends Controller
             // Definir valores do plano
             $preco_base = 250.00;
             $limite_gratuito = $assinatura->emails_permitidos; // Exemplo: 5 usuários gratuitos
-            $preco_extra_por_email = 25.00;
+            $preco_extra_por_email = 50.00;
 
             // Verificar se está ativando ou desativando
             if ($status == 1) {
@@ -237,8 +237,6 @@ class UserController extends Controller
 
     public function storeUserOld(Request $request)
     {
-        //dd($request->all());
-        // Validação dos dados
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',

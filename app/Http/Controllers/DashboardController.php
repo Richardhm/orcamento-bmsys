@@ -165,6 +165,7 @@ class DashboardController extends Controller
         $status_carencia = request()->status_carencia == "true" ? 1 : 0;
         $status_desconto = request()->status_desconto == "true" ? 1 : 0;
         if($ambulatorial == 0) {
+            $dadosPorPagina = 15;
             $dados = Tabela::select('tabelas.*')
                 ->selectRaw("CASE $sql END AS quantidade")
                 ->join('faixa_etarias', 'faixa_etarias.id', '=', 'tabelas.faixa_etaria_id')
@@ -175,6 +176,7 @@ class DashboardController extends Controller
                 ->where("acomodacao_id","!=",3)
                 ->whereIn('tabelas.faixa_etaria_id', explode(',', $keys))
                 ->get();
+
 
             $desconto = Desconto::where('plano_id', $plano)
                 ->where('tabela_origens_id', $cidade)
@@ -189,11 +191,8 @@ class DashboardController extends Controller
 
             $layout = auth()->user()->layout_id;
             $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
-
             $layout_folder = auth()->user()->isFolder() ?: '';
-
             $viewName = "cotacao.modelo{$layout_user}";
-
             if($apenasvalores == 0) {
 
 
@@ -300,9 +299,9 @@ class DashboardController extends Controller
                 $somar_linhas === 1 => 350,
                 $somar_linhas === 2 => 380,
                 $somar_linhas === 3 => 420,
-                $somar_linhas >= 4 && $linhas <= 5 => 500,
-                $somar_linhas >= 6 && $linhas <= 7 => 640,
-                default => 640,
+                $somar_linhas >= 4 && $somar_linhas <= 5 => 500,
+                $somar_linhas >= 6 && $somar_linhas <= 7 => 580,
+                default => 580,
             };
 
             if($tipo_documento == "pdf") {
@@ -357,6 +356,7 @@ class DashboardController extends Controller
 
             $frase = "Ambulatorial ".$odonto_frase;
             $imagem_user = auth()->user()->imagem;
+
             $dados = Tabela::select('tabelas.*')
                 ->selectRaw("CASE $sql END AS quantidade")
                 ->join('faixa_etarias', 'faixa_etarias.id', '=', 'tabelas.faixa_etaria_id')
@@ -367,10 +367,6 @@ class DashboardController extends Controller
                 ->where("acomodacao_id","=",3)
                 ->whereIn('tabelas.faixa_etaria_id', explode(',',$keys))
                 ->get();
-
-
-
-
 
             $hasTabelaOrigens = Pdf::where('plano_id', $plano)
                 ->where('tabela_origens_id',$cidade)

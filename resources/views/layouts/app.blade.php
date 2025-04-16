@@ -35,37 +35,38 @@
         };
     </script>
     <style>
-        .whatsapp-button {
+        .whatsapp-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            z-index: 99;
-            background-color: #25d366;
-            border-radius: 50%;
-            padding: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            transition: all 0.3s ease;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            gap: 5px;
+            z-index: 1000;
+        }
+
+        .suporte-texto {
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        .whatsapp-button {
+            background-color: #25D366;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
         }
 
         .whatsapp-button:hover {
-            background-color: #128C7E;
             transform: scale(1.1);
         }
-
-        .whatsapp-button img {
-            width: 20px;
-            height: 20px;
-        }
-
-
-
-
-
-
-
 
         #user-modal {
             opacity: 0; /* Inicialmente invisível */
@@ -76,6 +77,7 @@
             opacity: 1; /* Tornar visível */
             transform: translateX(0);
         }
+
         #toast-container {
             top: 10% !important;
             left: 50% !important;
@@ -120,10 +122,6 @@
             width: auto !important;
             font-size: 14px;
         }
-
-
-
-
 
     </style>
 </head>
