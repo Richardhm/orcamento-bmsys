@@ -84,8 +84,10 @@ class DashboardController extends Controller
                 ->get();
 
             $status = $dados->contains('odonto', 0);
+            $status_odonto = $dados->contains('odonto',1);
             return view("cotacao.cotacao2",[
                 "dados" => $dados,
+                "status_odonto" => $status_odonto,
                 "operadora" => $imagem_operadora,
                 "plano_nome" => $plano_nome,
                 "cidade_nome" => $cidade_nome,
@@ -143,45 +145,12 @@ class DashboardController extends Controller
 
         $linhas = count($chaves);
         $cidade_nome = TabelaOrigens::find($cidade)->nome;
-
-
-
-
         $plano_nome = Plano::find($plano)->nome;
         $linha_01 = "";
         $linha_02 = "";
 
         $cidade_uf = TabelaOrigens::find($cidade)->uf;
         $status_excecao = false;
-        if(($cidade_uf == "MT" || $cidade_uf == "MS") && $plano == 3) {
-            $status_excecao = true;
-            $pdf_copar = PdfExcecao::where('plano_id', $plano)->first();
-        } else {
-            $hasTabelaOrigens = Pdf::where('plano_id', $plano)
-                ->where('tabela_origens_id',$cidade)
-                ->exists();
-            if ($hasTabelaOrigens) {
-                $pdf_copar = Pdf::where('plano_id', $plano)
-                    ->where('tabela_origens_id',$cidade)
-                    ->first();
-
-                $itens = explode('|', $pdf_copar->linha02);
-                $itensFormatados = array_map(function($item) {
-                    return trim($item); // Remove espaços extras
-                }, $itens);
-                $linha_01 = $itensFormatados[0];
-                $linha_02 = $itensFormatados[1];
-
-            } else {
-                $pdf_copar = Pdf::where('plano_id', $plano)->first();
-                $itens = explode('|', $pdf_copar->linha02);
-                $itensFormatados = array_map(function($item) {
-                    return trim($item); // Remove espaços extras
-                }, $itens);
-                $linha_01 = $itensFormatados[0];
-                $linha_02 = $itensFormatados[1];
-            }
-        }
 
         $admin_nome = Administradora::find($operadora)->nome;
         $odonto_frase = $odonto == 1 ? " c/ Odonto" : " s/ Odonto";
@@ -206,9 +175,6 @@ class DashboardController extends Controller
                 ->whereIn('tabelas.faixa_etaria_id', explode(',', $keys))
                 ->get();
 
-
-
-
             $desconto = Desconto::where('plano_id', $plano)
                 ->where('tabela_origens_id', $cidade)
                 ->first();
@@ -228,12 +194,51 @@ class DashboardController extends Controller
             $viewName = "cotacao.modelo{$layout_user}";
 
             if($apenasvalores == 0) {
+
+
+                if(($cidade_uf == "MT" || $cidade_uf == "MS") && $plano == 3) {
+                    $status_excecao = true;
+                    $pdf_copar = PdfExcecao::where('plano_id', $plano)->first();
+                } else {
+                    $hasTabelaOrigens = Pdf::where('plano_id', $plano)
+                        ->where('tabela_origens_id',$cidade)
+                        ->exists();
+                    if ($hasTabelaOrigens) {
+                        $pdf_copar = Pdf::where('plano_id', $plano)
+                            ->where('tabela_origens_id',$cidade)
+                            ->first();
+
+                        if($pdf_copar->linha02) {
+                            $itens = explode('|', $pdf_copar->linha02);
+                            $itensFormatados = array_map(function($item) {
+                                return trim($item); // Remove espaços extras
+                            }, $itens);
+                            $linha_01 = $itensFormatados[0];
+                            $linha_02 = $itensFormatados[1];
+                        }
+
+
+                    } else {
+                        $pdf_copar = Pdf::where('plano_id', $plano)->first();
+                        if(isset($pdf_copar->linha02) && $pdf_copar->linha02) {
+                            $itens = explode('|', $pdf_copar->linha02);
+                            $itensFormatados = array_map(function($item) {
+                                return trim($item); // Remove espaços extras
+                            }, $itens);
+                            $linha_01 = $itensFormatados[0];
+                            $linha_02 = $itensFormatados[1];
+                        }
+
+                    }
+                }
+
                 $view = \Illuminate\Support\Facades\View::make($viewName,[
                     'com_coparticipacao' => $com_coparticipacao,
                     'sem_coparticipacao' => $sem_coparticipacao,
                     'apenas_valores' => $apenasvalores,
                     'folder' => $layout_folder,
                     'linha_01' => $linha_01,
+                    //'carencia' => 0,
                     'linha_02' => $linha_02,
                     'valor_desconto' => $valor_desconto,
                     'desconto' => $status_desconto,
@@ -247,7 +252,7 @@ class DashboardController extends Controller
                     'odonto_frase' => $odonto_frase,
                     'administradora' => $admin_nome,
                     'frase' => $frase,
-                    'status_carencia' => $status_carencia,
+                    'carencia' => $status_carencia,
                     'status_desconto' => $status_desconto,
                     'odonto' => $odonto,
                     'celular' => $celular,
@@ -262,15 +267,18 @@ class DashboardController extends Controller
                 $cabecalho_user = in_array($cabecalho, [1, 2, 3, 4]) ? $cabecalho : 1;
                 $cabecalhoName = "cotacao.cabecalho{$cabecalho_user}";
 
+                $layout_folder = auth()->user()->isFolder() ?: '';
+
 
                 $view = \Illuminate\Support\Facades\View::make($cabecalhoName,[
                     'com_coparticipacao' => $com_coparticipacao,
                     'sem_coparticipacao' => $sem_coparticipacao,
                     'apenas_valores' => $apenasvalores,
                     'cabecalho' => $cabecalho,
+                    'folder' => $layout_folder,
                     //'carencias' => $carencias,
                     'dados' => $dados,
-                    'pdf' => $pdf_copar,
+                    //'pdf' => $pdf_copar,
 
                     'nome' => $nome,
                     'cidade' => $cidade_nome,
@@ -303,8 +311,8 @@ class DashboardController extends Controller
                         ->setPaper([0, 0, 595, $altura]); // Redimensiona o PDF
                     return $pdf->download($nome_img.".pdf");
                 } else {
-                  $pdf = PDFFile::loadHTML($view)
-                    ->setPaper('A3', 'portrait');
+                    $pdf = PDFFile::loadHTML($view)
+                        ->setPaper('A3', 'portrait');
                     return $pdf->download($nome_img.".pdf");
 
                 }
@@ -325,7 +333,7 @@ class DashboardController extends Controller
                 }
 
                 if($apenasvalores == 1) {
-                    $command = "gs -sDEVICE=pngalpha -r300 -dDEVICEWIDTHPOINTS=595 -dPDFFitPage -dUseCropBox -dDetectDuplicateImages -dNOTRANSPARENCY -o {$imagemPath} {$pdfPath}";
+                    $command = "gs -sDEVICE=pngalpha -r300 -dDEVICEWIDTHPOINTS=595 -dDEVICEHEIGHTPOINTS={$altura} -dPDFFitPage -dUseCropBox -dDetectDuplicateImages -dNOTRANSPARENCY -o {$imagemPath} {$pdfPath}";
                     exec($command, $output, $status);
                 } else {
                     $command = "gs -sDEVICE=pngalpha -r300 -o {$imagemPath} {$pdfPath}";

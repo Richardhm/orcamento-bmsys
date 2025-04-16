@@ -285,7 +285,7 @@
 </head>
 <body>
     <div class="header-container">
-        <img style="position: absolute;top: 0;width:100%;height:300px;left: 0;object-fit: cover;" src="cabecalhos/cabecalho{{$cabecalho}}.png" alt="Orçamento">
+        <img style="position: absolute;top: 0;width:100%;height:300px;left: 0;object-fit: cover;" src="{{ $folder ? $folder . '/' : 'layouts' }}/cabecalhos/cabecalho3.png" alt="Orçamento">
     </div>
     <p class="cidade_container">{{$cidade}}</p>
     <p class="frase_container">{{$frase}}</p>

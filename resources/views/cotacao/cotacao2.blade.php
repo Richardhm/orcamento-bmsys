@@ -9,12 +9,14 @@
     <h4 class="text-black  dark:text-white">{{$plano_nome}}</h4>
     <p class="text-black dark:text-white text-center mr-2">{{$cidade_nome}}</p>
 </div>
-<div class="flex justify-center items-center w-full
-py-0.5 mb-1 text-sm font-medium
-text-white focus:outline-none bg-gray-500 bg-opacity-10 rounded-lg border
-border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-white">
-   Com Odonto
-</div>
+@if($status_odonto)
+    <div class="flex justify-center items-center w-full
+    py-0.5 mb-1 text-sm font-medium
+    text-white focus:outline-none bg-gray-500 bg-opacity-10 rounded-lg border
+    border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-white">
+       Com Odonto
+    </div>
+@endif
 
 <table class="min-w-full bg-gray-300 bg-opacity-20 rounded-lg bordered">
     <thead>
@@ -70,6 +72,7 @@ border-gray-200 dark:bg-gray-500 dark:bg-opacity-10 text-white">
         @endphp
     @endforeach
 
+    @if($status_odonto)
 
     @foreach($dadosComOdonto as $faixaEtaria => $valores)
         @for($i=0;$i<$valores['quantidade'];$i++)
@@ -147,11 +150,14 @@ focus:ring-4 focus:ring-gray-200 bg-red-400">
     Gerar Imagem
 </button>
 
+<div class="h-1 my-1 w-full dark:bg-white bg-white rounded-lg"></div>
+
+@endif
 
 
 @if($status)
 
-<div class="h-1 my-1 w-full dark:bg-white bg-white rounded-lg"></div>
+
 {{--Sem Odotno--}}
 {{-- Tabela sem Odonto --}}
 <div class="flex justify-center items-center w-full
@@ -287,10 +293,10 @@ focus:ring-4 focus:ring-gray-200 bg-red-400">
 
 
 <div class="flex justify-around items-center w-full mt-4 py-2">
-{{--    <label for="status_carencia">--}}
-{{--        <input type="checkbox" name="status_carencia" id="status_carencia" class="w-6 h-6 text-teal-600 bg-white border border-2 border-black rounded dark:bg-white dark:border-purple-900">--}}
-{{--        <span class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-2xl text-white">Com Carências</span>--}}
-{{--    </label>--}}
+    <label for="status_carencia">
+        <input type="checkbox" name="status_carencia" id="status_carencia" class="w-6 h-6 text-teal-600 bg-white border border-2 border-black rounded dark:bg-white dark:border-purple-900">
+        <span class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-2xl text-white">Com Carências</span>
+    </label>
 
 {{--        <label for="status_desconto">--}}
 {{--        <input type="checkbox" name="status_desconto" id="status_desconto" class="w-6 h-6 text-teal-600 bg-white border border-2 border-black rounded dark:bg-white dark:border-purple-900">--}}

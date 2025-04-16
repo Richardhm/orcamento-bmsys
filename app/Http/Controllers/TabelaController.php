@@ -315,13 +315,15 @@ class TabelaController extends Controller
                 ->whereIn('tabelas.faixa_etaria_id', explode(',', $keys))
                 ->get();
             $status = $dados->contains('odonto', 0);
+            $status_odonto = $dados->contains('odonto',1);
             return view("cotacao.cotacao2-tabela",[
                 "dados" => $dados,
                 "operadora" => $imagem_operadora,
                 "plano_nome" => $plano_nome,
                 "cidade_nome" => $cidade_nome,
                 "imagem_plano" => $imagem_plano,
-                "status" => $status
+                "status" => $status,
+                "status_odonto" => $status_odonto
             ]);
         } else {
             $dados = Tabela::select('tabelas.*')

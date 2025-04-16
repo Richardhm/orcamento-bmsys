@@ -9,6 +9,7 @@
     <h4 class="text-white">{{$plano_nome}}</h4>
     <p class="text-white text-center mr-2">{{$cidade_nome}}</p>
 </div>
+@if($status_odonto)
 <div class="flex justify-center items-center w-full
 py-0.5 mb-1 text-sm font-medium
 text-white focus:outline-none bg-gray-700 rounded-lg border
@@ -16,6 +17,7 @@ border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10
 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 bg-gray-500 bg-opacity-10 dark:hover:text-gray-900">
     Com Odonto
 </div>
+@endif
 
 <table class="min-w-full bg-gray-300 bg-opacity-20 rounded-lg bordered" id="tabela_aqui">
     <thead>
@@ -74,6 +76,7 @@ focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 bg-gray-500 bg-opacity
         @endphp
     @endforeach
 
+    @if($status_odonto)
 
     @foreach($dadosComOdonto as $faixaEtaria => $valores)
         @for($i=0;$i<$valores['quantidade'];$i++)
@@ -137,9 +140,13 @@ focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 bg-gray-500 bg-opacity
 
 </table>
 
+<div class="h-1 my-1 w-full bg-white rounded-lg"></div>
+@endif
+
+
 @if($status)
 
-    <div class="h-1 my-1 w-full bg-white rounded-lg"></div>
+
     {{--Sem Odotno--}}
     {{-- Tabela sem Odonto --}}
     <div class="flex justify-center items-center w-full py-0.5 mb-1 text-sm font-medium text-white focus:outline-none bg-gray-700 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 bg-gray-500 bg-opacity-10 dark:hover:text-gray-900">
