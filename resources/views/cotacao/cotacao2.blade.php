@@ -18,6 +18,7 @@
     </div>
 @endif
 
+@if($status_odonto)
 <table class="min-w-full bg-gray-300 bg-opacity-20 rounded-lg bordered">
     <thead>
     <tr>
@@ -71,7 +72,7 @@
             }
         @endphp
     @endforeach
-
+    @endif
     @if($status_odonto)
 
     @foreach($dadosComOdonto as $faixaEtaria => $valores)
