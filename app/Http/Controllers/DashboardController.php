@@ -301,7 +301,7 @@ class DashboardController extends Controller
                 $somar_linhas === 2 => 380,
                 $somar_linhas === 3 => 420,
                 $somar_linhas >= 4 && $linhas <= 5 => 500,
-                default => 620,
+                default => 640,
             };
 
             if($tipo_documento == "pdf") {
