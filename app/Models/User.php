@@ -49,6 +49,13 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    public function assinaturaUser()
+    {
+        return EmailAssinatura::whereHas('assinatura', function ($query) {
+            $query->where('user_id', $this->id);
+        })->first();
+    }
+
     public function isActive()
     {
         return $this->status == 1; // Retorna verdadeiro se status for 1 (ativo)
@@ -75,6 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'assinatura_id'  // Local key na tabela emails_assinatura
         );
     }
+
 
     // Relação direta com tabelas_origens via assinatura
     public function tabelasOrigens()

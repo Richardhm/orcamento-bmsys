@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administradora;
+use App\Models\AdministradoraPlano;
 use App\Models\Assinatura;
 use App\Models\Desconto;
 use App\Models\Pdf;
@@ -420,6 +421,67 @@ class ConfiguracoesController extends Controller
     {
         $desconto->delete();
         return back()->with('success', 'Desconto excluído!');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'assinatura_id' => 'required|array',
+            'administradora_id' => 'required|array',
+            'plano_id' => 'required|array',
+            'tabela_origem_id' => 'nullable|array',
+        ]);
+
+        $assinaturas = $request->assinatura_id;
+        $administradoras = $request->administradora_id;
+        $planos = $request->plano_id;
+        $tabelas = $request->tabela_origem_id ?? [];
+
+        $inserts = [];
+
+        foreach ($assinaturas as $assinaturaId) {
+            foreach ($administradoras as $administradoraId) {
+                foreach ($planos as $planoId) {
+                    foreach ($tabelas as $tabelaId) {
+
+                        // Verifica se já existe antes de adicionar no array
+                        $exists = AdministradoraPlano::where([
+                            'administradora_id' => $administradoraId,
+                            'plano_id' => $planoId,
+                            'tabela_origens_id' => $tabelaId,
+                            'assinatura_id' => $assinaturaId
+                        ])->exists();
+
+                        if (!$exists) {
+                            $inserts[] = [
+                                'administradora_id' => $administradoraId,
+                                'plano_id' => $planoId,
+                                'tabela_origens_id' => $tabelaId,
+                                'assinatura_id' => $assinaturaId,
+                                'created_at' => now(),  // Necessário se sua tabela usa timestamps
+                                'updated_at' => now(),
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!empty($inserts)) {
+            AdministradoraPlano::insert($inserts);
+        }
+
+        return response()->json(['success' => 'Associações criadas com sucesso!']);
+    }
+
+
+
+    public function destroy($id)
+    {
+        $vinculo = AdministradoraPlano::findOrFail($id);
+        $vinculo->delete();
+
+        return back()->with('success', 'Associação removida!');
     }
 
 

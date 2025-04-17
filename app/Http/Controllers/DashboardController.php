@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administradora;
+use App\Models\AdministradoraPlano;
 use App\Models\Assinatura;
 use App\Models\Desconto;
 use App\Models\EmailAssinatura;
@@ -20,14 +21,34 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $user = auth()->user()->load([
-            'assinaturas.tabelasOrigens'
-        ]);
 
-        $cidades = $user->assinaturas->tabelasOrigens;
-        //$cidades = $tabelasOrigens;
-        $administradoras = Administradora::all();
-        $planos = Plano::all();
+        $user = auth()->user(); // Usuário logado
+
+        // Busca na tabela emails_assinatura
+        $emailAssinatura = EmailAssinatura::where('email', $user->email)->first();
+
+        $assinaturaId = $emailAssinatura?->assinatura_id; // Usando safe operator para evitar erro se não encontrar
+
+        if ($assinaturaId) {
+            // Buscar só vínculos que pertencem à assinatura do usuário
+            $vinculos = AdministradoraPlano::with(['administradora', 'plano', 'cidade'])
+                ->where('assinatura_id', $assinaturaId)
+                ->get();
+            // Pegar administradoras e planos dos vínculos
+            $administradoras = $vinculos->pluck('administradora')->unique('id')->values();
+            $planos = $vinculos->pluck('plano')->unique('id')->values();
+            // Buscar cidades pela assinatura
+            //$cidades = $user->assinaturas->tabelasOrigens ?? collect();
+            $cidades = $vinculos->pluck('cidade')->unique('id')->values();
+
+        } else {
+            // Se não encontrar assinatura, manda vazio
+            $cidades = collect();
+            $administradoras = collect();
+            $planos = collect();
+        }
+
+
         return view('dashboard',[
             'cidades' => $cidades,
             'administradoras' => $administradoras,

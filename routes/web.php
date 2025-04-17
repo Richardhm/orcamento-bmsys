@@ -112,6 +112,12 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
 
         Route::post('/desconto', [ConfiguracoesController::class, 'storeDesconto'])->name('descontos.store');
         Route::delete('/desconto/{desconto}', [ConfiguracoesController::class, 'destroyDesconto'])->name('descontos.destroy');
+
+        Route::get('/plano/administradoras/cidades', [ConfiguracoesController::class, 'index'])->name('admin-planos.index');
+        Route::post('/plano/administradoras/cidades', [ConfiguracoesController::class, 'store'])->name('admin-planos.store');
+        Route::delete('/plano/administradoras/cidades/{id}', [ConfiguracoesController::class, 'destroy'])->name('admin-planos.destroy');
+
+
     });
     /********* Fim Configurações **************/
 
