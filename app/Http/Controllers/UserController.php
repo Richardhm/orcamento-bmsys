@@ -157,7 +157,7 @@ class UserController extends Controller
                 EmailAssinatura::where('assinatura_id', $assinatura->id)
                     ->pluck('user_id')
             )
-            ->where('status', 1)
+            //->where('status', 1)
             ->get();
 
             // Retornar o HTML da tabela de usuários

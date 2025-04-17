@@ -290,9 +290,10 @@
                         })
                             .then(response => response.json())
                             .then(data => {
+                                //console.log(data);
                                 load.style.display = "none";
                                 if (data.success) {
-                                    console.log(data);
+                                    //console.log(data);
                                     document.getElementById('user-table').innerHTML = data.html;
 
 
@@ -302,13 +303,15 @@
                                     }
                                     closeModal();
                                 } else {
-                                    console.log(data);
+                                    toastr.error("Erro ao tentar cadastrar usuario.", "Erro");
+                                    //console.log(data);
                                     //alert("Erro ao cadastrar o usuário");
                                 }
                             })
                             .catch(error => {
                                 load.style.display = "none";
-                                console.error('Error:', error);
+                                toastr.error("Erro ao tentar cadastrar usuario.", "Erro");
+                                //console.log('Error:', error);
                                 //alert('Erro ao enviar os dados.');
                             });
                     });
@@ -366,7 +369,7 @@
                             }
                         },
                         error: function (xhr) {
-                            console.error('Erro ao buscar os dados do usuário:', xhr.responseJSON);
+                            console.log('Erro ao buscar os dados do usuário:', xhr.responseJSON);
                             alert('Erro ao buscar os dados do usuário.');
                         }
                     });
@@ -432,7 +435,7 @@
                             }
                         },
                         error: function (xhr) {
-                            console.error("Erro ao atualizar os dados:", xhr.responseJSON);
+                            console.log("Erro ao atualizar os dados:", xhr.responseJSON);
                             //alert("Erro ao atualizar os dados.");
                         },
                     });
