@@ -60,6 +60,44 @@
             scrollbar-color: #34150b #FEF3C7;
         }
 
+
+        .whatsapp-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            z-index: 1000;
+        }
+
+        .suporte-texto {
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        .whatsapp-button {
+            background-color: #25D366;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+
+
+
+
+
         @media (max-width: 768px) {
             /* Ajustes para navbar */
             nav .flex.justify-between {
@@ -85,24 +123,24 @@
 
             /* Ajustes hero section */
             #imagem-dobra .grid-cols-1 {
-                gap: 30px;
+                /*gap: 30px;*/
             }
 
             #imagem-dobra h1 {
-                font-size: 2rem;
-                text-align: center;
+                /*font-size: 2rem;*/
+                /*text-align: center;*/
             }
 
             #imagem-dobra .flex.justify-between {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
+                /*flex-direction: column;*/
+                /*gap: 20px;*/
+                /*text-align: center;*/
             }
 
             /* Ajustes seção de preços */
             #pricing .flex.flex-1 {
-                flex-direction: column;
-                align-items: center;
+                /*flex-direction: column;*/
+                /*align-items: center;*/
             }
 
             #pricing .max-w-5xl {
@@ -153,7 +191,7 @@
             }
 
             #imagem-dobra .scale-75 {
-                scale: 0.6;
+                /*scale: 0.6;*/
 
             }
 
@@ -174,6 +212,25 @@
         <p class="ajax_load_box_title">Aguarde, carregando...</p>
     </div>
 </div>
+
+
+<div class="whatsapp-container">
+    <span class="suporte-texto">Suporte</span>
+    <a href="https://wa.me/5562982686918" target="_blank" class="whatsapp-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40">
+            <path fill="white" d="M19.077 4.928C17.191 3.041 14.683 2.001 12.011 2c-5.506 0-9.987 4.479-9.989 9.985-.001 1.76.459 3.478 1.333 4.992L2 22l5.233-1.237c1.37.751 2.945 1.148 4.565 1.148h.004c5.505 0 9.986-4.48 9.989-9.985.001-2.677-1.057-5.215-2.964-7.062zm-7.066 14.31h-.004c-1.37 0-2.697-.37-3.84-1.075l-.275-.163-2.865.758.764-2.853-.18-.278a8.3 8.3 0 0 1-1.274-4.383c.002-4.584 3.735-8.317 8.317-8.317 2.223 0 4.313.866 5.885 2.437a8.284 8.284 0 0 1 2.433 5.89c-.002 4.583-3.735 8.316-8.317 8.316zm4.538-6.213c-.246-.123-1.457-.719-1.684-.8-.226-.084-.392-.123-.557.123-.166.247-.643.8-.788.968-.145.164-.29.185-.538.062-.247-.123-1.043-.384-1.987-1.226-.734-.654-1.23-1.462-1.374-1.71-.144-.247-.015-.381.108-.504.112-.112.247-.289.37-.434.124-.145.165-.247.247-.412.082-.164.041-.309-.009-.434-.05-.123-.557-1.345-.763-1.84-.204-.495-.408-.428-.557-.433-.144-.005-.31-.005-.476-.005-.164 0-.431.061-.657.308-.226.246-.864.845-.864 2.058 0 1.213.883 2.387 1.006 2.55.123.164 1.746 2.666 4.236 3.727.59.255 1.05.409 1.407.522.59.185 1.126.159 1.551.097.473-.069 1.457-.594 1.662-1.168.204-.574.204-1.066.143-1.168-.062-.102-.226-.164-.472-.287z"/>
+        </svg>
+    </a>
+</div>
+
+
+
+
+
+
+
+
+
 <!-- Navbar -->
 <nav class="fixed w-full z-50 shadow-md bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
@@ -212,15 +269,13 @@
             &times;
         </button>
         <video id="demoVideo" controls class="w-full h-auto rounded-lg shadow-2xl">
-            <source src="{{asset('demonstracao.mp4')}}" type="video/mp4">
+            <source src="{{asset('video-demonstracao.mkv')}}" type="video/mp4">
             Seu navegador não suporta vídeos HTML5.
         </video>
     </div>
 </div>
 
-
-
-<section id="imagem-dobra" class="relative min-h-screen flex items-center justify-center pt-24 md:pt-16 pb-20 overflow-hidden">
+<section id="imagem-dobra" class="relative min-h-screen flex items-center justify-center pt-24 md:pt-16 pb-20 overflow-hidden flex-wrap">
     <!-- Background pattern -->
     <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.05\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
 
@@ -257,24 +312,24 @@
                 </div>
 
                 <!-- Metrics -->
-                <div class="flex justify-between mt-12">
-                    <div>
-                        <h4 class="text-3xl font-bold text-white text-center">+1000</h4>
+                <div class="flex flex-row justify-between mt-12 sm:mt-4 gap-4">
+                    <div class="flex-1 text-center">
+                        <h4 class="text-3xl font-bold text-white">+1000</h4>
                         <p class="text-white text-lg">Corretores Ativos</p>
                     </div>
-                    <div>
-                        <h4 class="text-3xl font-bold text-white text-center">30s</h4>
+                    <div class="flex-1 text-center">
+                        <h4 class="text-3xl font-bold text-white">30s</h4>
                         <p class="text-white text-lg">Tempo Médio de Cotação</p>
                     </div>
-                    <div>
-                        <h4 class="text-3xl font-bold text-white text-center">98%</h4>
+                    <div class="flex-1 text-center">
+                        <h4 class="text-3xl font-bold text-white">98%</h4>
                         <p class="text-white text-lg">Satisfação</p>
                     </div>
                 </div>
             </div>
 
             <!-- Right Column - Preview do GIF -->
-            <div class="relative group cursor-pointer w-[70%] md:mt-10" onclick="openVideoModal()">
+            <div class="relative group cursor-pointer w-[70%] md:mt-10 mx-auto" onclick="openVideoModal()">
                 <div class="relative rounded-xl overflow-hidden shadow-2xl transform group-hover:scale-90 transition-transform">
                     <img src="{{asset('tela.png')}}" alt="Preview" class="object-cover">
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -296,110 +351,120 @@
 
         </div>
     </div>
+    <div class="flex w-full justify-center text-center text-white py-2">
+        <h2 class="font-bold text-1xl md:text-4xl">✅ Tabelas atualizadas de todo o Brasil ✅</h2>
+    </div>
 </section>
 
-<section id="pricing" class="min-h-screen flex flex-col justify-center py-12 md:py-18">
+
+
+<section id="pricing" class="min-h-screen flex flex-col justify-center py-18 sm:py-4">
     <div class="max-w-5xl w-full md:w-[90%] mx-auto px-4">
         <div class="text-center mb-8">
-            <h2 class="text-4xl md:text-6xl font-bold text-white mb-4">Nossos Planos</h2>
-            <p class="text-xl md:text-4xl text-white font-bold">Escolha o plano ideal</p>
+            <h2 class="text-4xl md:text-4xl font-bold text-white mb-4">Nossos Planos</h2>
+
         </div>
 
         <div class="flex flex-col md:flex-row gap-6 justify-center items-stretch">
             <!-- Plano Individual -->
-{{--            <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-full md:w-[320px] rounded-xl shadow-lg p-4 md:p-6 border border-blue-100 transition-all hover:bg-gray-100">--}}
-{{--                <div>--}}
-{{--                    <div>--}}
-{{--                        <p class="text-purple-900 text-center font-bold text-lg">INDIVIDUAL</p>--}}
-{{--                        <p class="text-purple-900 text-center">Ideal para uma única pessoa</p>--}}
-{{--                    </div>--}}
-{{--                    <div class="bg-purple-950 text-white text-center py-3 rounded-full mt-6">--}}
-{{--                        Começar Agora--}}
-{{--                    </div>--}}
-{{--                    <div class="my-6 text-center flex items-center justify-center">--}}
-{{--                        <p class="flex flex-col items-start relative">--}}
-{{--                            <span class="text-lg font-bold text-purple-900 leading-none">R$</span>--}}
-{{--                            <span class="text-7xl font-bold text-purple-900">29,90</span>--}}
-{{--                            <span class="text-sm text-purple-900 self-end">/mês</span>--}}
-{{--                        </p>--}}
-{{--                    </div>--}}
+                        <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-full md:w-[320px] min-h-[70vh] rounded-xl shadow-lg p-4 md:p-6 border-4 border-purple-950 transition-all hover:bg-gray-100 flex flex-col justify-between">
+                            <div>
 
-{{--                    <ul class="space-y-2 text-gray-600 text-sm">--}}
-{{--                        <li class="flex items-center">--}}
-{{--                            ✅ Acesso ao sistema--}}
-{{--                        </li>--}}
-{{--                        <li class="flex items-center">--}}
-{{--                            ✅ Cotações ilimitadas--}}
-{{--                        </li>--}}
-{{--                        <li class="flex items-center">--}}
-{{--                            ✅ Fácil de usar--}}
-{{--                        </li>--}}
-{{--                        <li class="flex items-center">--}}
-{{--                            ✅ Apenas um e-mail--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
+                                <div class="bg-purple-950 text-white text-center py-3 rounded-full mt-6">
+                                    Assine Agora
+                                </div>
+                                <div class="my-6 text-center flex items-center justify-center">
+                                    <p class="flex flex-col items-start relative">
+                                        <span class="text-lg font-bold text-purple-900 leading-none">R$</span>
+                                        <span class="text-7xl font-bold text-purple-900">129,90</span>
+                                        <span class="text-sm text-purple-900 self-end">/mês</span>
+                                    </p>
+                                </div>
 
-{{--                <div>--}}
-{{--                    <p class="text-center text-gray-500 flex justify-center items-center text-sm">--}}
-{{--                        Saiba Mais, clique aqui--}}
-{{--                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">--}}
-{{--                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />--}}
-{{--                        </svg>--}}
-{{--                    </p>--}}
-{{--                </div>--}}
+                                <ul class="space-y-2 text-gray-600 text-xs">
+                                    <li class="flex items-center">
+                                        ✅ Liberado para 03 Usuários
+                                    </li>
+                                    <li class="flex items-center">
+                                        ✅ Taxa implantação R$ 150,00 (PIX)
+                                    </li>
+                                    <li class="flex items-center">
+                                        ✅ Tabelas Nacionais Atualizadas
+                                    </li>
+                                    <li class="flex items-center">
+                                        ✅ Cotações Ilimitadas
+                                    </li>
+                                    <li class="flex items-center">
+                                        ✅ Facil de usar
+                                    </li>
+                                    <li class="flex items-center">
+                                        ✅ Equipes colaborativas
+                                    </li>
+                                    <li class="flex items-center">
+                                        ✅ Gestão completa
+                                    </li>
+                                    <li class="flex items-center">
+                                        ✅ Acima de 3 usuários, R$ 37,90/usuario
+                                    </li>
+                                </ul>
+                            </div>
 
-{{--            </a>--}}
+                            <div>
+                                <p class="text-center text-gray-500 flex justify-center items-center text-sm">
+                                    Saiba Mais, clique aqui
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </p>
+                            </div>
+
+                        </a>
 
             <!-- Plano Empresarial -->
-            <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-full md:w-[320px] rounded-xl shadow-lg p-4 md:p-6 border-4 border-orange-400 transition-all hover:bg-gray-100">
+            <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-full md:w-[320px] min-h-[70vh] rounded-xl shadow-lg p-4 md:p-6 border-4 border-red-600 transition-all hover:bg-gray-100 flex flex-col justify-between">
                 <!-- Observação -->
 
 
                 <div>
-                    <div>
-                        <p class="text-purple-900 text-center font-bold text-lg">MULTIUSUÁRIO</p>
-                        <p class="text-purple-900 text-center">Ideal para a sua corretora</p>
-                    </div>
-                    <div class="bg-purple-950 text-white text-center py-3 rounded-full mt-6">
-                        Começar Agora
+
+                    <div class="bg-red-600 text-white text-center py-3 rounded-full mt-6">
+                        Assine Agora
                     </div>
                     <div class="my-6 text-center flex items-center justify-center">
                         <p class="flex flex-col items-start relative">
-                            <span class="text-lg font-bold text-purple-900 leading-none">R$</span>
-                            <span class="text-7xl font-bold text-purple-900">250,00</span>
-                            <span class="text-sm text-purple-900 self-end">/mês</span>
+                            <span class="text-lg font-bold text-red-600 leading-none">R$</span>
+                            <span class="text-7xl font-bold text-red-600">250,00</span>
+                            <span class="text-sm text-red-600 self-end">/mês</span>
                         </p>
                     </div>
-                    <ul class="space-y-2 text-gray-600 text-sm">
+                    <ul class="space-y-2 text-gray-600 text-xs">
                         <li class="flex items-center">
-                            ✅ Taxa implantação R$ 150,00 (PIX)
+                            ✅ Liberado para 05 Usuários
                         </li>
-                        <li class="flex items-center">
-                            ✅ Acesso ao sistema
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Cotações ilimitadas
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Fácil de usar
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Equipes colaborativas
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Gestão completa
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Relatórios detalhados
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Cadastrar até 5 e-mails
-                        </li>
-                        <li class="flex items-center">
-                            ✅ Acima de 5 e-mails é cobrado 50 reais
-                        </li>
-                    </ul>
+                        <ul class="space-y-2 text-gray-600 text-xs">
+                            <li class="flex items-center">
+                                ✅ Taxa implantação R$ 150,00 (PIX)
+                            </li>
+                            <li class="flex items-center">
+                                ✅ Tabelas Nacionais Atualizadas
+                            </li>
+                            <li class="flex items-center">
+                                ✅ Cotações ilimitadas
+                            </li>
+                            <li class="flex items-center">
+                                ✅ Fácil de usar
+                            </li>
+                            <li class="flex items-center">
+                                ✅ Equipes colaborativas
+                            </li>
+                            <li class="flex items-center">
+                                ✅ Gestão completa
+                            </li>
+
+                            <li class="flex items-center">
+                                ✅ Acima de 5 usuários, R$ 50,00 /usuário
+                            </li>
+                        </ul>
                 </div>
                 <div>
                     <p class="text-center text-gray-500 flex justify-center items-center text-sm">
@@ -410,6 +475,48 @@
                     </p>
                 </div>
             </a>
+
+
+
+            <div class="bg-white w-full md:w-[320px] min-h-[70vh] rounded-xl shadow-lg p-4 md:p-6 border-4 border-green-400 transition-all hover:bg-gray-100 flex flex-col justify-between">
+                <div>
+                    <div class="bg-green-500 text-white text-center py-3 rounded-full mt-6">
+                        Vamos Negociar
+                    </div>
+
+                    <div class="my-6 text-center flex items-center justify-center">
+                        <p class="flex flex-col items-start relative">
+                            <span class="text-lg font-bold text-green-700 leading-none">A partir de</span>
+                            <span class="text-5xl font-bold text-green-700">R$ Sob Consulta</span>
+                        </p>
+                    </div>
+
+                    <ul class="space-y-2 text-gray-600 text-xs">
+                        <li class="flex items-center">✅ Planos Personalizados</li>
+                        <li class="flex items-center">✅ Atendimento Exclusivo</li>
+                        <li class="flex items-center">✅ Negociação Direta</li>
+                        <li class="flex items-center">✅ Flexibilidade de Pagamento</li>
+                    </ul>
+                </div>
+
+                <div class="mt-6">
+                    <a href="https://wa.me/5599999999999?text=Ol%C3%A1%2C+gostaria+de+negociar+o+plano" target="_blank"
+                       class="text-center text-green-600 flex justify-center items-center gap-2 text-sm font-semibold hover:underline">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="size-6">
+                            <path d="M20.52 3.48a11.934 11.934 0 0 0-16.96 0 11.933 11.933 0 0 0-2.62 12.68l-1.58 5.75 5.75-1.58a11.933 11.933 0 0 0 12.68-2.62 11.934 11.934 0 0 0 0-16.96zM12 22c-1.49 0-2.94-.29-4.31-.87l-.31-.13-3.42.94.94-3.42-.13-.31A10 10 0 1 1 12 22zm4.94-7.06c-.26-.13-1.53-.76-1.77-.85s-.41-.13-.58.13-.67.85-.82 1.02-.3.19-.56.06a8.08 8.08 0 0 1-2.38-1.47 8.88 8.88 0 0 1-1.65-2.04c-.17-.3-.02-.46.12-.6.13-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.51-.07-.13-.58-1.4-.8-1.91-.21-.51-.42-.44-.58-.45h-.5c-.17 0-.45.06-.68.3-.23.23-.9.88-.9 2.15s.92 2.5 1.05 2.67c.13.17 1.81 2.76 4.4 3.87.62.27 1.1.43 1.48.55.62.2 1.18.17 1.63.1.5-.08 1.53-.63 1.75-1.24.22-.6.22-1.12.15-1.23-.06-.12-.24-.19-.5-.31z"/>
+                        </svg>
+                        Não achou seu preço? Fale com a gente!
+                    </a>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
         </div>
     </div>
 </section>

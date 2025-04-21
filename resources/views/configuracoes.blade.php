@@ -175,15 +175,6 @@
             });
             /******Fim Atualizar a senha******/
 
-
-
-
-
-
-
-
-
-
             document.addEventListener('DOMContentLoaded', function () {
                 const modal = document.getElementById('user-modal');
                 const toggleModalButton = document.getElementById('toggle-modal');

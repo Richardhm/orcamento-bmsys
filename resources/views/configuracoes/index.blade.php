@@ -4,49 +4,53 @@
             <div class="bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] overflow-hidden shadow-sm sm:rounded-lg">
                 <!-- Container das Abas -->
                 <div class="border-b border-gray-200">
-                    <nav class="flex space-x-8" aria-label="Tabs">
+                    <nav class="flex space-x-5" aria-label="Tabs">
                         <!-- Itens das Abas -->
-                        <a href="#tab1" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent active rounded-tl-lg rounded-tr-lg">Tabelas</a>
-                        <a href="#tab2" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Coparticipações</a>
-                        <a href="#tab3" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Cidades</a>
-                        <a href="#tab4" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Assinaturas/Cidade</a>
-                        <a href="#tab5" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Administradora</a>
-                        <a href="#tab6" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Planos</a>
-                        <a href="#tab7" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Desconto</a>
-                        <a href="#tab8" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Assinaturas/User</a>
-                        <a href="#tab9" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Administradora/Plano/Cidade</a>
+                        <a href="#tab0" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent active rounded-tl-lg rounded-tr-lg">Tabelas</a>
+                        <a href="#tab1" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Coparticipações</a>
+                        <a href="#tab2" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Cidades</a>
+                        <a href="#tab3" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Assinaturas/Cidade</a>
+                        <a href="#tab4" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Administradora</a>
+                        <a href="#tab5" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Planos</a>
+                        <a href="#tab6" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Desconto</a>
+                        <a href="#tab7" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Assinaturas/User</a>
+                        <a href="#tab8" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Administradora/Plano/Cidade</a>
+                        <a href="#tab9" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Cupons</a>
                     </nav>
                 </div>
 
                 <!-- Conteúdo das Abas -->
                 <div class="p-6">
                     <!-- Conteúdos mantidos igual -->
-                    <div id="tab1" class="tab-content active">
+                    <div id="tab0" class="tab-content active">
                         <x-configuracoes.tabelas-tab />
                     </div>
-                    <div id="tab2" class="tab-content hidden">
+                    <div id="tab1" class="tab-content hidden">
                         <x-configuracoes.pdf-tab />
                     </div>
-                    <div id="tab3" class="tab-content hidden">
+                    <div id="tab2" class="tab-content hidden">
                         <x-configuracoes.cidades-tab />
                     </div>
-                    <div id="tab4" class="tab-content hidden">
+                    <div id="tab3" class="tab-content hidden">
                         <x-configuracoes.assinaturas-cidade-tab />
                     </div>
-                    <div id="tab5" class="tab-content hidden">
+                    <div id="tab4" class="tab-content hidden">
                         <x-configuracoes.administradoras-tab />
                     </div>
-                    <div id="tab6" class="tab-content hidden">
+                    <div id="tab5" class="tab-content hidden">
                         <x-configuracoes.planos-tab />
                     </div>
-                    <div id="tab7" class="tab-content hidden">
+                    <div id="tab6" class="tab-content hidden">
                         <x-configuracoes.desconto-tab />
                     </div>
-                    <div id="tab8" class="tab-content hidden">
+                    <div id="tab7" class="tab-content hidden">
                         <x-configuracoes.assinaturas-user :perPage="15" />
                     </div>
-                    <div id="tab9" class="tab-content hidden">
+                    <div id="tab8" class="tab-content hidden">
                         <x-configuracoes.administradora-plano-cidade />
+                    </div>
+                    <div id="tab9" class="tab-content hidden">
+                        <x-configuracoes.cupons-tab />
                     </div>
                 </div>
             </div>
@@ -120,6 +124,13 @@
                 $('input[name*="valor_enfermaria"]').mask("#.##0,00", {reverse: true});
                 $('input[name*="valor_ambulatorial"]').mask("#.##0,00", {reverse: true});
 
+
+                $('input[name="desconto_plano"]').mask("#.##0,00", {reverse: true});
+                $('input[name="desconto_extra"]').mask("#.##0,00", {reverse: true});
+
+
+
+
                 // Ativa aba inicial
                 $('.tab-button:first').addClass('active');
                 $('.tab-button').click(function (e) {
@@ -161,84 +172,84 @@
                         $(".alert-danger").remove();
 
                         if(todosPreenchidos) {
-                                $('input[name*="valor_apartamento"]').prop('disabled',false);
-                                $('input[name*="valor_enfermaria"]').prop('disabled',false);
-                                $('input[name*="valor_ambulatorial"]').prop('disabled',false);
-                                $('#overlay').removeClass("ocultar");
+                            $('input[name*="valor_apartamento"]').prop('disabled',false);
+                            $('input[name*="valor_enfermaria"]').prop('disabled',false);
+                            $('input[name*="valor_ambulatorial"]').prop('disabled',false);
+                            $('#overlay').removeClass("ocultar");
 
-                                let administradora = $('select[name="administradora"]').val();
-                                let planos  = $('select[name="planos"]').val()
-                                let tabela_origem = $('select[name="tabela_origem"]').val();
-                                let coparticipacao = $('select[name="coparticipacao"]').val();
-                                let odonto = $('select[name="odonto"]').val();
+                            let administradora = $('select[name="administradora"]').val();
+                            let planos  = $('select[name="planos"]').val()
+                            let tabela_origem = $('select[name="tabela_origem"]').val();
+                            let coparticipacao = $('select[name="coparticipacao"]').val();
+                            let odonto = $('select[name="odonto"]').val();
 
-                                //let plano = $("#planos").val();
-                                //let cidade = $("#tabela_origem").val();
-                                $('.valor').removeAttr('disabled');
+                            //let plano = $("#planos").val();
+                            //let cidade = $("#tabela_origem").val();
+                            $('.valor').removeAttr('disabled');
 
-                                $.ajax({
-                                    url:"{{route('tabelas.verificar')}}",
-                                    method:"POST",
-                                    data: {
-                                        "administradora" : administradora,
-                                        "planos" : planos,
-                                        "tabela_origem" : tabela_origem,
-                                        "coparticipacao" : coparticipacao,
-                                        "odonto" : odonto,
+                            $.ajax({
+                                url:"{{route('tabelas.verificar')}}",
+                                method:"POST",
+                                data: {
+                                    "administradora" : administradora,
+                                    "planos" : planos,
+                                    "tabela_origem" : tabela_origem,
+                                    "coparticipacao" : coparticipacao,
+                                    "odonto" : odonto,
 
-                                    },
-                                    success:function(res) {
+                                },
+                                success:function(res) {
 
-                                        // $('#overlay').addClass('ocultar');
-                                        if(res != "empty") {
+                                    // $('#overlay').addClass('ocultar');
+                                    if(res != "empty") {
 
-                                            $('input[name="valor_apartamento[]"]').each(function(index) {
-                                                $(this).addClass('valor');
-                                                if (res[index] && res[index].acomodacao_id == 1) {
-                                                    $(this).val(res[index].valor_formatado).attr('data-id',res[index].id);
-                                                }
-                                            });
-                                            $('input[name="valor_enfermaria[]"]').each(function(index) {
-                                                $(this).addClass('valor');
-                                                if (res[index+10] && res[index+10].acomodacao_id == 2) {
-                                                    $(this).val(res[index+10].valor_formatado).attr('data-id',res[index+10].id);
-                                                }
-                                            });
-                                            $('input[name="valor_ambulatorial[]"]').each(function(index) {
-                                                $(this).addClass('valor');
-                                                if (res[index+20] && res[index+20].acomodacao_id == 3) {
-                                                    $(this).val(res[index+20].valor_formatado).attr('data-id',res[index+20].id)
-                                                }
-                                            });
-                                            $("#container_btn_cadastrar").slideUp('slow').html('');
-                                        } else {
-                                            $('input[name="valor_apartamento[]"]')
-                                                .val('')
-                                                .removeClass('valor');
+                                        $('input[name="valor_apartamento[]"]').each(function(index) {
+                                            $(this).addClass('valor');
+                                            if (res[index] && res[index].acomodacao_id == 1) {
+                                                $(this).val(res[index].valor_formatado).attr('data-id',res[index].id);
+                                            }
+                                        });
+                                        $('input[name="valor_enfermaria[]"]').each(function(index) {
+                                            $(this).addClass('valor');
+                                            if (res[index+10] && res[index+10].acomodacao_id == 2) {
+                                                $(this).val(res[index+10].valor_formatado).attr('data-id',res[index+10].id);
+                                            }
+                                        });
+                                        $('input[name="valor_ambulatorial[]"]').each(function(index) {
+                                            $(this).addClass('valor');
+                                            if (res[index+20] && res[index+20].acomodacao_id == 3) {
+                                                $(this).val(res[index+20].valor_formatado).attr('data-id',res[index+20].id)
+                                            }
+                                        });
+                                        $("#container_btn_cadastrar").slideUp('slow').html('');
+                                    } else {
+                                        $('input[name="valor_apartamento[]"]')
+                                            .val('')
+                                            .removeClass('valor');
 
-                                            $('input[name="valor_enfermaria[]"]')
-                                                .val('')
-                                                .removeClass('valor');
+                                        $('input[name="valor_enfermaria[]"]')
+                                            .val('')
+                                            .removeClass('valor');
 
-                                            $('input[name="valor_ambulatorial[]"]')
-                                                .val('')
-                                                .removeClass('valor');
+                                        $('input[name="valor_ambulatorial[]"]')
+                                            .val('')
+                                            .removeClass('valor');
 
-                                            $("#container_btn_cadastrar")
-                                                .html(`<button type="button" class="btn_cadastrar text-white w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Cadastrar</button>`)
-                                                .hide()
-                                                .slideDown('slow');
+                                        $("#container_btn_cadastrar")
+                                            .html(`<button type="button" class="btn_cadastrar text-white w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Cadastrar</button>`)
+                                            .hide()
+                                            .slideDown('slow');
 
-                                            $("#container_alert_cadastrar")
-                                                .html(`<div class="bg-blue-100 border border-blue-300 text-blue-800 text-2xl px-4 py-3 rounded">
+                                        $("#container_alert_cadastrar")
+                                            .html(`<div class="bg-blue-100 border border-blue-300 text-blue-800 text-2xl px-4 py-3 rounded">
                                                     <h4 class="font-semibold">Essa tabela não existe, para inserir os dados clicar no botão cadastrar abaixo, após preencher todos os campos.</h4>
                                                 </div>`)
-                                                .hide()
-                                                .slideDown('slow');
-                                        }
+                                            .hide()
+                                            .slideDown('slow');
                                     }
-                                });
-                                return false;
+                                }
+                            });
+                            return false;
                         }
                         return false;
                     }
@@ -385,14 +396,70 @@
                         }
                     });
                 });
-
-
-
-
-
-
-
             });
+
+            document.querySelector('form[name="cupon-form"]').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                const successMessage = document.getElementById('success-message');
+
+                try {
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        console.log(data);
+                        // Exibir mensagem de sucesso
+                        document.getElementById('success-codigo').textContent = data.codigo;
+                        document.getElementById('success-validade').textContent = data.validade;
+                        document.getElementById('success-plano').textContent = parseFloat(data.valor_plano).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        document.getElementById('success-desconto').textContent = parseFloat(data.valor_desconto).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        successMessage.classList.remove('hidden');
+
+                        // Rolagem suave para a mensagem
+                        successMessage.scrollIntoView({ behavior: 'smooth' });
+
+                        // Resetar formulário
+                        this.reset();
+                    } else {
+                        alert('Erro: ' + (data.message || 'Falha ao cadastrar'));
+                    }
+
+                } catch (error) {
+                    console.error('Erro:', error);
+                    alert('Erro na comunicação com o servidor');
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
+            function copiarCodigo() {
+                const codigo = document.getElementById('codigo-input').value;
+                navigator.clipboard.writeText(codigo).then(() => {
+                    alert('Código copiado para a área de transferência!');
+                });
+            }
+
+
+
+
 
             let itemAtivo = null;
             function carregarCidades(assinaturaId,elemento) {

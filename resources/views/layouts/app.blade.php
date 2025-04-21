@@ -123,6 +123,20 @@
             font-size: 14px;
         }
 
+        body {
+            background: url('{{ asset('fred01.jpeg') }}') no-repeat center center;
+            background-size: cover;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background-position: top center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-color: #ffffff; /* fundo branco para não ficar vazio */
+            }
+        }
+
     </style>
 </head>
 <body class="font-sans antialiased">
@@ -144,38 +158,29 @@
 
 <!-- Script para aplicar lógica de tema -->
 <script>
-    {{--setInterval(() => {--}}
-    {{--    fetch("{{ route('csrf-token') }}")--}}
-    {{--        .then(response => response.json())--}}
-    {{--        .then(data => {--}}
-    {{--            document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.token);--}}
-    {{--        });--}}
-    {{--}, 600000); // A cada 10 minutos (600000 ms)--}}
-
-
 
 
     // Verifica se o tema é dark ou light e aplica a lógica
-    const htmlElement = document.getElementById('html');
-    const appContainer = document.getElementById('app-container');
+    {{--const htmlElement = document.getElementById('html');--}}
+    {{--const appContainer = document.getElementById('app-container');--}}
 
-    function applyThemeBackground() {
-        if (htmlElement.classList.contains('dark')) {
-            // Modo dark: fundo preto
-            appContainer.style.background = '#000';
-        } else {
-            // Modo light: fundo com imagem
-            appContainer.style.background = "url('{{ asset('fred01.jpeg') }}') no-repeat center center";
-            appContainer.style.backgroundSize = 'cover';
-        }
-    }
+    {{--function applyThemeBackground() {--}}
+    {{--    if (htmlElement.classList.contains('dark')) {--}}
+    {{--        // Modo dark: fundo preto--}}
+    {{--        appContainer.style.background = '#000';--}}
+    {{--    } else {--}}
+    {{--        // Modo light: fundo com imagem--}}
+    {{--        appContainer.style.background = "url('{{ asset('fred01.jpeg') }}') no-repeat center center";--}}
+    {{--        appContainer.style.backgroundSize = 'cover';--}}
+    {{--    }--}}
+    {{--}--}}
 
-    // Executa ao carregar a página
-    applyThemeBackground();
+    {{--// Executa ao carregar a página--}}
+    {{--applyThemeBackground();--}}
 
-    // Observa mudanças no tema (se for implementado com toggle)
-    const observer = new MutationObserver(applyThemeBackground);
-    observer.observe(htmlElement, { attributes: true, attributeFilter: ['class'] });
+    {{--// Observa mudanças no tema (se for implementado com toggle)--}}
+    {{--const observer = new MutationObserver(applyThemeBackground);--}}
+    {{--observer.observe(htmlElement, { attributes: true, attributeFilter: ['class'] });--}}
 </script>
 @yield('scripts')
 </body>

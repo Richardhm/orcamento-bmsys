@@ -82,40 +82,7 @@
             <!-- Lista -->
             <div class="col-span-2 bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] p-6 rounded-lg shadow">
                 <h2 class="text-xl font-semibold mb-4 text-white">Associações Existentes</h2>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full">
-                        <thead>
-                        <tr class="bg-[rgba(254,254,254,0.18)] rounded">
-                            <th class="px-2 py-1 text-left text-white text-xs">Adm.</th>
-                            <th class="px-2 py-1 text-left text-white text-xs">Plano</th>
-                            <th class="px-2 py-1 text-left text-white text-xs">Tabela</th>
-                            <th class="px-2 py-1 text-left text-white text-xs">Assinatura</th>
-                            <th class="px-2 py-1 text-left text-white text-xs">Ações</th>
-                        </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                        @foreach($vinculos as $vinculo)
-                            <tr>
-                                <td class="px-2 py-1 text-left text-white text-xs">{{ $vinculo->administradora->nome }}</td>
-                                <td class="px-2 py-1 text-left text-white text-xs">{{ $vinculo->plano->nome }}</td>
-                                <td class="px-2 py-1 text-left text-white text-xs">{{ $vinculo->tabelaOrigem->nome ?? 'N/A' }}</td>
-                                <td class="px-2 py-1 text-left text-white text-xs">{{ $vinculo->assinatura->user->email }}</td>
-                                <td class="px-6 py-4">
-                                    <form action="{{ route('admin-planos.destroy', $vinculo->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                                class="text-red-500 hover:text-red-700"
-                                                onclick="return confirm('Excluir esta associação?')">
-                                            Excluir
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+
             </div>
         </div>
     </div>

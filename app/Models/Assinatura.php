@@ -8,6 +8,7 @@ class Assinatura extends Model
 {
     protected $fillable = [
         'user_id',
+        'cupom_id',
         'tipo_plano_id',
         'preco_base',
         'emails_permitidos',

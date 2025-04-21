@@ -223,12 +223,28 @@
                 </div>
 
 
+
                 <input type="hidden" name="bandeira" id="bandeira">
 
 
             </div>
 
             <!--Fim Lado Direito-->
+
+            <div class="w-full mb-4">
+
+
+                    <div class="mt-2 w-60">
+                        <input type="text"
+                               name="cupom_promocional"
+                               id="cupom"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                               required
+                               placeholder="Digite seu código promocional">
+                    </div>
+
+            </div>
+
 
 
             <div class="w-full mx-auto my-1">
@@ -512,7 +528,7 @@
                                 formData.append("mascaraCartao", mascaraCartao);
 
                                 $.ajax({
-                                    url:"{{ route('assinaturas.empresarial.store') }}",
+                                    url:"{{ route('assinaturas.promocional.store') }}",
                                     method:"POST",
                                     data: formData,
                                     contentType: false,  // Importante para envio de arquivos
@@ -539,10 +555,7 @@
 
                                     },
                                     success:function(res) {
-
-
                                         load.fadeOut(100).css("display", "none");
-
                                         if (res.success && res.redirect) {
                                             window.location.href = res.redirect;
                                         }

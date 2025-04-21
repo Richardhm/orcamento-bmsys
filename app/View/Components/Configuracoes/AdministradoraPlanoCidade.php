@@ -18,6 +18,7 @@ class AdministradoraPlanoCidade extends Component
     public $planos;
     public $tabelas;
     public $assinaturas;
+    public $vinculosAgrupados;
     public $vinculos;
 
     public function __construct()
@@ -29,6 +30,11 @@ class AdministradoraPlanoCidade extends Component
         $this->vinculos = AdministradoraPlano::with(['administradora', 'plano', 'tabelaOrigem','assinatura'])
             ->whereNotNull('assinatura_id')
             ->get();
+        $this->vinculosAgrupados = AdministradoraPlano::with(['administradora', 'plano', 'tabelaOrigem', 'assinatura.user'])
+            ->whereNotNull('assinatura_id')
+            ->get()
+            ->groupBy('assinatura_id');
+
     }
 
 

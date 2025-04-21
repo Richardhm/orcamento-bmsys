@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assinatura;
+use App\Models\Cupom;
 use App\Models\EmailAssinatura;
+use App\Models\TipoPlano;
 use App\Models\User;
 use Efi\EfiPay;
 use Efi\Exception\EfiException;
@@ -59,7 +61,22 @@ class UserController extends Controller
 
         $assinatura = Assinatura::where("user_id",auth()->user()->id)->first();
 
-        return view('users.manage', compact('users','assinatura'));
+
+        if($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
+            $cupom = Cupom::find($assinatura->cupom_id);
+            $valor = 250 - $cupom->desconto_plano;
+            $limite_gratuito = $assinatura->emails_permitidos;
+            $extra = 50 - $cupom->desconto_extra;
+        } elseif (empty($assinatura->cupom_id) && in_array($assinatura->tipo_plano_id, [1, 2])) {
+            $plan = TipoPlano::find($assinatura->tipo_plano_id);
+            $valor = $assinatura->preco_total;
+            $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
+            $extra = number_format($plan->valor_por_email,2,",",".");
+        }
+
+
+
+        return view('users.manage', compact('users','assinatura','valor','extra'));
     }
 
     private function atualizarAssinaturaEFi($assinatura)
@@ -119,10 +136,22 @@ class UserController extends Controller
                 throw new \Exception("Assinatura não encontrada.");
             }
 
+
+            if($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
+                $cupom = Cupom::find($assinatura->cupom_id);
+                $preco_base = 250 - $cupom->desconto_plano;
+                $limite_gratuito = $assinatura->emails_permitidos;
+                $preco_extra_por_email = 50 - $cupom->desconto_extra;
+            } elseif (empty($assinatura->cupom_id) && in_array($assinatura->tipo_plano_id, [1, 2])) {
+                $plan = TipoPlano::find($assinatura->tipo_plano_id);
+                $preco_base = $plan->valor_base;
+                $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
+                $preco_extra_por_email = $plan->valor_por_email;
+            }
+
+
             // Definir valores do plano
-            $preco_base = 250.00;
-            $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
-            $preco_extra_por_email = 50.00;
+
 
             // Aumenta emails_extra
             $assinatura->emails_extra += 1;
@@ -184,10 +213,25 @@ class UserController extends Controller
             // Buscar a assinatura do administrador
             $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
 
+            if($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
+                $cupom = Cupom::find($assinatura->cupom_id);
+                $preco_base = 250 - $cupom->desconto_plano;
+                $limite_gratuito = $assinatura->emails_permitidos;
+                $preco_extra_por_email = 50 - $cupom->desconto_extra;
+            } elseif (empty($assinatura->cupom_id) && in_array($assinatura->tipo_plano_id, [1, 2])) {
+                $plan = TipoPlano::find($assinatura->tipo_plano_id);
+                $preco_base = $plan->valor_base;
+                $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
+                $preco_extra_por_email = $plan->valor_por_email;
+            }
+
+
+
+
+
+
             // Definir valores do plano
-            $preco_base = 250.00;
-            $limite_gratuito = $assinatura->emails_permitidos; // Exemplo: 5 usuários gratuitos
-            $preco_extra_por_email = 50.00;
+
 
             // Verificar se está ativando ou desativando
             if ($status == 1) {

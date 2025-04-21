@@ -19,14 +19,14 @@
         </div>
 
         <p class="text-sm text-white dark:text-gray-400 text-center">
-            Sua assinatura inclui <strong class="text-blue-200 font-bold">{{ $assinatura->emails_permitidos }}</strong> e-mails. Acima disso, é cobrado <strong class="text-yellow-600 text-lg">R$ 50</strong> por e-mail.
+            Sua assinatura inclui <strong class="text-blue-200 font-bold">{{ $assinatura->emails_permitidos }}</strong> e-mails. Acima disso, é cobrado <strong class="text-yellow-600 text-lg quantidade_email_extra">R$ {{$extra}}</strong> por e-mail.
         </p>
 
 
 
         <p>
             <span class="text-white">📈 Preço Total:</span>
-            <strong class="text-red-500 text-sm preco_total">R$ {{ number_format($assinatura->preco_total, 2, ',', '.') }}</strong>
+            <strong class="text-red-500 text-sm preco_total">R$ {{ number_format($valor, 2, ',', '.') }}</strong>
         </p>
 
 

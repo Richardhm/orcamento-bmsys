@@ -446,6 +446,7 @@
                 $("form[name='cadastrar_individual']").on('submit',function(e){
                     e.preventDefault();
                     let load = $(".ajax_load");
+                    load.fadeIn(100).css("display", "flex");
                     if(!TestaCPF($("#cpf").val().replace(/[^0-9]/g,''))) {
                         toastr.error("O CPF informado é inválido. Verifique e tente novamente.", "Error",{
                             toastClass: "toast-custom-width"

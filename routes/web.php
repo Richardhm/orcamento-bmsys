@@ -73,6 +73,9 @@ Route::get('/assinatura/historico', [AssinaturaController::class, 'historicoPaga
 Route::get('/assinaturas/empresarial', [AssinaturaController::class, 'createEmpresarial'])->name('assinaturas.empresarial.create');
 Route::post('/assinaturas/empresarial', [AssinaturaController::class, 'storeEmpresarial'])->name('assinaturas.empresarial.store');
 
+Route::get('/assinaturas/promocional', [AssinaturaController::class, 'createPromocional'])->name('assinaturas.promocional.create');
+Route::post('/assinaturas/promocional', [AssinaturaController::class, 'storePromocional'])->name('assinaturas.promocional.store');
+
 Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('teste');
 
 //Route::get('/csrf-token', function () {
@@ -81,6 +84,20 @@ Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('t
 
 
 Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
+
+    Route::get('/teste-fuso', function() {
+        $cupom = \App\Models\Cupom::find(10);
+
+
+        return [
+            'Banco (UTC)' => $cupom->validade->format('Y-m-d H:i:s'),
+            //'Aplicação' => $cupom->validade->tz(config('app.timezone'))->format('Y-m-d H:i:s'),
+            //'Timestamp' => $cupom->validade->getTimestamp(),
+            //'PHP' => now()->format('Y-m-d H:i:s'),
+            //'MySQL' => DB::select(DB::raw('SELECT NOW() as now'))[0]->now
+        ];
+    });
+
 
     /********* Configurações **************/
     Route::middleware(['apenasDesenvolvedores'])->group(function () {
@@ -116,6 +133,8 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
         Route::get('/plano/administradoras/cidades', [ConfiguracoesController::class, 'index'])->name('admin-planos.index');
         Route::post('/plano/administradoras/cidades', [ConfiguracoesController::class, 'store'])->name('admin-planos.store');
         Route::delete('/plano/administradoras/cidades/{id}', [ConfiguracoesController::class, 'destroy'])->name('admin-planos.destroy');
+
+        Route::post('/cupons', [ConfiguracoesController::class, 'storeCupon'])->name('cupons.store');
 
 
     });
