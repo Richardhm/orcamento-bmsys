@@ -24,6 +24,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'phone',
         'imagem',
+        'cpf',
+        'birth_date',
     ];
 
     /**
@@ -46,14 +48,22 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birth_date' => 'date',
         ];
+    }
+
+    public function isOnTrial()
+    {
+        return $this->assinatura->status === 'trial' &&
+            now()->lt($this->assinatura->trial_ends_at);
     }
 
     public function assinaturaUser()
     {
+
         return EmailAssinatura::whereHas('assinatura', function ($query) {
             $query->where('user_id', $this->id);
-        })->first();
+        })->toSql();
     }
 
     public function isActive()

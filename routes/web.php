@@ -68,7 +68,7 @@ Route::post("/pdf",[DashboardController::class,'criarPDF'])->middleware(['auth',
 Route::get('/assinaturas/individual', [AssinaturaController::class, 'createIndividual'])->name('assinaturas.individual.create');
 Route::post('/assinaturas/individual', [AssinaturaController::class, 'storeIndividual'])->name('assinaturas.individual.store');
 
-Route::get('/assinatura/historico', [AssinaturaController::class, 'historicoPagamentos'])->middleware(['auth', 'verified'])->name('assinatura.historico');
+Route::get('/assinatura/historico', [AssinaturaController::class, 'historicoPagamentos'])->middleware(['auth', 'verified','check'])->name('assinatura.historico');
 
 Route::get('/assinaturas/empresarial', [AssinaturaController::class, 'createEmpresarial'])->name('assinaturas.empresarial.create');
 Route::post('/assinaturas/empresarial', [AssinaturaController::class, 'storeEmpresarial'])->name('assinaturas.empresarial.store');
@@ -84,20 +84,6 @@ Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('t
 
 
 Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
-
-    Route::get('/teste-fuso', function() {
-        $cupom = \App\Models\Cupom::find(10);
-
-
-        return [
-            'Banco (UTC)' => $cupom->validade->format('Y-m-d H:i:s'),
-            //'Aplicação' => $cupom->validade->tz(config('app.timezone'))->format('Y-m-d H:i:s'),
-            //'Timestamp' => $cupom->validade->getTimestamp(),
-            //'PHP' => now()->format('Y-m-d H:i:s'),
-            //'MySQL' => DB::select(DB::raw('SELECT NOW() as now'))[0]->now
-        ];
-    });
-
 
     /********* Configurações **************/
     Route::middleware(['apenasDesenvolvedores'])->group(function () {
@@ -140,21 +126,28 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
     });
     /********* Fim Configurações **************/
 
-    Route::get('/users/manage', [UserController::class, 'index'])->name('users.manage')->middleware('apenasAdministradores');
+    Route::get('/users/manage', [UserController::class, 'index'])->name('users.manage')
+        ->middleware(['apenasAdministradores','check']);
     Route::post('/users/manage', [UserController::class, 'storeUser'])->name('storeUser')->middleware('apenasAdministradores');
 
+    Route::get("/assinatura/alterar", [AssinaturaController::class, 'edit'])->name('assinatura.edit')->middleware('apenasAdministradores');
+    Route::post("/assinatura/trial/store", [AssinaturaController::class, 'storeTrial'])->name('assinaturas.trial.store')->middleware('apenasAdministradores');
 
-    Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/assinatura/expirada', function () {
+        return view('assinaturas.expirada');
+    })->name('assinatura.expirada')->middleware(['checkExpired']);
+
+    Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit')->middleware(['check']);
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', [DashboardController::class,"index"])
-        ->middleware(['verified'])
+        ->middleware(['verified','check'])
         ->name('dashboard');
-    Route::get('/layout', [LayoutController::class, 'index'])->name('layouts.index');
+    Route::get('/layout', [LayoutController::class, 'index'])->name('layouts.index')->middleware(['check']);
     Route::post('/layouts/select', [LayoutController::class, 'select'])->name('layouts.select');
 
-    Route::get('/tabela_completa',[TabelaController::class,'index'])->name('tabela_completa.index');
+    Route::get('/tabela_completa',[TabelaController::class,'index'])->name('tabela_completa.index')->middleware(['check']);
     Route::get('/tabela',[TabelaController::class,'tabela_preco'])->name('tabela.config');
     Route::post('/corretora/select/planos/administradoras',[TabelaController::class,'planosAdministradoraSelect'])->name('planos.administradora.select');
     //Route::post('/corretora/mudar/valor/tabela',[TabelaController::class,'mudarValorTabela'])->name('corretora.mudar.valor.tabela');

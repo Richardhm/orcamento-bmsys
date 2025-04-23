@@ -77,28 +77,90 @@ class AssinaturaController extends Controller
 
 
 
+    private function handleTrialRegistration($request, $imagePath)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'phone' => $request->phone,
+            'imagem' => $imagePath,
+            'cpf' => preg_replace('/[^0-9]/', '', $request->cpf), // Remove formatação
+            'birth_date' => $request->birth_date,
+
+        ]);
+
+        $assinatura = Assinatura::create([
+            'user_id' => $user->id,
+            'tipo_plano_id' => 1,
+            'status' => 'trial',
+            'trial_ends_at' => now()->addDays(3),
+            'emails_permitidos' => 3,
+            'email_extra' => 1,
+            'preco_base' => 0,
+            'preco_total' => 0,
+        ]);
+
+        EmailAssinatura::create([
+            'assinatura_id' => $assinatura->id,
+            'email' => $user->email,
+            'user_id' => $user->id,
+            'is_administrador' => true, // Marca este e-mail como administrador
+        ]);
+
+        SendVerificationEmail::dispatch($user);
+
+
+        return response()->json([
+            'success' => true,
+            'redirect' => route('bemvindo', ['user' => $user->id])
+        ]);
+    }
+
 
 
 
 
     public function storeIndividual(Request $request)
     {
+        $isTrial = $request->has('trial');
 
-        $request->validate([
+        $validationRules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'cpf' => 'required|string',
+            'birth_date' => 'required|date|before:-18 years',
             'phone' => 'required|string',
-            'password' => 'required|confirmed|min:8|confirmed',
-            'paymentToken' => 'required|string',
+            'password' => 'required|confirmed|min:8',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
+        ];
+
+        if(!$isTrial) {
+            $validationRules['paymentToken'] = 'required|string';
+        }
+
+        $request->validate($validationRules);
 
         $imagePath = null;
         if ($request->hasFile('imagem')) {
             $imagePath = $request->file('imagem')->store('users', 'public');
         }
 
+        try {
+            if($isTrial) {
+                return $this->handleTrialRegistration($request,$imagePath);
+            } else {
+                return $this->handlePaidRegistration($request,$imagePath);
+            }
+        } catch (EfiException $e) {
+            // ... tratamento de erro existente
+        }
+
+    }
+
+
+    private function handlePaidRegistration($request, $imagePath)
+    {
         try {
             // Parâmetros do plano
             $params = [
@@ -212,6 +274,95 @@ class AssinaturaController extends Controller
         }
 
     }
+
+    public function storeTrial(Request $request)
+    {
+        try {
+
+            $user = User::find(auth()->user()->id);
+
+            $params = [
+                "id" => 13289
+            ];
+
+            // Itens da assinatura
+            $items = [
+                [
+                    "name" => "Plano Individual",
+                    "amount" => 1,
+                    "value" => 12990 // R$29,90 em centavos
+                ]
+            ];
+            // Dados do cliente
+            $customer = [
+                "name" => $user->name,
+                "cpf" => $user->cpf,
+                "phone_number" => preg_replace('/[^0-9]/', '', $user->phone),
+                "email" => $user->email,
+                "birth" => "1986-10-24"
+            ];
+
+            // Endereço (também necessário)
+            $billingAddress = [
+                "street" => $request->street,
+                "number" => !empty($request->number) ? $request->number : "S/N",
+                "neighborhood" => $request->neighborhood, // Adicionar campo no formulário
+                "zipcode" => str_replace('-', '', $request->zipcode), // Adicionar campo no formulário
+                "city" => $request->city, // Adicionar campo no formulário
+                "state" => $request->state, // Adicionar campo no formulário
+            ];
+
+
+
+            $body = [
+                "items" => $items,
+                "payment" => [
+                    "credit_card" => [
+                        "billing_address" => $billingAddress,
+                        "payment_token" => $request->paymentToken,
+                        "customer" => $customer
+                    ]
+                ],
+                "metadata" => [
+                    "notification_url" => "https://cotacao.bmsys.com.br/callback"
+                ]
+            ];
+
+            $response = $this->efi->createOneStepSubscription($params, $body);
+
+            $assinatura = Assinatura::where("user_id",$user->id)->first();
+            $assinatura->preco_base = 129.90;
+            $assinatura->preco_total = 129.90;
+            $assinatura->status = 'ativo';
+            $assinatura->subscription_id = $response['data']['subscription_id'];
+            $assinatura->trial_ends_at = null;
+            $assinatura->save();
+
+
+            return response()->json([
+                'success' => true,
+
+                'redirect' => route('dashboard')->with('success','Assinatura Atualizada com sucesso')
+            ]);
+
+
+        } catch (EfiException $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->errorDescription,
+                'code' => $e->code
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+
+    }
+
+
 
     public function storePromocional(Request $request)
     {
@@ -344,7 +495,7 @@ class AssinaturaController extends Controller
                 'user_id' => $user->id,
                 'tipo_plano_id' => null, // ID do plano Individual
                 'preco_base' => 250.00,
-                'emails_permitidos' => 5,
+                'emails_permitidos' => 10,
                 'emails_extra' => 1,
                 'preco_total' => 250.00, // Preço base sem e-mails extras
                 'status' => 'ativo',
@@ -386,14 +537,7 @@ class AssinaturaController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
-
-
-
-
-
     }
-
-
 
 
     public function storeEmpresarial(Request $request)
@@ -484,7 +628,7 @@ class AssinaturaController extends Controller
                 'user_id' => $user->id,
                 'tipo_plano_id' => 2, // ID do plano Individual
                 'preco_base' => 250.00,
-                'emails_permitidos' => 5,
+                'emails_permitidos' => 10,
                 'emails_extra' => 1,
                 'preco_total' => 250.00, // Preço base sem e-mails extras
                 'status' => 'ativo',
@@ -526,6 +670,12 @@ class AssinaturaController extends Controller
     {
         return view('assinaturas.promocional.create');
     }
+
+    public function edit()
+    {
+        return view('assinaturas.trial.create');
+    }
+
 
 
 

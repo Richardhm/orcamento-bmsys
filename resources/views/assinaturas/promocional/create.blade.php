@@ -92,8 +92,8 @@
                             <input type="text" name="street" id="street" placeholder="Rua"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                         </div>
-                        <div class="w-full md:w-1/6">
-                            <label for="number" class="block mb-1 font-medium text-white text-sm">Número</label>
+                        <div class="w-full md:w-1/4">
+                            <label for="number" class="block mb-1 font-medium text-white text-sm">Nº <small>(Opcional)</small></label>
                             <input type="text" name="number" id="number" placeholder="Nº"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg">
                         </div>
@@ -110,7 +110,7 @@
                             <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                         </div>
-                        <div class="w-full md:w-1/6">
+                        <div class="w-full md:w-1/4">
                             <label for="state" class="block mb-1 font-medium text-white text-sm">Estado</label>
                             <input type="text" name="state" id="state" placeholder="UF"
                                    class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>

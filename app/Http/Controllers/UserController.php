@@ -61,8 +61,11 @@ class UserController extends Controller
 
         $assinatura = Assinatura::where("user_id",auth()->user()->id)->first();
 
-
-        if($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
+        if($assinatura->status == "trial") {
+            $valor = 0;
+            $limite_gratuito = 3; // 5 por padrão
+            $extra = 0;
+        } elseif($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
             $cupom = Cupom::find($assinatura->cupom_id);
             $valor = 250 - $cupom->desconto_plano;
             $limite_gratuito = $assinatura->emails_permitidos;
@@ -98,6 +101,10 @@ class UserController extends Controller
     }
 
 
+
+
+
+
     public function storeUser(Request $request)
     {
         // Validação dos dados
@@ -107,16 +114,40 @@ class UserController extends Controller
             'phone' => 'required|string|max:20',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        $emails_cobrados = 0;
-        DB::beginTransaction(); // Inicia uma transação
 
-        try {
+        $assinatura_trial = Assinatura::where('user_id', auth()->id())->first();
+        if($assinatura_trial->status == "trial") {
+
             $imagePath = null;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('users', 'public');
             }
 
-            // Passo 1: Criar o usuário
+
+
+            $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
+
+
+
+            if (!$assinatura) {
+                throw new \Exception("Assinatura não encontrada.");
+            }
+
+            //return $assinatura->emails_extra;
+
+            $assinatura->emails_extra += 1;
+
+            if ($assinatura->emails_extra >= $assinatura->emails_permitidos) {
+
+                return response()->json([
+                    'success' => false,
+                    'limite' => true,
+                    'message' => 'Limite de trial atingido'
+                ], 403);
+            }
+
+            $assinatura->save();
+
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -129,48 +160,8 @@ class UserController extends Controller
             $user->primeiro_acesso = 1;
             $user->save();
 
-            // Passo 2: Obter a Assinatura do Administrador
-            $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
-
-            if (!$assinatura) {
-                throw new \Exception("Assinatura não encontrada.");
-            }
 
 
-            if($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
-                $cupom = Cupom::find($assinatura->cupom_id);
-                $preco_base = 250 - $cupom->desconto_plano;
-                $limite_gratuito = $assinatura->emails_permitidos;
-                $preco_extra_por_email = 50 - $cupom->desconto_extra;
-            } elseif (empty($assinatura->cupom_id) && in_array($assinatura->tipo_plano_id, [1, 2])) {
-                $plan = TipoPlano::find($assinatura->tipo_plano_id);
-                $preco_base = $plan->valor_base;
-                $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
-                $preco_extra_por_email = $plan->valor_por_email;
-            }
-
-
-            // Definir valores do plano
-
-
-            // Aumenta emails_extra
-            $assinatura->emails_extra += 1;
-
-            // Verifica se já passou do limite gratuito
-            if ($assinatura->emails_extra > $limite_gratuito) {
-                $emails_cobrados = $assinatura->emails_extra - $limite_gratuito;
-                $assinatura->preco_total = $preco_base + ($emails_cobrados * $preco_extra_por_email);
-            } else {
-                $assinatura->preco_total = $preco_base; // Se ainda está no limite gratuito, mantém o preço base
-            }
-
-            // Salva as alterações na assinatura
-            $assinatura->save();
-
-
-            $this->atualizarAssinaturaEFi($assinatura);
-
-            // Passo 3: Cadastrar o novo e-mail na Tabela `emails_assinatura`
             EmailAssinatura::create([
                 'assinatura_id' => $assinatura->id,
                 'email' => $validated['email'],
@@ -178,23 +169,119 @@ class UserController extends Controller
                 'is_administrador' => false,
             ]);
 
-            DB::commit(); // Confirma as transações
-
-            // Recuperar todos os usuários da assinatura
             $users = User::whereIn(
                 'id',
                 EmailAssinatura::where('assinatura_id', $assinatura->id)
                     ->pluck('user_id')
             )
-            //->where('status', 1)
-            ->get();
+                //->where('status', 1)
+                ->get();
 
             // Retornar o HTML da tabela de usuários
             $html = view('partials.user-table', compact('users'))->render();
-            return response()->json(['success' => true, 'html' => $html,'emails_extra' => $assinatura->emails_extra,'preco_total' => number_format($assinatura->preco_total,2,",","."),'emails_cobrados' => $emails_cobrados]);
-        } catch (\Exception $e) {
-            DB::rollBack(); // Reverte em caso de erro
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+            return response()->json(['success' => true, 'html' => $html,'emails_extra' => $assinatura->emails_extra,'preco_total' => 0,'emails_cobrados' => 0]);
+
+
+        } else {
+
+            $emails_cobrados = 0;
+            DB::beginTransaction(); // Inicia uma transação
+
+            try {
+                $imagePath = null;
+                if ($request->hasFile('image')) {
+                    $imagePath = $request->file('image')->store('users', 'public');
+                }
+
+                // Passo 1: Criar o usuário
+                $user = User::create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'phone' => $validated['phone'] ?? null,
+                    'password' => bcrypt('12345678'), // Senha padrão criptografada
+                    'imagem' => $imagePath
+                ]);
+
+                $user->email_verified_at = now(); // Define o usuário como verificado
+                $user->primeiro_acesso = 1;
+                $user->save();
+
+                // Passo 2: Obter a Assinatura do Administrador
+                $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
+
+                if (!$assinatura) {
+                    throw new \Exception("Assinatura não encontrada.");
+                }
+
+
+                if($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
+                    $cupom = Cupom::find($assinatura->cupom_id);
+                    $preco_base = 250 - $cupom->desconto_plano;
+                    $limite_gratuito = $assinatura->emails_permitidos;
+                    $preco_extra_por_email = 50 - $cupom->desconto_extra;
+                } elseif (empty($assinatura->cupom_id) && in_array($assinatura->tipo_plano_id, [1, 2])) {
+                    $plan = TipoPlano::find($assinatura->tipo_plano_id);
+                    $preco_base = $plan->valor_base;
+                    $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
+                    $preco_extra_por_email = $plan->valor_por_email;
+                }
+
+
+                // Definir valores do plano
+
+
+                // Aumenta emails_extra
+                $assinatura->emails_extra += 1;
+
+                // Verifica se já passou do limite gratuito
+                if ($assinatura->emails_extra > $limite_gratuito) {
+                    $emails_cobrados = $assinatura->emails_extra - $limite_gratuito;
+                    $assinatura->preco_total = $preco_base + ($emails_cobrados * $preco_extra_por_email);
+                } else {
+                    $assinatura->preco_total = $preco_base; // Se ainda está no limite gratuito, mantém o preço base
+                }
+
+                // Salva as alterações na assinatura
+                $assinatura->save();
+
+
+                $this->atualizarAssinaturaEFi($assinatura);
+
+                // Passo 3: Cadastrar o novo e-mail na Tabela `emails_assinatura`
+                EmailAssinatura::create([
+                    'assinatura_id' => $assinatura->id,
+                    'email' => $validated['email'],
+                    'user_id' => $user->id,
+                    'is_administrador' => false,
+                ]);
+
+                DB::commit(); // Confirma as transações
+
+                // Recuperar todos os usuários da assinatura
+                $users = User::whereIn(
+                    'id',
+                    EmailAssinatura::where('assinatura_id', $assinatura->id)
+                        ->pluck('user_id')
+                )
+                    //->where('status', 1)
+                    ->get();
+
+                // Retornar o HTML da tabela de usuários
+                $html = view('partials.user-table', compact('users'))->render();
+                return response()->json(['success' => true, 'html' => $html,'emails_extra' => $assinatura->emails_extra,'preco_total' => number_format($assinatura->preco_total,2,",","."),'emails_cobrados' => $emails_cobrados]);
+            } catch (\Exception $e) {
+                DB::rollBack(); // Reverte em caso de erro
+                return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+            }
+
+
+
+
+
+
+
+
+
         }
     }
 
@@ -204,36 +291,10 @@ class UserController extends Controller
         $user_id = $request->userId;
         $status = $request->status == 'false' ? 0 : 1;
 
-        DB::beginTransaction(); // Inicia transação
+        $assinatura = Assinatura::where("user_id",auth()->id())->firstOrFail();
 
-        try {
-            // Buscar o usuário
+        if($assinatura->status == "trial") {
             $user = User::findOrFail($user_id);
-
-            // Buscar a assinatura do administrador
-            $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
-
-            if($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
-                $cupom = Cupom::find($assinatura->cupom_id);
-                $preco_base = 250 - $cupom->desconto_plano;
-                $limite_gratuito = $assinatura->emails_permitidos;
-                $preco_extra_por_email = 50 - $cupom->desconto_extra;
-            } elseif (empty($assinatura->cupom_id) && in_array($assinatura->tipo_plano_id, [1, 2])) {
-                $plan = TipoPlano::find($assinatura->tipo_plano_id);
-                $preco_base = $plan->valor_base;
-                $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
-                $preco_extra_por_email = $plan->valor_por_email;
-            }
-
-
-
-
-
-
-            // Definir valores do plano
-
-
-            // Verificar se está ativando ou desativando
             if ($status == 1) {
                 // Se estiver ativando e o usuário estava desativado, incrementar emails_extra
                 if ($user->status == 0) {
@@ -245,37 +306,94 @@ class UserController extends Controller
                     $assinatura->emails_extra -= 1;
                 }
             }
-
-            // Recalcular o preço total da assinatura
-            if ($assinatura->emails_extra > $limite_gratuito) {
-                $emails_cobrados = $assinatura->emails_extra - $limite_gratuito;
-                $assinatura->preco_total = $preco_base + ($emails_cobrados * $preco_extra_por_email);
-            } else {
-                $emails_cobrados = 0;
-                $assinatura->preco_total = $preco_base;
-            }
-
-            // Salvar a assinatura
             $assinatura->save();
 
-            // Atualizar o status do usuário
             $user->status = $status;
             $user->save();
 
-            $this->atualizarAssinaturaEFi($assinatura);
 
-            DB::commit(); // Confirma as transações
 
-            return response()->json([
-                'success' => true,
-                'emails_extra' => $assinatura->emails_extra,
-                'preco_total' => number_format($assinatura->preco_total, 2, ",", "."),
-                'emails_cobrados' => $emails_cobrados
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack(); // Reverte em caso de erro
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+
+        } else {
+            DB::beginTransaction(); // Inicia transação
+
+            try {
+                // Buscar o usuário
+                $user = User::findOrFail($user_id);
+
+                // Buscar a assinatura do administrador
+                $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
+
+                if($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
+                    $cupom = Cupom::find($assinatura->cupom_id);
+                    $preco_base = 250 - $cupom->desconto_plano;
+                    $limite_gratuito = $assinatura->emails_permitidos;
+                    $preco_extra_por_email = 50 - $cupom->desconto_extra;
+                } elseif (empty($assinatura->cupom_id) && in_array($assinatura->tipo_plano_id, [1, 2])) {
+                    $plan = TipoPlano::find($assinatura->tipo_plano_id);
+                    $preco_base = $plan->valor_base;
+                    $limite_gratuito = $assinatura->emails_permitidos; // 5 por padrão
+                    $preco_extra_por_email = $plan->valor_por_email;
+                }
+
+
+
+
+
+
+                // Definir valores do plano
+
+
+                // Verificar se está ativando ou desativando
+                if ($status == 1) {
+                    // Se estiver ativando e o usuário estava desativado, incrementar emails_extra
+                    if ($user->status == 0) {
+                        $assinatura->emails_extra += 1;
+                    }
+                } else {
+                    // Se estiver desativando e emails_extra for maior que zero, decrementa
+                    if ($user->status == 1 && $assinatura->emails_extra > 0) {
+                        $assinatura->emails_extra -= 1;
+                    }
+                }
+
+                // Recalcular o preço total da assinatura
+                if ($assinatura->emails_extra > $limite_gratuito) {
+                    $emails_cobrados = $assinatura->emails_extra - $limite_gratuito;
+                    $assinatura->preco_total = $preco_base + ($emails_cobrados * $preco_extra_por_email);
+                } else {
+                    $emails_cobrados = 0;
+                    $assinatura->preco_total = $preco_base;
+                }
+
+                // Salvar a assinatura
+                $assinatura->save();
+
+                // Atualizar o status do usuário
+                $user->status = $status;
+                $user->save();
+
+                $this->atualizarAssinaturaEFi($assinatura);
+
+                DB::commit(); // Confirma as transações
+
+                return response()->json([
+                    'success' => true,
+                    'emails_extra' => $assinatura->emails_extra,
+                    'preco_total' => number_format($assinatura->preco_total, 2, ",", "."),
+                    'emails_cobrados' => $emails_cobrados
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack(); // Reverte em caso de erro
+                return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+            }
         }
+
+
+
+
+
+
     }
 
 

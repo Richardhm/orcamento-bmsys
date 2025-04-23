@@ -204,10 +204,134 @@
 
     <!--Fim Modal Editar-->
 
+    <div id="paymentModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Fundo escuro -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-900 opacity-75"></div>
+            </div>
+
+            <!-- Conteúdo da Modal -->
+            <div class="inline-block align-bottom bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <!-- Header -->
+                <div class="bg-gray-900 px-4 py-3 sm:px-6 flex justify-between items-center border-b border-gray-700">
+                    <h3 class="text-lg font-semibold leading-6 text-cyan-400">🔓 Upgrade de Assinatura</h3>
+                    <button onclick="closePaymentModal()" class="text-gray-400 hover:text-gray-200">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Body -->
+                <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="bg-blue-900/20 text-blue-300 p-3 rounded-lg mb-4 text-sm">
+                        💡 Para continuar usando o sistema, complete seu cadastro com os dados de pagamento:
+                    </div>
+
+                    <!-- Campos do Cartão (Reutilize seus componentes existentes) -->
+                    <div class="space-y-4">
+
+                        <div>
+                            <label for="nome_titular" class="block mb-1 font-medium text-white text-sm">Nome do Titular</label>
+                            <input type="text" name="nome_titular" required id="nome_titular" placeholder="Nome do Titular do Cartão"
+                                   class="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-100 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Número do Cartão</label>
+                            <input type="text"
+                                   class="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-100 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                                   placeholder="0000 0000 0000 0000">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Validade</label>
+                                <div class="flex gap-2">
+                                    <select class="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-100">
+                                        <!-- Opções do mês -->
+                                    </select>
+                                    <select class="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-100">
+                                        <!-- Opções do ano -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">CVV</label>
+                                <input type="text"
+                                       class="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-100"
+                                       placeholder="123">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <input type="hidden" name="bandeira" id="bandeira">
+
+
+                </div>
+
+                <!-- Footer -->
+                <div class="bg-gray-900 px-4 py-3 sm:px-6 flex justify-end gap-3 border-t border-gray-700">
+                    <button onclick="closePaymentModal()"
+                            class="px-4 py-2 text-gray-300 hover:text-gray-100 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors">
+                        Cancelar
+                    </button>
+                    <button class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-md transition-colors flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Confirmar Pagamento
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
 
 
     @section('scripts')
         <script>
+
+            function openPaymentModal() {
+                document.getElementById('paymentModal').classList.remove('hidden');
+            }
+
+            function closePaymentModal() {
+                document.getElementById('paymentModal').classList.add('hidden');
+            }
+
+            // Toast com link
+            function showUpgradeToast() {
+                Toastify({
+                    text: 'Limite trial atingido! <a href="#" onclick="openPaymentModal()" class="font-semibold underline ml-2">Fazer upgrade</a>',
+                    duration: -1, // Toast permanente
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: '#eab308',
+                    escapeMarkup: false,
+                    className: '!bg-yellow-600 !text-white',
+                    stopOnFocus: true
+                }).showToast();
+            }
+
+
+
+
+
+
+
+
+
 
             document.addEventListener('DOMContentLoaded', function () {
                 const modal = document.getElementById('user-modal');
@@ -290,9 +414,10 @@
                         })
                             .then(response => response.json())
                             .then(data => {
-                                //console.log(data);
+                                console.log(data);
                                 load.style.display = "none";
                                 if (data.success) {
+
                                     //console.log(data);
                                     document.getElementById('user-table').innerHTML = data.html;
 
@@ -302,6 +427,21 @@
                                         //document.querySelector('.quantidade_emails').innerHTML  = `Pagando por ${data.emails_cobrados} e-mails extras`;
                                     }
                                     closeModal();
+                                } else if(data.limite) {
+                                    const toast = toastr.warning(
+                                        'Limite de 3 usuários atingido no trial. <a href="{{route('assinatura.edit')}}" id="upgrade-link" class="text-blue-200 hover:text-blue-400 underline">Clique aqui para assinar</a>',
+                                        'Limite Excedido',
+                                        {
+                                            timeOut: 30000, // 30 segundos
+                                            progressBar: true,
+                                            closeButton: true,
+                                            allowHtml: true, // Permite HTML no conteúdo
+                                            onclick: function() {
+                                                //toastr.clear(this);
+                                                //openPaymentModal();
+                                            }
+                                        }
+                                    );
                                 } else {
                                     toastr.error("Erro ao tentar cadastrar usuario.", "Erro");
                                     //console.log(data);
@@ -324,6 +464,11 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+
+
+
+
+
                 const openModalButtonEdit = document.getElementById('openModal');
                 const closeModalButtonEdit = document.getElementById('closeModal');
                 const modalEdit = document.getElementById('editUserModal');
@@ -392,6 +537,7 @@
 
                 $(document).on('change', '.toggle-switch', function () {
                     let load = $(".ajax_load");
+                    load.fadeIn(100).css("display", "flex");
                     let userId = $(this).data('id');
                     let status = $(this).is(':checked');
 
@@ -401,9 +547,6 @@
                        data: {
                            userId,
                            status
-                       },
-                       beforeSend: function () {
-                            load.fadeIn(100).css("display", "flex");
                        },
                        success:function(res) {
                            load.fadeOut(100).css("display", "none");
@@ -417,7 +560,8 @@
 
                 $("body").on("submit", "#editUserForm", function (e) {
                     e.preventDefault();
-
+                    let load = $(".ajax_load");
+                    load.fadeIn(100).css("display", "flex");
                     let formData = new FormData(this);
 
                     $.ajax({
@@ -427,7 +571,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            console.log(response);
+                            load.fadeOut(100).css("display", "none");
                             if (response.success) {
                                 //alert(response.message);
                                 // Atualiza os dados na interface ou fecha a modal

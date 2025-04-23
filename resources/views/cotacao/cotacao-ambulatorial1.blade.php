@@ -716,7 +716,7 @@
                         <tr>
 
                             <td>
-                                <div class="valor-copart-laranja">Desc.15%</div>
+                                <div class="valor-copart-laranja">Desc.{{$valor_desconto}}%</div>
                             </td>
 
                         </tr>
@@ -931,7 +931,8 @@
 
 
 
-        <div style="{{$com_coparticipacao == 1 ? 'width: 50%;float:left' : 'width:50%;float:left;margin-left:490px;' }}">
+
+        <div style="{{$com_coparticipacao == 1 && $carencia == 1 ? 'width: 50%;float:left' : 'width:50%;float:left;margin-left:490px;' }}">
 
             <!-- Primeiro Bloco -->
 
@@ -1095,7 +1096,7 @@
 
         </div>
 
-        @if($com_coparticipacao == 1)
+        @if($com_coparticipacao == 1 && $carencia == 1)
 
             <div style="width: 50%;float:right;">
 
@@ -1251,7 +1252,7 @@
 
                                     <span style="font-size: 1.3em; color: yellow;text-align:left;display: block;font-weight: bold;">
 
-                                        Cirurgias, Internações, Exames<br>
+                                        Exames<br>
 
                                         Alto Custo, Trat. Psicológico,<br>
 
@@ -1269,37 +1270,9 @@
 
 
 
-                    <!-- 5º Bloco -->
 
-                    <div style="padding-bottom: 10px;">
 
-                        <table>
 
-                            <tr>
-
-                                <td style="vertical-align: top; padding-right: 10px;">
-
-                                    <div style="border: 8px solid yellow;background-color:white;border-radius:10%;color:blue; width: 80px; text-align: center; line-height: 1; padding: 12px;height:80px;">
-
-                                        <span style="font-size: 1.4em; font-weight: bold;">300</span><br>
-
-                                        <span style="font-size: 1.2em;">Dias</span>
-
-                                    </div>
-
-                                </td>
-
-                                <td style="vertical-align: middle;">
-
-                                    <span style="font-size: 1.3em; color: yellow;text-align:left;display: block;font-weight: bold;">Parto</span>
-
-                                </td>
-
-                            </tr>
-
-                        </table>
-
-                    </div>
 
 
 
@@ -1347,14 +1320,10 @@
 
         @endif
 
-        @if($com_coparticipacao == 0)
+        @if($com_coparticipacao == 0 && $carencia == 1)
 
             <div style="width:100%;display:block;padding:0;clear:both;margin:0;">
-
                 <div style="width:70%;margin:0 auto;height:100%;padding:0px;">
-
-
-
                     <div style="width:50%;float:left;">
 
 

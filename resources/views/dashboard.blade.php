@@ -316,7 +316,7 @@
                    $plusBtn.on('click', function(e) {
                        e.preventDefault();
                        const currentTotal = getTotal();
-                       if (currentTotal < 30) {
+                       if (currentTotal < 7) {
                            $input.val((i, val) => {
                                const newVal = parseInt(val) + 1;
                                return isNaN(newVal) ? 1 : newVal;
@@ -348,8 +348,8 @@
 
                        // Verifica o total global
                        const currentTotal = getTotal();
-                       if (currentTotal > 30) {
-                           value -= (currentTotal - 30);
+                       if (currentTotal > 7) {
+                           value -= (currentTotal - 7);
                            toastr.error(`Limitado a 7 pessoas.`, 'Limite Atingido', {
                                timeOut: 3000,
                                progressBar: true,

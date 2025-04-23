@@ -13,7 +13,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Usuários</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Cidades</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Próximo Pagamento</th>
+
 
                             </tr>
                         </thead>
@@ -49,9 +49,7 @@
                                         {{ ucfirst($assinatura['status']) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                                    {{ $assinatura['proximo_pagamento'] ?? '-' }}
-                                </td>
+
 
                             </tr>
                         @endforeach

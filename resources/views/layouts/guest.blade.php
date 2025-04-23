@@ -140,7 +140,7 @@
     </div>
 </div>
 <div id="app-container" class="min-h-screen flex flex-col sm:justify-center items-center sm:pt-0">
-    <div class="container_formulario {{ (request()->routeIs('login')) ? 'login' : ((request()->routeIs('assinaturas.individual.create') || request()->routeIs('assinaturas.empresarial.create') || request()->routeIs('assinaturas.promocional.create')) ? 'cadastro' : '') }} w-full mt-1 px-2 py-1 dark:bg-[rgba(254,254,254,0.18)] bg-transparent dark:backdrop-blur-[15px] dark:border-white dark:border-2 shadow-md overflow-hidden sm:rounded-lg">
+    <div class="container_formulario {{ (request()->routeIs('login')) ? 'login' : ((request()->routeIs('assinaturas.individual.create') || request()->routeIs('assinaturas.empresarial.create') || request()->routeIs('assinaturas.promocional.create') || request()->routeIs('assinatura.edit')) ? 'cadastro' : '') }} w-full mt-1 px-2 py-1 dark:bg-[rgba(254,254,254,0.18)] bg-transparent dark:backdrop-blur-[15px] dark:border-white dark:border-2 shadow-md overflow-hidden sm:rounded-lg">
         {{ $slot }}
     </div>
 </div>

@@ -83,6 +83,56 @@
             <div class="col-span-2 bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] p-6 rounded-lg shadow">
                 <h2 class="text-xl font-semibold mb-4 text-white">Associações Existentes</h2>
 
+                <table class="min-w-full text-xs">
+                    <thead class="bg-gray-800 text-white">
+                    <tr>
+                        <th class="px-2 py-1 text-left">Assinatura</th>
+                        <th class="px-2 py-1 text-left">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($vinculosAgrupados as $assinaturaId => $vinculos)
+                        @php
+                            $firstVinculo = $vinculos->first();
+                        @endphp
+                        <tr>
+                            <td class="px-2 py-1 font-bold text-white">
+                                {{ $firstVinculo->assinatura->user->name }} ({{ $firstVinculo->assinatura->user->email }})
+                            </td>
+                            <td class="px-2 py-1">
+                                <button onclick="toggleVinculos('{{ $assinaturaId }}')"
+                                        class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                                    Ver Vínculos
+                                </button>
+                            </td>
+                        </tr>
+
+                    <tbody id="vinculos-{{ $assinaturaId }}" style="display:none;">
+                    @foreach($vinculos as $vinculo)
+                        <tr class="bg-gray-700">
+                            <td class="px-2 py-1 text-white">
+                                {{ $vinculo->administradora->nome }} /
+                                {{ $vinculo->plano->nome }} /
+                                {{ $vinculo->tabelaOrigem->nome ?? 'N/A' }}
+                            </td>
+                            <td class="px-2 py-1">
+                                <form action="{{ route('admin-planos.destroy', $vinculo->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="text-red-500 hover:text-red-700"
+                                            onclick="return confirm('Excluir este vínculo?')">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                    @endforeach
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>

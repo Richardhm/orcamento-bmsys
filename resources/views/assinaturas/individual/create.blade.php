@@ -83,8 +83,14 @@
             <!--Lado Direito-->
 
             <div class="w-full md:w-[49%]">
+                <div class="mb-4">
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="trial" id="trialCheckbox" class="form-checkbox text-cyan-500">
+                        <span class="ml-2 text-white">Desejo usar o período de teste gratuito de 3 dias</span>
+                    </label>
+                </div>
 
-                <fieldset class="border border-gray-300 p-1 rounded-lg">
+                <fieldset id="cardFields" class="border border-gray-300 p-1 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Endereço</legend>
 
                         <div class="flex flex-col md:flex-row gap-4">
@@ -99,8 +105,8 @@
                                 <input type="text" name="street" id="street" placeholder="Rua"
                                        class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                             </div>
-                            <div class="w-full md:w-1/6">
-                                <label for="number" class="block mb-1 font-medium text-white text-sm">Número</label>
+                            <div class="w-full md:w-1/4">
+                                <label for="number" class="block mb-1 font-medium text-white text-sm">Nº <small>(Opcional)</small></label>
                                 <input type="text" name="number" id="number" placeholder="Nº"
                                        class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg">
                             </div>
@@ -117,7 +123,7 @@
                                 <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro"
                                        class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                             </div>
-                            <div class="w-full md:w-1/6">
+                            <div class="w-full md:w-1/4">
                                 <label for="state" class="block mb-1 font-medium text-white text-sm">Estado</label>
                                 <input type="text" name="state" id="state" placeholder="UF"
                                        class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
@@ -126,7 +132,7 @@
 
                 </fieldset>
 
-                <fieldset class="border border-gray-300 p-1 rounded-lg">
+                <fieldset id="cardDados" class="border border-gray-300 p-1 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Dados Cartão</legend>
                     <div class="mb-2">
                         <label for="numero_cartao" class="block mb-1 font-medium text-white text-sm">Número do Cartão</label>
@@ -445,8 +451,12 @@
 
                 $("form[name='cadastrar_individual']").on('submit',function(e){
                     e.preventDefault();
+
                     let load = $(".ajax_load");
                     load.fadeIn(100).css("display", "flex");
+
+                    const isTrial = $('#trialCheckbox').is(':checked');
+
                     if(!TestaCPF($("#cpf").val().replace(/[^0-9]/g,''))) {
                         toastr.error("O CPF informado é inválido. Verifique e tente novamente.", "Error",{
                             toastClass: "toast-custom-width"
@@ -454,117 +464,179 @@
                         return false;
                     }
 
-                    let numero_cartao = $("#numero_cartao").val();
-                    //let bandeira_validar = getBandeira(numero_cartao);
-                    let bandeira_validar = getBandeira(numero_cartao.replace(/\s/g, "").substring(0,6));
 
 
-                    if (!bandeira_validar) {
-                        toastr.error("O número do cartão informado não corresponde a nenhuma bandeira válida.", "Erro");
-                        return false;
-                    }
+                    if(!isTrial) {
 
-                    if (!validarCartaoCredito(numero_cartao)) {
-                        toastr.error("O número do cartão de crédito é inválido. Verifique e tente novamente.", "Erro");
-                        return false;
-                    }
-
-                    let nome_titular = $("#nome_titular").val();
-                    let mes = $("#mes").val();
-                    let ano = $("#ano").val();
-                    let cvv = $("#cvv").val();
-                    let bandeira = $("#bandeira").val();
-
-
-                    let nome = $("#name").val();
-                    let email_usuario = $("#email").val();
-                    let cpf = $("#cpf").val();
-                    let telefone = $("#phone").val();
-                    let password = $("#password").val();
-                    let password_confirmation = $("#password_confirmation").val();
-                    let birth_date = $("#birth_date").val();
-                    let zipcode = $("#zipcode").val();
-                    let street = $("#street").val();
-                    let number = $("#number").val();
-                    let city = $("#city").val();
-                    let neighborhood = $("#neighborhood").val();
-                    let state = $("#state").val();
-
-
-                    let paymentToken = "";
-                    let mascaraCartao = "";
-
-                    checkout.getPaymentToken(
-                        {
-                            brand: bandeira,
-                            number: numero_cartao,
-                            cvv: cvv,
-                            expiration_month: mes,
-                            expiration_year: ano
-                        },
-                        function(error,response) {
-                            if(error) {
-                                load.fadeOut(100).css("display", "none");
-                            } else {
-                                paymentToken = response.data.payment_token;
-                                mascaraCartao = response.data.card_mask;
-
-                                $.ajax({
-                                    url:"{{ route('assinaturas.individual.store') }}",
-                                    method:"POST",
-                                    data: {
-                                        paymentToken,
-                                        mascaraCartao,
-                                        name: nome,
-                                        email:email_usuario,
-                                        cpf,
-                                        phone: telefone,
-                                        password,
-                                        password_confirmation,
-                                        birth_date,
-                                        zipcode,
-                                        street,
-                                        number,
-                                        city,
-                                        neighborhood,
-                                        state
-                                    },
-                                    beforeSend: function () {
-                                        load.fadeIn(100).css("display", "flex");
-
-                                    },
-                                    success:function(res) {
-                                        //if(res.success == true) {
-                                            load.fadeOut(100).css("display", "none");
-                                        //}
-                                        if (res.success && res.redirect) {
-                                            window.location.href = res.redirect;
-                                        }
-                                    },
-                                    error: function (xhr) {
-                                        load.fadeOut(100).css("display", "none");
-                                        if (xhr.status === 422) {
-                                            load.fadeOut(100).css("display", "none");
-                                            let errors = xhr.responseJSON.errors;
-                                            $.each(errors, function (key, value) {
-                                                toastr.error(value[0], "Erro");
-                                            });
-                                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
-                                            toastr.error(xhr.responseJSON.message, "Erro");
-                                        } else {
-                                            toastr.error("Ocorreu um erro inesperado. Tente novamente.", "Erro");
-                                        }
-                                    }
-                                });
-
-                            }
+                        let numero_cartao = $("#numero_cartao").val();
+                        let bandeira_validar = getBandeira(numero_cartao.replace(/\s/g, "").substring(0,6));
+                        if (!bandeira_validar) {
+                            toastr.error("O número do cartão informado não corresponde a nenhuma bandeira válida.", "Erro");
+                            return false;
                         }
-                    );
+                        if (!validarCartaoCredito(numero_cartao)) {
+                            toastr.error("O número do cartão de crédito é inválido. Verifique e tente novamente.", "Erro");
+                            return false;
+                        }
+
+                        let paymentToken = "";
+                        let mascaraCartao = "";
+
+                        checkout.getPaymentToken(
+                            {
+                                brand: bandeira,
+                                number: numero_cartao,
+                                cvv: cvv,
+                                expiration_month: mes,
+                                expiration_year: ano
+                            },
+                            function(error,response) {
+                                if(error) {
+                                    load.fadeOut(100).css("display", "none");
+                                } else {
+                                    paymentToken = response.data.payment_token;
+                                    mascaraCartao = response.data.card_mask;
+
+                                    let formData = new FormData($("form[name='cadastrar_individual']")[0]);
+                                    formData.append("paymentToken", paymentToken);
+                                    formData.append("mascaraCartao", mascaraCartao);
+
+                                    $.ajax({
+                                        url:"{{ route('assinaturas.individual.store') }}",
+                                        method:"POST",
+                                        data: formData,
+                                        contentType: false,  // Importante para envio de arquivos
+                                        processData: false,  // Impede que o jQuery converta os dados
+
+                                        beforeSend: function () {
+                                            load.fadeIn(100).css("display", "flex");
+
+                                        },
+                                        success:function(res) {
+                                            //if(res.success == true) {
+                                            load.fadeOut(100).css("display", "none");
+                                            //}
+                                            if (res.success && res.redirect) {
+                                                window.location.href = res.redirect;
+                                            }
+                                        },
+                                        error: function (xhr) {
+                                            load.fadeOut(100).css("display", "none");
+                                            if (xhr.status === 422) {
+                                                load.fadeOut(100).css("display", "none");
+                                                let errors = xhr.responseJSON.errors;
+                                                $.each(errors, function (key, value) {
+                                                    toastr.error(value[0], "Erro");
+                                                });
+                                            } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                                                toastr.error(xhr.responseJSON.message, "Erro");
+                                            } else {
+                                                toastr.error("Ocorreu um erro inesperado. Tente novamente.", "Erro");
+                                            }
+                                        }
+                                    });
+
+                                }
+                            }
+                        );
+
+
+
+
+
+                    } else {
+                        let formData = new FormData($("form[name='cadastrar_individual']")[0]);
+                        formData.append("trial", isTrial);
+                        $.ajax({
+                            url:"{{ route('assinaturas.individual.store') }}",
+                            method:"POST",
+                            data: formData,
+                            contentType: false,  // Importante para envio de arquivos
+                            processData: false,  // Impede que o jQuery converta os dados
+
+                            beforeSend: function () {
+                                load.fadeIn(100).css("display", "flex");
+
+                            },
+                            success:function(res) {
+                                //if(res.success == true) {
+                                load.fadeOut(100).css("display", "none");
+                                //}
+                                if (res.success && res.redirect) {
+                                    window.location.href = res.redirect;
+                                }
+                            },
+                            error: function (xhr) {
+                                load.fadeOut(100).css("display", "none");
+                                if (xhr.status === 422) {
+                                    load.fadeOut(100).css("display", "none");
+                                    let errors = xhr.responseJSON.errors;
+                                    $.each(errors, function (key, value) {
+                                        toastr.error(value[0], "Erro");
+                                    });
+                                } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                                    toastr.error(xhr.responseJSON.message, "Erro");
+                                } else {
+                                    toastr.error("Ocorreu um erro inesperado. Tente novamente.", "Erro");
+                                }
+                            }
+                        });
+                    }
+
+
+
+
+
+
+
+                    // let nome_titular = $("#nome_titular").val();
+                    // let mes = $("#mes").val();
+                    // let ano = $("#ano").val();
+                    // let cvv = $("#cvv").val();
+                    // let bandeira = $("#bandeira").val();
+                    //
+                    //
+                    // let nome = $("#name").val();
+                    // let email_usuario = $("#email").val();
+                    // let cpf = $("#cpf").val();
+                    // let telefone = $("#phone").val();
+                    // let password = $("#password").val();
+                    // let password_confirmation = $("#password_confirmation").val();
+                    // let birth_date = $("#birth_date").val();
+                    // let zipcode = $("#zipcode").val();
+                    // let street = $("#street").val();
+                    // let number = $("#number").val();
+                    // let city = $("#city").val();
+                    // let neighborhood = $("#neighborhood").val();
+                    // let state = $("#state").val();
+
+
+
 
                     return false;
                 });
 
+                document.getElementById('trialCheckbox').addEventListener('change', function() {
+                    const cardFields = document.getElementById('cardFields');
+                    const cardDados = document.getElementById('cardDados');
+                    const cardPreview = document.getElementById('cartao');
 
+                    if(this.checked) {
+                        cardFields.style.display = 'none';
+                        cardPreview.style.display = 'none';
+                        cardDados.style.display = 'none';
+                        // Remove required dos campos
+                        document.querySelectorAll('#cardFields [required]').forEach(el => el.removeAttribute('required'));
+                        document.querySelectorAll('#cardDados [required]').forEach(el => el.removeAttribute('required'));
+                    } else {
+                        cardFields.style.display = 'block';
+                        cardPreview.style.display = 'block';
+                        cardDados.style.display = 'block';
+                        // Adiciona required novamente
+                        document.querySelectorAll('#cardFields [required]').forEach(el => el.setAttribute('required', 'true'));
+                        document.querySelectorAll('#cardDados [required]').forEach(el => el.setAttribute('required', 'true'));
+                    }
+                });
 
 
             });

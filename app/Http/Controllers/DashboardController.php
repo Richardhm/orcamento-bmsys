@@ -93,6 +93,7 @@ class DashboardController extends Controller
 
 
 
+
         if($ambulatorial == 0) {
             $dados = Tabela::select('tabelas.*')
                 ->selectRaw("CASE $sql END AS quantidade")
@@ -103,6 +104,17 @@ class DashboardController extends Controller
                 //->where('acomodacao_id',"!=",3)
                 ->whereIn('tabelas.faixa_etaria_id', explode(',', $keys))
                 ->get();
+            $desconto = Desconto::where("tabela_origens_id",$cidade)->where("plano_id",$plano)->where("administradora_id",$operadora)->count();
+            $status_desconto = 0;
+            if($desconto == 1) {
+                $status_desconto = 1;
+            }
+
+
+
+
+
+
 
             $status = $dados->contains('odonto', 0);
             $status_odonto = $dados->contains('odonto',1);
@@ -113,7 +125,8 @@ class DashboardController extends Controller
                 "plano_nome" => $plano_nome,
                 "cidade_nome" => $cidade_nome,
                 "imagem_plano" => $imagem_plano,
-                "status" => $status
+                "status" => $status,
+                "status_desconto" => $status_desconto
             ]);
 
         } else {
@@ -128,13 +141,21 @@ class DashboardController extends Controller
                 ->get();
             //return $dados;
             $status = $dados->contains('odonto', 0);
+
+            $desconto = Desconto::where("tabela_origens_id",$cidade)->where("plano_id",$plano)->where("administradora_id",$operadora)->count();
+            $status_desconto = 0;
+            if($desconto == 1) {
+                $status_desconto = 1;
+            }
+
             return view("cotacao.cotacao-ambulatorial",[
                 "dados" => $dados,
                 "operadora" => $imagem_operadora,
                 "plano_nome" => $plano_nome,
                 "cidade_nome" => $cidade_nome,
                 "imagem_plano" => $imagem_plano,
-                "status" => $status
+                "status" => $status,
+                "status_desconto" => $status_desconto
             ]);
         }
     }
@@ -143,7 +164,8 @@ class DashboardController extends Controller
     {
         $com_coparticipacao = request()->comcoparticipacao  == "true" ? 1 : 0;
         $sem_coparticipacao = request()->semcoparticipacao  == "true" ? 1 : 0;
-        $apenasvalores      = request()->apenasvalores     == "true" ? 1 : 0;
+        //$status_desconto    = request()->status_desconto    == "true" ? 1 : 0;
+        $apenasvalores      = request()->apenasvalores      == "true" ? 1 : 0;
         $tipo_documento     = request()->tipo_documento;
 
         $ambulatorial = request()->ambulatorial;
@@ -199,16 +221,25 @@ class DashboardController extends Controller
                 ->get();
 
 
-            $desconto = Desconto::where('plano_id', $plano)
-                ->where('tabela_origens_id', $cidade)
-                ->first();
+            $valor_desconto = 0;
+            if($status_desconto) {
+                $desconto = Desconto::where('plano_id', $plano)->where('tabela_origens_id', $cidade)->where('administradora_id',$operadora)->first();
+                if($desconto) {
+                    $valor_desconto = $desconto->valor;
+                }
 
-            $valor_desconto = "";
-            $status_desconto = 0;
-            if($desconto) {
-                $valor_desconto = $desconto->valor;
-                $status_desconto = 1;
             }
+
+//            $desconto = Desconto::where('plano_id', $plano)
+//                ->where('tabela_origens_id', $cidade)
+//                ->first();
+//
+//            $valor_desconto = "";
+//            $status_desconto = 0;
+//            if($desconto) {
+//                $valor_desconto = $desconto->valor;
+//                $status_desconto = 1;
+//            }
 
             $layout = auth()->user()->layout_id;
             $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
@@ -291,6 +322,7 @@ class DashboardController extends Controller
                 $layout_folder = auth()->user()->isFolder() ?: '';
 
 
+
                 $view = \Illuminate\Support\Facades\View::make($cabecalhoName,[
                     'com_coparticipacao' => $com_coparticipacao,
                     'sem_coparticipacao' => $sem_coparticipacao,
@@ -300,7 +332,8 @@ class DashboardController extends Controller
                     //'carencias' => $carencias,
                     'dados' => $dados,
                     //'pdf' => $pdf_copar,
-
+                    'linha_01' => $linha_01,
+                    'linha_02' => $linha_02,
                     'nome' => $nome,
                     'cidade' => $cidade_nome,
                     'plano_nome' => $plano_nome,
@@ -376,7 +409,8 @@ class DashboardController extends Controller
             $viewName = "cotacao.modelo-ambulatorial{$layout_user}";
 
             $frase = "Ambulatorial ".$odonto_frase;
-            $imagem_user = auth()->user()->imagem;
+
+            $imagem_user = "storage/".auth()->user()->imagem;
 
             $dados = Tabela::select('tabelas.*')
                 ->selectRaw("CASE $sql END AS quantidade")
@@ -404,16 +438,61 @@ class DashboardController extends Controller
             $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
             $viewName = "cotacao.cotacao-ambulatorial{$layout_user}";
 
-            $desconto = Desconto::where('plano_id', $plano)
-                ->where('tabela_origens_id', $cidade)
-                ->first();
+            $valor_desconto = 0;
+            if($status_desconto) {
+                $desconto = Desconto::where('plano_id', $plano)->where('tabela_origens_id', $cidade)->where('administradora_id',$operadora)->first();
+                if($desconto) {
+                    $valor_desconto = $desconto->valor;
+                }
 
-            $valor_desconto = "";
-            $status_desconto = 0;
-            if($desconto) {
-                $valor_desconto = $desconto->valor;
-                $status_desconto = 1;
             }
+
+
+
+
+
+            if(($cidade_uf == "MT" || $cidade_uf == "MS") && $plano == 3) {
+                $status_excecao = true;
+                $pdf_copar = PdfExcecao::where('plano_id', $plano)->first();
+            } else {
+                $hasTabelaOrigens = Pdf::where('plano_id', $plano)
+                    ->where('tabela_origens_id',$cidade)
+                    ->exists();
+                if ($hasTabelaOrigens) {
+                    $pdf_copar = Pdf::where('plano_id', $plano)
+                        ->where('tabela_origens_id',$cidade)
+                        ->first();
+
+                    if($pdf_copar->linha02) {
+                        $itens = explode('|', $pdf_copar->linha02);
+                        $itensFormatados = array_map(function($item) {
+                            return trim($item); // Remove espaços extras
+                        }, $itens);
+                        $linha_01 = $itensFormatados[0];
+                        $linha_02 = $itensFormatados[1];
+                    }
+
+
+                } else {
+                    $pdf_copar = Pdf::where('plano_id', $plano)->first();
+                    if(isset($pdf_copar->linha02) && $pdf_copar->linha02) {
+                        $itens = explode('|', $pdf_copar->linha02);
+                        $itensFormatados = array_map(function($item) {
+                            return trim($item); // Remove espaços extras
+                        }, $itens);
+                        $linha_01 = $itensFormatados[0];
+                        $linha_02 = $itensFormatados[1];
+                    }
+
+                }
+            }
+
+
+
+
+
+
+
 
             $view = \Illuminate\Support\Facades\View::make($viewName,[
                 'com_coparticipacao' => 1,
@@ -432,7 +511,7 @@ class DashboardController extends Controller
                 'odonto_frase' => $odonto_frase,
                 'administradora' => $admin_nome,
                 'frase' => $frase,
-                'status_carencia' => $status_carencia,
+                'carencia' => $status_carencia,
                 'status_desconto' => $status_desconto,
                 'odonto' => $odonto,
                 'celular' => $celular,

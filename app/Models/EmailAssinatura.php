@@ -19,7 +19,7 @@ class EmailAssinatura extends Model
 
     public function assinatura()
     {
-        return $this->belongsTo(Assinatura::class);
+        return $this->belongsTo(Assinatura::class,'assinatura_id','id');
     }
 
     public function user(): BelongsTo

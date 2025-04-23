@@ -11,6 +11,7 @@ class Desconto extends Model
     protected $fillable = [
         'tabela_origens_id',
         'plano_id',
+        'administradora_id',
         'valor',
     ];
 

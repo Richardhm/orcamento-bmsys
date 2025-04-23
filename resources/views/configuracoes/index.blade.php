@@ -443,7 +443,14 @@
 
 
 
-
+            function toggleVinculos(assinaturaId) {
+                const tbody = document.getElementById('vinculos-' + assinaturaId);
+                if (tbody.style.display === 'none') {
+                    tbody.style.display = '';
+                } else {
+                    tbody.style.display = 'none';
+                }
+            }
 
 
 

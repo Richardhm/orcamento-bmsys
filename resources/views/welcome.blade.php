@@ -386,7 +386,7 @@
                                         ✅ Liberado para 03 Usuários
                                     </li>
                                     <li class="flex items-center">
-                                        ✅ Taxa implantação R$ 150,00 (PIX)
+                                        ✅ Taxa implantação R$ 100,00 (PIX)
                                     </li>
                                     <li class="flex items-center">
                                         ✅ Tabelas Nacionais Atualizadas
@@ -421,94 +421,94 @@
                         </a>
 
             <!-- Plano Empresarial -->
-            <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-full md:w-[320px] min-h-[70vh] rounded-xl shadow-lg p-4 md:p-6 border-4 border-red-600 transition-all hover:bg-gray-100 flex flex-col justify-between">
-                <!-- Observação -->
+{{--            <a href="{{route('assinaturas.empresarial.create')}}" class="bg-white w-full md:w-[320px] min-h-[70vh] rounded-xl shadow-lg p-4 md:p-6 border-4 border-red-600 transition-all hover:bg-gray-100 flex flex-col justify-between">--}}
+{{--                <!-- Observação -->--}}
 
 
-                <div>
+{{--                <div>--}}
 
-                    <div class="bg-red-600 text-white text-center py-3 rounded-full mt-6">
-                        Assine Agora
-                    </div>
-                    <div class="my-6 text-center flex items-center justify-center">
-                        <p class="flex flex-col items-start relative">
-                            <span class="text-lg font-bold text-red-600 leading-none">R$</span>
-                            <span class="text-7xl font-bold text-red-600">250,00</span>
-                            <span class="text-sm text-red-600 self-end">/mês</span>
-                        </p>
-                    </div>
-                    <ul class="space-y-2 text-gray-600 text-xs">
-                        <li class="flex items-center">
-                            ✅ Liberado para 05 Usuários
-                        </li>
-                        <ul class="space-y-2 text-gray-600 text-xs">
-                            <li class="flex items-center">
-                                ✅ Taxa implantação R$ 150,00 (PIX)
-                            </li>
-                            <li class="flex items-center">
-                                ✅ Tabelas Nacionais Atualizadas
-                            </li>
-                            <li class="flex items-center">
-                                ✅ Cotações ilimitadas
-                            </li>
-                            <li class="flex items-center">
-                                ✅ Fácil de usar
-                            </li>
-                            <li class="flex items-center">
-                                ✅ Equipes colaborativas
-                            </li>
-                            <li class="flex items-center">
-                                ✅ Gestão completa
-                            </li>
+{{--                    <div class="bg-red-600 text-white text-center py-3 rounded-full mt-6">--}}
+{{--                        Assine Agora--}}
+{{--                    </div>--}}
+{{--                    <div class="my-6 text-center flex items-center justify-center">--}}
+{{--                        <p class="flex flex-col items-start relative">--}}
+{{--                            <span class="text-lg font-bold text-red-600 leading-none">R$</span>--}}
+{{--                            <span class="text-7xl font-bold text-red-600">250,00</span>--}}
+{{--                            <span class="text-sm text-red-600 self-end">/mês</span>--}}
+{{--                        </p>--}}
+{{--                    </div>--}}
+{{--                    <ul class="space-y-2 text-gray-600 text-xs">--}}
+{{--                        <li class="flex items-center">--}}
+{{--                            ✅ Liberado para 10 Usuários--}}
+{{--                        </li>--}}
+{{--                        <ul class="space-y-2 text-gray-600 text-xs">--}}
+{{--                            <li class="flex items-center">--}}
+{{--                                ✅ Taxa implantação R$ 150,00 (PIX)--}}
+{{--                            </li>--}}
+{{--                            <li class="flex items-center">--}}
+{{--                                ✅ Tabelas Nacionais Atualizadas--}}
+{{--                            </li>--}}
+{{--                            <li class="flex items-center">--}}
+{{--                                ✅ Cotações ilimitadas--}}
+{{--                            </li>--}}
+{{--                            <li class="flex items-center">--}}
+{{--                                ✅ Fácil de usar--}}
+{{--                            </li>--}}
+{{--                            <li class="flex items-center">--}}
+{{--                                ✅ Equipes colaborativas--}}
+{{--                            </li>--}}
+{{--                            <li class="flex items-center">--}}
+{{--                                ✅ Gestão completa--}}
+{{--                            </li>--}}
 
-                            <li class="flex items-center">
-                                ✅ Acima de 5 usuários, R$ 50,00 /usuário
-                            </li>
-                        </ul>
-                </div>
-                <div>
-                    <p class="text-center text-gray-500 flex justify-center items-center text-sm">
-                        Saiba Mais, clique aqui
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                        </svg>
-                    </p>
-                </div>
-            </a>
+{{--                            <li class="flex items-center">--}}
+{{--                                ✅ Acima de 5 usuários, R$ 50,00 /usuário--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
+{{--                </div>--}}
+{{--                <div>--}}
+{{--                    <p class="text-center text-gray-500 flex justify-center items-center text-sm">--}}
+{{--                        Saiba Mais, clique aqui--}}
+{{--                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">--}}
+{{--                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />--}}
+{{--                        </svg>--}}
+{{--                    </p>--}}
+{{--                </div>--}}
+{{--            </a>--}}
 
 
 
-            <div class="bg-white w-full md:w-[320px] min-h-[70vh] rounded-xl shadow-lg p-4 md:p-6 border-4 border-green-400 transition-all hover:bg-gray-100 flex flex-col justify-between">
-                <div>
-                    <div class="bg-green-500 text-white text-center py-3 rounded-full mt-6">
-                        Vamos Negociar
-                    </div>
+{{--            <div class="bg-white w-full md:w-[320px] min-h-[70vh] rounded-xl shadow-lg p-4 md:p-6 border-4 border-green-400 transition-all hover:bg-gray-100 flex flex-col justify-between">--}}
+{{--                <div>--}}
+{{--                    <div class="bg-green-500 text-white text-center py-3 rounded-full mt-6">--}}
+{{--                        Vamos Negociar--}}
+{{--                    </div>--}}
 
-                    <div class="my-6 text-center flex items-center justify-center">
-                        <p class="flex flex-col items-start relative">
-                            <span class="text-lg font-bold text-green-700 leading-none">A partir de</span>
-                            <span class="text-5xl font-bold text-green-700">R$ Sob Consulta</span>
-                        </p>
-                    </div>
+{{--                    <div class="my-6 text-center flex items-center justify-center">--}}
+{{--                        <p class="flex flex-col items-start relative">--}}
+{{--                            <span class="text-lg font-bold text-green-700 leading-none">A partir de</span>--}}
+{{--                            <span class="text-5xl font-bold text-green-700">R$ Sob Consulta</span>--}}
+{{--                        </p>--}}
+{{--                    </div>--}}
 
-                    <ul class="space-y-2 text-gray-600 text-xs">
-                        <li class="flex items-center">✅ Planos Personalizados</li>
-                        <li class="flex items-center">✅ Atendimento Exclusivo</li>
-                        <li class="flex items-center">✅ Negociação Direta</li>
-                        <li class="flex items-center">✅ Flexibilidade de Pagamento</li>
-                    </ul>
-                </div>
+{{--                    <ul class="space-y-2 text-gray-600 text-xs">--}}
+{{--                        <li class="flex items-center">✅ Planos Personalizados</li>--}}
+{{--                        <li class="flex items-center">✅ Atendimento Exclusivo</li>--}}
+{{--                        <li class="flex items-center">✅ Negociação Direta</li>--}}
+{{--                        <li class="flex items-center">✅ Flexibilidade de Pagamento</li>--}}
+{{--                    </ul>--}}
+{{--                </div>--}}
 
-                <div class="mt-6">
-                    <a href="https://wa.me/5599999999999?text=Ol%C3%A1%2C+gostaria+de+negociar+o+plano" target="_blank"
-                       class="text-center text-green-600 flex justify-center items-center gap-2 text-sm font-semibold hover:underline">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="size-6">
-                            <path d="M20.52 3.48a11.934 11.934 0 0 0-16.96 0 11.933 11.933 0 0 0-2.62 12.68l-1.58 5.75 5.75-1.58a11.933 11.933 0 0 0 12.68-2.62 11.934 11.934 0 0 0 0-16.96zM12 22c-1.49 0-2.94-.29-4.31-.87l-.31-.13-3.42.94.94-3.42-.13-.31A10 10 0 1 1 12 22zm4.94-7.06c-.26-.13-1.53-.76-1.77-.85s-.41-.13-.58.13-.67.85-.82 1.02-.3.19-.56.06a8.08 8.08 0 0 1-2.38-1.47 8.88 8.88 0 0 1-1.65-2.04c-.17-.3-.02-.46.12-.6.13-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.51-.07-.13-.58-1.4-.8-1.91-.21-.51-.42-.44-.58-.45h-.5c-.17 0-.45.06-.68.3-.23.23-.9.88-.9 2.15s.92 2.5 1.05 2.67c.13.17 1.81 2.76 4.4 3.87.62.27 1.1.43 1.48.55.62.2 1.18.17 1.63.1.5-.08 1.53-.63 1.75-1.24.22-.6.22-1.12.15-1.23-.06-.12-.24-.19-.5-.31z"/>
-                        </svg>
-                        Não achou seu preço? Fale com a gente!
-                    </a>
-                </div>
-            </div>
+{{--                <div class="mt-6">--}}
+{{--                    <a href="https://wa.me/5599999999999?text=Ol%C3%A1%2C+gostaria+de+negociar+o+plano" target="_blank"--}}
+{{--                       class="text-center text-green-600 flex justify-center items-center gap-2 text-sm font-semibold hover:underline">--}}
+{{--                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="size-6">--}}
+{{--                            <path d="M20.52 3.48a11.934 11.934 0 0 0-16.96 0 11.933 11.933 0 0 0-2.62 12.68l-1.58 5.75 5.75-1.58a11.933 11.933 0 0 0 12.68-2.62 11.934 11.934 0 0 0 0-16.96zM12 22c-1.49 0-2.94-.29-4.31-.87l-.31-.13-3.42.94.94-3.42-.13-.31A10 10 0 1 1 12 22zm4.94-7.06c-.26-.13-1.53-.76-1.77-.85s-.41-.13-.58.13-.67.85-.82 1.02-.3.19-.56.06a8.08 8.08 0 0 1-2.38-1.47 8.88 8.88 0 0 1-1.65-2.04c-.17-.3-.02-.46.12-.6.13-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.51-.07-.13-.58-1.4-.8-1.91-.21-.51-.42-.44-.58-.45h-.5c-.17 0-.45.06-.68.3-.23.23-.9.88-.9 2.15s.92 2.5 1.05 2.67c.13.17 1.81 2.76 4.4 3.87.62.27 1.1.43 1.48.55.62.2 1.18.17 1.63.1.5-.08 1.53-.63 1.75-1.24.22-.6.22-1.12.15-1.23-.06-.12-.24-.19-.5-.31z"/>--}}
+{{--                        </svg>--}}
+{{--                        Não achou seu preço? Fale com a gente!--}}
+{{--                    </a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
 
 

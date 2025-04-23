@@ -16,12 +16,14 @@ class AssinaturasUser extends Component
     {
         $this->assinaturas = Assinatura::with([
             'user',
-            'emails' => function($query) {
-                $query->where('is_administrador', 1);
-            },
+            'emails',
             'cidades'
         ])
+            //->where('is_administrador', 1)
+            //->get();
             ->paginate($perPage);
+        //dd($this->assinaturas);
+
 
         $this->paginacao = $this->assinaturas;
     }

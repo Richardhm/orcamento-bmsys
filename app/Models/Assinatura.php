@@ -18,12 +18,13 @@ class Assinatura extends Model
         'subscription_id',
         'last_updated',
         'last_payment',
-        'next_charge'
+        'next_charge',
+        'trial_ends_at'
     ];
 
     public function emails()
     {
-        return $this->hasMany(EmailAssinatura::class);
+        return $this->hasMany(EmailAssinatura::class,'assinatura_id','id');
     }
 //
     public function emailsAssinatura()
@@ -49,7 +50,7 @@ class Assinatura extends Model
     public function cidades()
     {
 
-        return $this->belongsToMany(TabelaOrigens::class, 'assinatura_cidade','assinatura_id','tabela_origem_id');
+        return $this->belongsToMany(TabelaOrigens::class, 'administradora_planos','assinatura_id','tabela_origens_id');
     }
 
 

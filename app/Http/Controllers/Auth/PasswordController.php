@@ -26,10 +26,7 @@ class PasswordController extends Controller
                 'password' => Hash::make($validated['password']),
             ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Senha atualizada com sucesso'
-            ]);
+            return redirect()->back()->with('success', 'Senha atualizado com sucesso!');
         } catch (ValidationException $e) {
             return response()->json([
                 'success' => false,
