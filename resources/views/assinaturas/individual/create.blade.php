@@ -468,6 +468,7 @@
 
                     if(!isTrial) {
 
+
                         let numero_cartao = $("#numero_cartao").val();
                         let bandeira_validar = getBandeira(numero_cartao.replace(/\s/g, "").substring(0,6));
                         if (!bandeira_validar) {
@@ -482,6 +483,13 @@
                         let paymentToken = "";
                         let mascaraCartao = "";
 
+                        let nome_titular = $("#nome_titular").val();
+                        let mes = $("#mes").val();
+                        let ano = $("#ano").val();
+                        let cvv = $("#cvv").val();
+                        let bandeira = $("#bandeira").val();
+
+
                         checkout.getPaymentToken(
                             {
                                 brand: bandeira,
@@ -491,6 +499,7 @@
                                 expiration_year: ano
                             },
                             function(error,response) {
+                                console.log(error);
                                 if(error) {
                                     load.fadeOut(100).css("display", "none");
                                 } else {
@@ -513,6 +522,7 @@
 
                                         },
                                         success:function(res) {
+                                            console.log(res);
                                             //if(res.success == true) {
                                             load.fadeOut(100).css("display", "none");
                                             //}
