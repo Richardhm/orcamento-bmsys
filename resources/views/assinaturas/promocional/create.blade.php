@@ -233,7 +233,7 @@
 
             <div class="w-full mb-4">
 
-
+                <label for="promocional" class="text-white">Coloque o código Promocional</label>
                     <div class="mt-2 w-60">
                         <input type="text"
                                name="cupom_promocional"

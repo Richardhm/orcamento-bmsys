@@ -40,7 +40,7 @@
                 <fieldset class="border border-gray-300 px-1 py-3 rounded-lg">
                     <legend class="text-lg font-semibold text-white">Senha</legend>
                     <div class="mb-5">
-                        <label for="password" class="block mb-1 font-medium text-white text-sm">Senha</label>
+                        <label for="password" class="block mb-1 font-medium text-white text-sm">Senha <small>(Minimo 8 caracteres)</small></label>
                         <div class="relative">
                             <input type="password" name="password" id="password" class="bg-gray-50 border text-gray-950 border-gray-300 text-sm block w-full p-1.5 rounded-lg" placeholder="Sua Senha" required />
                             <button type="button" id="togglePassword" class="absolute right-2 top-2 cursor-pointer" style="color:black;">
@@ -56,7 +56,7 @@
 
                     </div>
                     <div class="mb-5">
-                        <label for="password_confirmation" class="block mb-1 font-medium text-white text-sm">Confirmar Senha</label>
+                        <label for="password_confirmation" class="block mb-1 font-medium text-white text-sm">Confirmar Senha <small>(Minimo 8 caracteres)</small></label>
                         <div class="relative">
                             <input type="password" name="password_confirmation" id="password_confirmation" class="bg-gray-50 border text-gray-950 border-gray-300 text-sm block w-full p-1.5 rounded-lg" placeholder="Confirmar Senha" required />
                             <button type="button" id="togglePasswordConfirmation" class="absolute right-2 top-2 cursor-pointer" style="color:black;">
