@@ -83,7 +83,7 @@ Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('t
 //})->name('csrf-token');
 
 
-Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     /********* Configurações **************/
     Route::middleware(['apenasDesenvolvedores'])->group(function () {
@@ -122,9 +122,19 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
 
         Route::post('/cupons', [ConfiguracoesController::class, 'storeCupon'])->name('cupons.store');
 
+        Route::post('/config/filtrar-planos-por-admin', [ConfiguracoesController::class, 'planosPorAdministradora'])->name('filtrar.planos.admin');
+        Route::post('/config/filtrar-tabelas-por-admin-plano', [ConfiguracoesController::class, 'tabelasPorAdminPlano'])->name('filtrar.tabelas.adminplano');
+
+
+
+
 
     });
     /********* Fim Configurações **************/
+
+
+
+
 
     Route::get('/users/manage', [UserController::class, 'index'])->name('users.manage')
         ->middleware(['apenasAdministradores','check']);
@@ -144,6 +154,10 @@ Route::middleware(['auth','prevent-simultaneous-logins'])->group(function () {
     Route::get('/dashboard', [DashboardController::class,"index"])
         ->middleware(['verified','check'])
         ->name('dashboard');
+
+    Route::post('/cidades/origem', [DashboardController::class, 'getCidadesDeOrigem'])->name('cidades.origem');
+
+
     Route::get('/layout', [LayoutController::class, 'index'])->name('layouts.index')->middleware(['check']);
     Route::post('/layouts/select', [LayoutController::class, 'select'])->name('layouts.select');
 

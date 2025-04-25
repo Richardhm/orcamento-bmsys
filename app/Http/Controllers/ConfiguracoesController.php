@@ -426,22 +426,22 @@ class ConfiguracoesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'assinatura_id' => 'required|array',
-            'administradora_id' => 'required|array',
-            'plano_id' => 'required|array',
-            'tabela_origem_id' => 'nullable|array',
+            'assinatura_id' => 'required',
+            'administradora_id' => 'required',
+            'plano_id' => 'required',
+            'tabela_origem_id' => 'required',
         ]);
 
-        $assinaturas = $request->assinatura_id;
-        $administradoras = $request->administradora_id;
-        $planos = $request->plano_id;
-        $tabelas = $request->tabela_origem_id ?? [];
+        $assinaturaId = $request->assinatura_id;
+        $administradoraId = $request->administradora_id;
+        $planoId = $request->plano_id;
+        $tabelas = $request->tabela_origem_id ?? "";
 
         $inserts = [];
 
-        foreach ($assinaturas as $assinaturaId) {
-            foreach ($administradoras as $administradoraId) {
-                foreach ($planos as $planoId) {
+        //foreach ($assinaturas as $assinaturaId) {
+            //foreach ($administradoras as $administradoraId) {
+                //foreach ($planos as $planoId) {
                     foreach ($tabelas as $tabelaId) {
 
                         // Verifica se já existe antes de adicionar no array
@@ -463,9 +463,9 @@ class ConfiguracoesController extends Controller
                             ];
                         }
                     }
-                }
-            }
-        }
+                //}
+            //}
+        //}
 
         if (!empty($inserts)) {
             AdministradoraPlano::insert($inserts);
@@ -573,6 +573,39 @@ class ConfiguracoesController extends Controller
         $caracteres = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         return substr(str_shuffle(str_repeat($caracteres, 5)), 0, 10);
     }
+
+
+    public function planosPorAdministradora(Request $request)
+    {
+
+        $administradoraIds = $request->input('administradora_id');
+
+        $planos = \DB::table('tabelas')
+            ->join('planos', 'planos.id', '=', 'tabelas.plano_id')
+            ->where('tabelas.administradora_id', $administradoraIds)
+            ->select('planos.id', 'planos.nome')
+            ->groupBy('planos.id', 'planos.nome')
+            ->get();
+
+        return response()->json($planos);
+    }
+
+    public function tabelasPorAdminPlano(Request $request)
+    {
+        $administradoraIds = $request->input('administradora_id');
+        $planoIds = $request->input('plano_id');
+
+        $tabelas = \DB::table('tabelas')
+            ->join('tabela_origens', 'tabela_origens.id', '=', 'tabelas.tabela_origens_id')
+            ->where('tabelas.administradora_id', $administradoraIds)
+            ->where('tabelas.plano_id', $planoIds)
+            ->select('tabela_origens.id', 'tabela_origens.nome')
+            ->groupBy('tabela_origens.id', 'tabela_origens.nome')
+            ->get();
+
+        return response()->json($tabelas);
+    }
+
 
 
 

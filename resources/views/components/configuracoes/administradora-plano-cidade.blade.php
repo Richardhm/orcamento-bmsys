@@ -21,7 +21,7 @@
                             <div class="space-y-2 max-h-60 overflow-y-auto">
                                 @foreach($assinaturas as $ass)
                                     <label class="flex items-center space-x-1 text-white text-sm">
-                                        <input type="checkbox" name="assinatura_id[]" value="{{ $ass->id }}"
+                                        <input type="radio" name="assinatura_id" value="{{ $ass->id }}"
                                                class="rounded border-gray-300">
                                         <span>{{ $ass->user->name }} ({{ $ass->user->email }})</span>
                                     </label>
@@ -35,7 +35,7 @@
                             <div class="space-y-2 max-h-60 overflow-y-auto">
                                 @foreach($administradoras as $adm)
                                     <label class="flex items-center space-x-1 text-white text-sm">
-                                        <input type="checkbox" name="administradora_id[]" value="{{ $adm->id }}"
+                                        <input type="radio" name="administradora_id" value="{{ $adm->id }}"
                                                class="rounded border-gray-300">
                                         <span>{{ $adm->nome }}</span>
                                     </label>
@@ -44,32 +44,20 @@
                         </div>
 
                         <!-- Planos -->
-                        <div>
+                        <div id="bloco-planos" style="display:none;">
                             <h3 class="text-white mb-2 font-medium">Planos</h3>
-                            <div class="space-y-2 max-h-60 overflow-y-auto">
-                                @foreach($planos as $plano)
-                                    <label class="flex items-center space-x-1 text-white text-sm">
-                                        <input type="checkbox" name="plano_id[]" value="{{ $plano->id }}"
-                                               class="rounded border-gray-300">
-                                        <span>{{ $plano->nome }}</span>
-                                    </label>
-                                @endforeach
+                            <div class="space-y-2 max-h-60 overflow-y-auto" id="lista-planos">
+                                <!-- Populado via JS -->
+                            </div>
+                        </div>
+                        <!-- Tabelas de Origem -->
+                        <div id="bloco-tabelas" style="display:none;">
+                            <h3 class="text-white mb-2 font-medium">Tabelas de Origem</h3>
+                            <div class="space-y-2 max-h-60 overflow-y-auto" id="lista-tabelas">
+                                <!-- Populado via JS -->
                             </div>
                         </div>
 
-                        <!-- Tabelas de Origem -->
-                        <div>
-                            <h3 class="text-white mb-2 font-medium">Tabelas de Origem</h3>
-                            <div class="space-y-2 max-h-60 overflow-y-auto">
-                                @foreach($tabelas as $tabela)
-                                    <label class="flex items-center space-x-1 text-white text-sm">
-                                        <input type="checkbox" name="tabela_origem_id[]" value="{{ $tabela->id }}"
-                                               class="rounded border-gray-300">
-                                        <span>{{ $tabela->nome }}</span>
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
                     </div>
 
                     <button type="submit"

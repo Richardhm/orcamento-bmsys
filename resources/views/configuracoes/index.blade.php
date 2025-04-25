@@ -632,6 +632,101 @@
                 }
             });
 
+            $('#bloco-planos').hide();
+            $('#bloco-tabelas').hide();
+
+            // Quando usuário seleciona administradoras
+            $("input[name='administradora_id']").on('change', function(){
+                //var adminSelecionados = $("input[name='administradora_id']:checked").map(function(){return this.value;}).get();
+                let adminSelecionados = $(this).val();
+                $('#bloco-tabelas').hide(); // Esconde tabelas
+                $('#bloco-planos').hide(); // Esconde blocos até carregar
+
+                if(adminSelecionados.length > 0) {
+                    $.ajax({
+                        url: "{{ route('filtrar.planos.admin') }}",
+                        type: "POST",
+                        data: {
+                            administradora_id: adminSelecionados,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(planos) {
+                            console.log(planos);
+                            $("#lista-planos").empty();
+                            $.each(planos, function(i, plano){
+                                $("#lista-planos").append(
+                                    `<label class="flex items-center space-x-1 text-white text-sm">
+                            <input type="radio" name="plano_id" value="${plano.id}" class="rounded border-gray-300 plano-checkbox-js">
+                            <span>${plano.nome}</span>
+                          </label>`
+                                );
+                            });
+                            $('#bloco-planos').show();
+                        }
+                    });
+                }
+            });
+
+            // Quando usuário seleciona um plano
+            $(document).on('change', ".plano-checkbox-js", function(){
+                var adminSelecionados = $("input[name='administradora_id']:checked").val();
+                var planosSelecionados = $(this).val();
+
+                $('#bloco-tabelas').hide();
+
+                if(planosSelecionados && adminSelecionados) {
+                    $.ajax({
+                        url: "{{ route('filtrar.tabelas.adminplano') }}",
+                        type: "POST",
+                        data: {
+                            administradora_id: adminSelecionados,
+                            plano_id: planosSelecionados,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(tabelas){
+                            $("#lista-tabelas").empty();
+                            $.each(tabelas, function(i, tabela){
+                                $("#lista-tabelas").append(
+                                    `<label class="flex items-center space-x-1 text-white text-sm">
+                            <input type="checkbox" name="tabela_origem_id[]" value="${tabela.id}" class="rounded border-gray-300">
+                            <span>${tabela.nome}</span>
+                          </label>`
+                                );
+                            });
+                            $('#bloco-tabelas').show();
+                        }
+                    });
+                }
+            });
+
+            // Sempre que mudar administradora, limpa planos e tabelas
+            $("input[name='administradora_id[]']").on('change', function(){
+                $("#lista-planos").empty();
+                $("#lista-tabelas").empty();
+                $('#bloco-planos').hide();
+                $('#bloco-tabelas').hide();
+            });
+
+            // Sempre que mudar planos, limpa tabelas
+            $(document).on('change', ".plano-checkbox-js", function(){
+                $("#lista-tabelas").empty();
+                $('#bloco-tabelas').hide();
+            });
+
+            // Opcional: ao mudar assinatura, limpa tudo
+            $("input[name='assinatura_id[]']").on('change', function(){
+                $("input[name='administradora_id[]']").prop('checked', false);
+                $("#lista-planos").empty(); $("#lista-tabelas").empty();
+                $('#bloco-planos').hide(); $('#bloco-tabelas').hide();
+            });
+
+
+
+
+
+
+
+
 
         </script>
     @endsection
