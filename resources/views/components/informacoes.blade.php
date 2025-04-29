@@ -5,9 +5,19 @@
 
     <form>
         <div class="w-full flex">
-            <div class="ml-1 w-full">
+            <div class="ml-3 w-[32%]">
+                <label for="estado" class="text-white text-sm">UF</label>
+                <select id="estado" class="py-2 py-2 text-black w-full dark:border-white text-xs px-1 me-2 mb-2 font-medium rounded-lg dark:bg-transparent dark:text-white">
+                    <option value="" class="text-xs text-black">Escolher UF</option>
+                    @foreach($estados as $uf)
+                        <option value="{{$uf->uf}}" class="text-black">{{$uf->uf}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="ml-1 w-[60%]">
+                <label for="cidade" class="text-white text-sm">Cidade</label>
                 <select id="cidade" class="py-2 py-2 text-black w-full dark:border-white text-xs px-1 me-2 mb-2 font-medium rounded-lg dark:bg-transparent dark:text-white">
-                    <option value="" class="text-center text-lg text-black">Escolher Cidade</option>
+                    <option value="" class="text-xs text-black">Escolher Cidade</option>
                     @foreach($cidades as $cc)
                         <option value="{{$cc->id}}" class="text-black">{{$cc->nome}}</option>
                     @endforeach

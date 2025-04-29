@@ -126,6 +126,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/config/filtrar-tabelas-por-admin-plano', [ConfiguracoesController::class, 'tabelasPorAdminPlano'])->name('filtrar.tabelas.adminplano');
 
 
+        Route::post("/config/carencia",[ConfiguracoesController::class, 'storeCarencia'])->name('carencia.store');
+
+        Route::get('/carencia/detalhe', [ConfiguracoesController::class, 'detalheCarencia'])->name('carencia.detalhe');
+        Route::delete('/carencia/deleteGrupo', [ConfiguracoesController::class, 'deleteGrupoCarencia'])->name('carencia.deleteGrupo');
+
+        Route::post('/pdf-excecao', [ConfiguracoesController::class, 'storePdfExcecao'])->name('pdf-excecao.store');
+        Route::delete('/pdf-excecao/{id}', [ConfiguracoesController::class, 'destroyPdfExcecao'])->name('pdf-excecao.destroy');
 
 
 

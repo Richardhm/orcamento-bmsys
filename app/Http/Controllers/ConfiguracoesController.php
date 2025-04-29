@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Validator;
+use App\Models\PdfExcecao;
+
 
 class ConfiguracoesController extends Controller
 {
@@ -474,6 +476,69 @@ class ConfiguracoesController extends Controller
         return response()->json(['success' => 'Associações criadas com sucesso!']);
     }
 
+    public function detalheCarencia(Request $request)
+    {
+        $plano_id = $request->get('plano_id');
+        $tabela_origens_id = $request->get('tabela_origens_id');
+
+        $plano = \App\Models\Plano::findOrFail($plano_id);
+        $cidade = \App\Models\TabelaOrigens::findOrFail($tabela_origens_id);
+
+        $carencias = \App\Models\Carencia::where('plano_id', $plano_id)
+            ->where('tabela_origens_id', $tabela_origens_id)
+            ->orderBy('id')
+            ->get();
+
+        return view('carencia.detalhe', compact('plano', 'cidade', 'carencias'));
+    }
+
+    public function deleteGrupoCarencia(Request $request)
+    {
+        $plano_id = $request->get('plano_id');
+        $tabela_origens_id = $request->get('tabela_origens_id');
+
+        \App\Models\Carencia::where('plano_id', $plano_id)
+            ->where('tabela_origens_id', $tabela_origens_id)
+            ->delete();
+
+        return redirect()->route('configuracoes.index')
+            ->with('success', 'Grupo de carências excluído com sucesso!');
+    }
+
+
+
+
+
+    public function storeCarencia(Request $request)
+    {
+        $plano_id           = $request->input('plano_id');
+        $tabela_origens_id  = $request->input('tabela_origens_id');
+
+        $carencia = \App\Models\Carencia::where('plano_id', $plano_id)
+            ->where('tabela_origens_id', $tabela_origens_id)
+            ->count();
+
+        if($carencia >= 1) {
+            \App\Models\Carencia::where('plano_id', $plano_id)
+                ->where('tabela_origens_id', $tabela_origens_id)
+                ->delete();
+        }
+
+        // Cria os 6 registros novos
+        for ($i = 1; $i <= 6; $i++) {
+            \App\Models\Carencia::create([
+                'plano_id'          => $plano_id,
+                'tabela_origens_id' => $tabela_origens_id,
+                'tempo'             => $request->input("tempo_{$i}"),
+                'detalhe'           => $request->input("detalhe_{$i}"),
+
+            ]);
+        }
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
 
 
     public function destroy($id)
@@ -607,7 +672,22 @@ class ConfiguracoesController extends Controller
     }
 
 
+    public function storePdfExcecao(Request $request)
+    {
+        PdfExcecao::create($request->all());
 
+        return redirect()->back()->with('success', 'Registro salvo!');
+    }
+
+    public function destroyPdfExcecao($id)
+    {
+        PdfExcecao::destroy($id);
+
+
+
+
+        return redirect()->back()->with('success', 'Registro excluído!');
+    }
 
 
 
