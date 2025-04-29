@@ -4,18 +4,21 @@
             <div class="bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] overflow-hidden shadow-sm sm:rounded-lg">
                 <!-- Container das Abas -->
                 <div class="border-b border-gray-200">
-                    <nav class="flex space-x-5" aria-label="Tabs">
+                    <nav class="flex space-x-3" aria-label="Tabs">
                         <!-- Itens das Abas -->
-                        <a href="#tab0" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent active rounded-tl-lg rounded-tr-lg">Tabelas</a>
-                        <a href="#tab1" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Coparticipações</a>
-                        <a href="#tab2" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Cidades</a>
-                        <a href="#tab3" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Assinaturas/Cidade</a>
-                        <a href="#tab4" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Administradora</a>
-                        <a href="#tab5" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Planos</a>
-                        <a href="#tab6" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Desconto</a>
-                        <a href="#tab7" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Assinaturas/User</a>
-                        <a href="#tab8" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Administradora/Plano/Cidade</a>
-                        <a href="#tab9" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Cupons</a>
+                        <a href="#tab0" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent active rounded-tl-lg rounded-tr-lg">Tabelas</a>
+                        <a href="#tab1" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Coparticipações</a>
+                        <a href="#tab2" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Cidades</a>
+                        <a href="#tab3" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Assinaturas/Cidade</a>
+                        <a href="#tab4" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent">Administradora</a>
+                        <a href="#tab5" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Planos</a>
+                        <a href="#tab6" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Desconto</a>
+                        <a href="#tab7" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Assinaturas/User</a>
+                        <a href="#tab8" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Administradora/Plano/Cidade</a>
+                        <a href="#tab9" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Cupons</a>
+                        <a href="#tab10" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">Carencia</a>
+                        <a href="#tab11" class="tab-button whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm text-white hover:bg-white/10 transition-all border-transparent rounded-tr-lg">PDF Exceção</a>
+
                     </nav>
                 </div>
 
@@ -51,6 +54,12 @@
                     </div>
                     <div id="tab9" class="tab-content hidden">
                         <x-configuracoes.cupons-tab />
+                    </div>
+                    <div id="tab10" class="tab-content hidden">
+                        <x-configuracoes.carencia-tab />
+                    </div>
+                    <div id="tab11" class="tab-content hidden">
+                        <x-configuracoes.pdf-excecao-tab />
                     </div>
                 </div>
             </div>
@@ -684,6 +693,11 @@
                             _token: $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function(tabelas){
+                            //window.location.reload();
+                            // if(res.success) {
+                            //     document.getElementById('success-codigo').classList.remove('hidden');
+                            //
+                            // }
                             $("#lista-tabelas").empty();
                             $.each(tabelas, function(i, tabela){
                                 $("#lista-tabelas").append(
