@@ -168,8 +168,22 @@
 
             </div>
 
-            <!--Fim Lado Direito-->
 
+            <div>
+                <label for="cupom_promocional" class="text-white">Você possui um cupom Promocional?</label>
+                <input type="checkbox" id="cupom_promocional">
+            </div>
+
+
+            <!--Fim Lado Direito-->
+            <fieldset id="cardCupom" class="border border-gray-300 p-1 rounded-lg w-full">
+                <legend class="text-lg font-semibold text-white">Cupom Promocional?</legend>
+
+                <div class="mb-2">
+                    <label for="cupom_promocional" class="block mb-1 font-medium text-white text-sm">Digite o seu cupom promocional abaixo</label>
+                    <input type="text" name="cupom_promocional" id="cupom_promocional" class="rounded">
+                </div>
+            </fieldset>
 
             <div class="w-full mx-auto my-1">
                 <button type="submit" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2 text-center me-2 mb-1 w-full rounded-lg">Salvar</button>
@@ -189,7 +203,16 @@
                     }
                 });
 
+                $('#cardCupom').hide();
 
+                // Coloca um listener no checkbox
+                $('#cupom_promocional').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        $('#cardCupom').show();
+                    } else {
+                        $('#cardCupom').hide();
+                    }
+                });
 
 
 

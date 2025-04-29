@@ -1,4 +1,15 @@
 <x-app-layout>
+    <div id="loading-cidades" style="display:none; position: absolute; left:0; right:0; margin:auto; top:0; bottom:0; z-index:9999; background:rgba(0,0,0,0.2); width:100%; height:100%; text-align:center;">
+        <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);">
+            <div class="jumping-dots-loader">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+
+
     @if(Auth::user()->isAdmin() && !Auth::user()->primeiro_acesso)
         <div class="bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] flex flex-col items-center justify-center text-center w-full text-white rounded py-2 mb-4 relative">
             <div class="mb-2">
@@ -35,7 +46,7 @@
 
     <input type="hidden" id="odonto_resultado" />
     <div class="max-w-full mx-auto sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-x-4 px-4">
-        <x-informacoes :cidades="$cidades" class="sm:mx-5"></x-informacoes>
+        <x-informacoes :cidades="$cidades" :estados="$estados" class="sm:mx-5"></x-informacoes>
         <x-operadoras :operadoras="$administradoras" class="sm:mx-5"></x-operadoras>
         <x-planos :planos="$planos" class="sm:mx-5"></x-planos>
         <div class="p-1 rounded mt-2 hidden bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border w-full lg:w-[30%] sm:mx-5" id="resultado"></div>
@@ -178,6 +189,36 @@
                animation: pulseArrow 0.8s infinite;
            }
 
+           .jumping-dots-loader {
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               height: 40px;
+               gap: 8px;
+           }
+
+           .jumping-dots-loader .dot {
+               width: 15px;
+               height: 15px;
+               background: orange;
+               border-radius: 50%;
+               margin: 0 3px;
+               animation: jumping 0.6s infinite alternate;
+               display: inline-block;
+           }
+
+           .jumping-dots-loader .dot:nth-child(2) {
+               animation-delay: 0.2s;
+           }
+           .jumping-dots-loader .dot:nth-child(3) {
+               animation-delay: 0.4s;
+           }
+
+           @keyframes jumping {
+               to {
+                   transform: translateY(-16px);
+               }
+           }
 
        </style>
    @endsection
@@ -185,6 +226,59 @@
     @section('scripts')
        <script>
            $(document).ready(function(){
+
+               $('#cidade').on('focus', function() {
+                   if($('#estado').val() === '' || $('#estado').val() == null) {
+                       //alert("OPSSSSS");
+                       toastr.error('Escolha o estado primeiro','error');
+                   }
+               });
+
+
+
+               $('#estado').on('change', function() {
+                   let estado_id = $(this).val();
+
+                   if(estado_id) {
+                       $('#loading-cidades').fadeIn(150);
+                       $.ajax({
+                           url: '{{route('cidades.origem')}}', // endpoint para post
+                           type: "POST",
+                           dataType: "json",
+                           data: {
+                               uf: estado_id, // 'uf' ou 'id', conforme seu campo
+                               _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token Laravel
+                           },
+                           success:function(data) {
+                               $('#cidade').empty();
+                               $('#cidade').append('<option value="">Escolher Cidade</option>');
+                               $.each(data, function(key, value) {
+                                   $('#cidade').append('<option value="'+ value.id +'">' + value.nome + '</option>');
+                               });
+                           },
+                           complete: function() {
+                               // Esconde loader sempre ao finalizar
+                               $('#loading-cidades').fadeOut(150);
+                           }
+                       });
+                   } else {
+                       $('#cidade').empty();
+                       $('#cidade').append('<option value="">Escolher Cidade</option>');
+                   }
+               });
+
+
+
+
+
+
+
+
+
+
+
+
+
                function scrollToBottom() {
                    if (window.innerWidth <= 768) { // Aplica apenas para mobile
                        $('html, body').animate({
@@ -223,6 +317,12 @@
                    e.preventDefault();
                    let valor = $(this).val();
                    let cidade = $("#cidade").val();
+
+                   console.log("valor", valor);
+                   console.log("cidade", cidade);
+
+
+
                    if($("#resultado").is(":visible")){
                        $("input[name='planos-radio']").prop('checked', false);
                        $("#resultado").hide().empty();
@@ -273,6 +373,7 @@
 
                /*****************verificar se cidade e minus estão preenchidos para aparecer administradoras*******/
                function checkFields() {
+
                    var hasValue = false;
                    // Verifica se algum campo de texto tem valor diferente de vazio ou zero
                    $('input[type="text"]').each(function() {
@@ -283,6 +384,7 @@
                    });
                    // Verifica se o select está preenchido
                    var cidadeSelected = $('#cidade').val() !== '';
+                   console.log(cidadeSelected);
                    // Se ambas as condições forem verdadeiras, remova a classe 'hidden'
                    if (hasValue && cidadeSelected) {
                        $('#operadoras').removeClass('hidden');

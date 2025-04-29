@@ -66,7 +66,7 @@
                         </svg>
                     </a>
 
-                    @if(Auth::user()->isAdmin())
+                    @if(Auth::user()->isAdmin() && !auth()->user()->estaEmTrial())
 
                         <a class="text-white ml-2" title="Historico Financeiro" alt="Editar Seu Perfil" href="{{route('assinatura.historico')}}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

@@ -86,7 +86,7 @@
                 <div class="mb-4">
                     <label class="inline-flex items-center">
                         <input type="checkbox" name="trial" id="trialCheckbox" class="form-checkbox text-cyan-500">
-                        <span class="ml-2 text-white">Desejo usar o período de teste gratuito de 3 dias</span>
+                        <span class="ml-2 text-white">Desejo usar o período de teste gratuito de 7 dias???</span>
                     </label>
                 </div>
 
@@ -340,15 +340,6 @@
                 });
 
 
-
-
-
-
-
-
-
-
-
                 function getBandeira(numero) {
                     let bins = {
                         visa: [/^4[0-9]{5}/],
@@ -463,12 +454,7 @@
                         });
                         return false;
                     }
-
-
-
                     if(!isTrial) {
-
-
                         let numero_cartao = $("#numero_cartao").val();
                         let bandeira_validar = getBandeira(numero_cartao.replace(/\s/g, "").substring(0,6));
                         if (!bandeira_validar) {
@@ -499,7 +485,6 @@
                                 expiration_year: ano
                             },
                             function(error,response) {
-                                console.log(error);
                                 if(error) {
                                     load.fadeOut(100).css("display", "none");
                                 } else {
@@ -522,7 +507,7 @@
 
                                         },
                                         success:function(res) {
-                                            console.log(res);
+
                                             //if(res.success == true) {
                                             load.fadeOut(100).css("display", "none");
                                             //}
@@ -549,11 +534,6 @@
                                 }
                             }
                         );
-
-
-
-
-
                     } else {
                         let formData = new FormData($("form[name='cadastrar_individual']")[0]);
                         formData.append("trial", isTrial);

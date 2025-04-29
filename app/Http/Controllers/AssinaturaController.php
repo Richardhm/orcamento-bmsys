@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Efi\Exception\EfiException;
 use Efi\EfiPay;
+use PHPUnit\Exception;
 
 class AssinaturaController extends Controller
 {
@@ -94,7 +95,7 @@ class AssinaturaController extends Controller
             'user_id' => $user->id,
             'tipo_plano_id' => 1,
             'status' => 'trial',
-            'trial_ends_at' => now()->addDays(3),
+            'trial_ends_at' => now()->addDays(7),
             'emails_permitidos' => 3,
             'email_extra' => 1,
             'preco_base' => 0,
@@ -150,7 +151,7 @@ class AssinaturaController extends Controller
             if($isTrial) {
                 return $this->handleTrialRegistration($request,$imagePath);
             } else {
-                return $this->handlePaidRegistration($request,$imagePath);
+                return $this->handlePaidRegistration($request,$imagePath,$redirect = false);
             }
         } catch (EfiException $e) {
             // ... tratamento de erro existente
@@ -172,7 +173,7 @@ class AssinaturaController extends Controller
                 [
                     "name" => "Plano Individual",
                     "amount" => 1,
-                    "value" => 12990 // R$29,90 em centavos
+                    "value" => 12990 // R$129,90 em centavos
                 ]
             ];
             // Dados do cliente
@@ -277,105 +278,102 @@ class AssinaturaController extends Controller
 
     public function storeTrial(Request $request)
     {
-        try {
 
-            $user = User::find(auth()->user()->id);
+        if($request->cupom_promocional) {
+            return $this->storePromocionalTrialToPaid($request);
+        } else {
+            try {
 
-            $params = [
-                "id" => 13289
-            ];
+                $user = User::find(auth()->user()->id);
 
-            // Itens da assinatura
-            $items = [
-                [
-                    "name" => "Plano Individual",
-                    "amount" => 1,
-                    "value" => 12990 // R$29,90 em centavos
-                ]
-            ];
-            // Dados do cliente
-            $customer = [
-                "name" => $user->name,
-                "cpf" => $user->cpf,
-                "phone_number" => preg_replace('/[^0-9]/', '', $user->phone),
-                "email" => $user->email,
-                "birth" => "1986-10-24"
-            ];
+                $params = [
+                    "id" => 13289
+                ];
 
-            // Endereço (também necessário)
-            $billingAddress = [
-                "street" => $request->street,
-                "number" => !empty($request->number) ? $request->number : "S/N",
-                "neighborhood" => $request->neighborhood, // Adicionar campo no formulário
-                "zipcode" => str_replace('-', '', $request->zipcode), // Adicionar campo no formulário
-                "city" => $request->city, // Adicionar campo no formulário
-                "state" => $request->state, // Adicionar campo no formulário
-            ];
-
-
-
-            $body = [
-                "items" => $items,
-                "payment" => [
-                    "credit_card" => [
-                        "billing_address" => $billingAddress,
-                        "payment_token" => $request->paymentToken,
-                        "customer" => $customer
+                // Itens da assinatura
+                $items = [
+                    [
+                        "name" => "Plano Individual",
+                        "amount" => 1,
+                        "value" => 12990 // R$29,90 em centavos
                     ]
-                ],
-                "metadata" => [
-                    "notification_url" => "https://cotacao.bmsys.com.br/callback"
-                ]
-            ];
+                ];
+                // Dados do cliente
+                $customer = [
+                    "name" => $user->name,
+                    "cpf" => $user->cpf,
+                    "phone_number" => preg_replace('/[^0-9]/', '', $user->phone),
+                    "email" => $user->email,
+                    "birth" => "1986-10-24"
+                ];
 
-            $response = $this->efi->createOneStepSubscription($params, $body);
-
-            $assinatura = Assinatura::where("user_id",$user->id)->first();
-            $assinatura->preco_base = 129.90;
-            $assinatura->preco_total = 129.90;
-            $assinatura->status = 'ativo';
-            $assinatura->subscription_id = $response['data']['subscription_id'];
-            $assinatura->trial_ends_at = null;
-            $assinatura->save();
-
-
-            return response()->json([
-                'success' => true,
-
-                'redirect' => route('dashboard')->with('success','Assinatura Atualizada com sucesso')
-            ]);
+                // Endereço (também necessário)
+                $billingAddress = [
+                    "street" => $request->street,
+                    "number" => !empty($request->number) ? $request->number : "S/N",
+                    "neighborhood" => $request->neighborhood, // Adicionar campo no formulário
+                    "zipcode" => str_replace('-', '', $request->zipcode), // Adicionar campo no formulário
+                    "city" => $request->city, // Adicionar campo no formulário
+                    "state" => $request->state, // Adicionar campo no formulário
+                ];
 
 
-        } catch (EfiException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => $e->errorDescription,
-                'code' => $e->code
-            ], 400);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => true,
-                'message' => $e->getMessage()
-            ], 500);
+
+                $body = [
+                    "items" => $items,
+                    "payment" => [
+                        "credit_card" => [
+                            "billing_address" => $billingAddress,
+                            "payment_token" => $request->paymentToken,
+                            "customer" => $customer
+                        ]
+                    ],
+                    "metadata" => [
+                        "notification_url" => "https://cotacao.bmsys.com.br/callback"
+                    ]
+                ];
+
+                $response = $this->efi->createOneStepSubscription($params, $body);
+
+                $assinatura = Assinatura::where("user_id",$user->id)->first();
+                $assinatura->preco_base = 129.90;
+                $assinatura->preco_total = 129.90;
+                $assinatura->status = 'ativo';
+                $assinatura->subscription_id = $response['data']['subscription_id'];
+                $assinatura->trial_ends_at = null;
+                $assinatura->save();
+
+
+                return response()->json([
+                    'success' => true,
+
+                    'redirect' => route('dashboard')->with('success','Assinatura Atualizada com sucesso')
+                ]);
+
+
+            } catch (EfiException $e) {
+                return response()->json([
+                    'error' => true,
+                    'message' => $e->errorDescription,
+                    'code' => $e->code
+                ], 400);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'error' => true,
+                    'message' => $e->getMessage()
+                ], 500);
+            }
         }
+
+
 
 
     }
 
 
-
-    public function storePromocional(Request $request)
+    public function storePromocionalTrialToPaid(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'cpf' => 'required|string',
-            'phone' => 'required|string',
-            'password' => 'required|confirmed|min:8|confirmed',
-            'paymentToken' => 'required|string',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'cupom_promocional' => 'required|string|max:10'
-        ]);
+
 
         $cupom = null;
         $precoBase = 25000; // 250 reais em centavos
@@ -385,6 +383,9 @@ class AssinaturaController extends Controller
             $cupom = Cupom::where('codigo', $request->cupom_promocional)
                 ->where('ativo', true)
                 ->first();
+
+
+
 
             if (!$cupom) {
                 return response()->json([
@@ -416,6 +417,9 @@ class AssinaturaController extends Controller
             // Garantir valores mínimos
             $precoBase = max($precoBase, 0);
             $precoExtraPorEmail = max($precoExtraPorEmail, 0);
+
+
+
         }
 
         $imagePath = null;
@@ -424,7 +428,6 @@ class AssinaturaController extends Controller
         }
 
         try {
-
             $params = [
                 "id" => 13290
             ];
@@ -438,12 +441,14 @@ class AssinaturaController extends Controller
             ];
 
             $customer = [
-                "name" => $request->name,
-                "cpf" => preg_replace('/[^0-9]/', '', $request->cpf),
-                "phone_number" => preg_replace('/[^0-9]/', '', $request->phone),
-                "email" => $request->email,
-                "birth" => $request->birth_date // Você precisa adicionar este campo no formulário!
+                "name" => auth()->user()->name,
+                "cpf" => auth()->user()->cpf,
+                "phone_number" => preg_replace('/[^0-9]/', '', auth()->user()->phone),
+                "email" => auth()->user()->email,
+                "birth" => "1986-10-24" // Você precisa adicionar este campo no formulário!
             ];
+
+
 
             // Endereço (também necessário)
             $billingAddress = [
@@ -469,7 +474,169 @@ class AssinaturaController extends Controller
                 ]
             ];
 
+
             $response = $this->efi->createOneStepSubscription($params, $body);
+
+            if (!isset($response['data']['subscription_id'])) {
+                return response()->json([
+                    'success' => false,
+                    'data' => $response,
+                    'redirect' => ""
+                ]);
+            }
+
+            $assinatura = Assinatura::where("user_id",auth()->user()->id)->first();
+            $assinatura->preco_base = 250.00;
+            $assinatura->emails_permitidos = 3;
+            $assinatura->emails_extra = 1;
+            $assinatura->tipo_plano_id = null;
+            $assinatura->cupom_id = $cupom->id;
+            $assinatura->preco_total = 250.00;
+            $assinatura->status = 'ativo';
+            $assinatura->subscription_id = $response['data']['subscription_id'];
+            $assinatura->trial_ends_at = null;
+            $assinatura->save();
+
+
+            return response()->json([
+                'success' => true,
+                'redirect' => route('dashboard'),
+                'message' => 'Assinatura Atualizada com sucesso'
+            ]);
+
+
+
+        }catch(Exception $e) {
+
+        }
+
+
+
+
+    }
+
+
+
+    public function storePromocional(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'cpf' => 'required|string',
+            'phone' => 'required|string',
+            'password' => 'required|confirmed|min:8|confirmed',
+            'paymentToken' => 'required|string',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cupom_promocional' => 'required|string|max:10'
+        ]);
+
+        $cupom = null;
+        $precoBase = 25000; // 250 reais em centavos
+        $precoExtraPorEmail = 5000; // 50 reais em centavos
+
+        if ($request->filled('cupom_promocional')) {
+            $cupom = Cupom::where('codigo', $request->cupom_promocional)
+                ->where('ativo', true)
+                ->first();
+
+
+
+
+            if (!$cupom) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Cupom inválido ou expirado'
+                ], 400);
+            }
+
+            // Verificar validade
+            if (now()->gt($cupom->validade)) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Cupom expirado'
+                ], 400);
+            }
+
+            // Verificar usos máximos
+            if ($cupom->usos_maximos && $cupom->usos >= $cupom->usos_maximos) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Cupom já utilizado o máximo de vezes'
+                ], 400);
+            }
+
+            // Aplicar descontos
+            $precoBase -= $cupom->desconto_plano * 100;
+            $precoExtraPorEmail -= $cupom->desconto_extra * 100;
+
+            // Garantir valores mínimos
+            $precoBase = max($precoBase, 0);
+            $precoExtraPorEmail = max($precoExtraPorEmail, 0);
+
+
+
+        }
+
+        $imagePath = null;
+        if ($request->hasFile('imagem')) {
+            $imagePath = $request->file('imagem')->store('users', 'public');
+        }
+
+        try {
+
+            $params = [
+                "id" => 13290
+            ];
+
+            $items = [
+                [
+                    "name" => "Plano Multiusuário",
+                    "amount" => 1,
+                    "value" => $precoBase
+                ]
+            ];
+
+
+
+            $customer = [
+                "name" => $request->name,
+                "cpf" => preg_replace('/[^0-9]/', '', $request->cpf),
+                "phone_number" => preg_replace('/[^0-9]/', '', $request->phone),
+                "email" => $request->email,
+                "birth" => $request->birth_date // Você precisa adicionar este campo no formulário!
+            ];
+
+
+
+            // Endereço (também necessário)
+            $billingAddress = [
+                "street" => $request->street, // Adicionar campo no formulário
+                "number" => !empty($request->number) ? $request->number : "S/N", // Adicionar campo no formulário
+                "neighborhood" => $request->neighborhood, // Adicionar campo no formulário
+                "zipcode" => str_replace('-', '', $request->zipcode), // Adicionar campo no formulário
+                "city" => $request->city, // Adicionar campo no formulário
+                "state" => $request->state, // Adicionar campo no formulário
+            ];
+
+            $body = [
+                "items" => $items,
+                "payment" => [
+                    "credit_card" => [
+                        "billing_address" => $billingAddress,
+                        "payment_token" => $request->paymentToken,
+                        "customer" => $customer
+                    ]
+                ],
+                "metadata" => [
+                    "notification_url" => "https://cotacao.bmsys.com.br/callback"
+                ]
+            ];
+
+
+            $response = $this->efi->createOneStepSubscription($params, $body);
+
+
+
 
             if (!isset($response['data']['subscription_id'])) {
 
@@ -490,10 +657,12 @@ class AssinaturaController extends Controller
                 'imagem' => $imagePath,
             ]);
 
+
+
             // 2. Vincular o ID da assinatura ao usuário
             $assinatura = Assinatura::create([
                 'user_id' => $user->id,
-                'tipo_plano_id' => null, // ID do plano Individual
+                'tipo_plano_id' => 2, // ID do plano Individual
                 'preco_base' => 250.00,
                 'emails_permitidos' => 10,
                 'emails_extra' => 1,

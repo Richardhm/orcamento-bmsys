@@ -5,10 +5,11 @@ use App\Http\Middleware\ApenasDesenvolvedor;
 use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckSubscriptionExpired;
 use App\Http\Middleware\PreventSimultaneousLogins;
+use App\Http\Middleware\MobileSessionFix;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\MobileSessionFix;
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(

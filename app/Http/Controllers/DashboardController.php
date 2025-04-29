@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Administradora;
 use App\Models\AdministradoraPlano;
 use App\Models\Assinatura;
+use App\Models\Carencia;
 use App\Models\Desconto;
 use App\Models\EmailAssinatura;
 use App\Models\Layout;
+use App\Models\PdfExcecao;
 use App\Models\Plano;
 use App\Models\Tabela;
 use App\Models\Pdf;
@@ -29,36 +31,55 @@ class DashboardController extends Controller
 
         $assinaturaId = $emailAssinatura?->assinatura_id; // Usando safe operator para evitar erro se não encontrar
 
-        if ($assinaturaId) {
+
             // Buscar só vínculos que pertencem à assinatura do usuário
             $vinculos = AdministradoraPlano::with(['administradora', 'plano', 'cidade'])
                 ->where('assinatura_id', $assinaturaId)
                 ->get();
+
+
+
             // Pegar administradoras e planos dos vínculos
             $administradoras = $vinculos->pluck('administradora')->unique('id')->values();
+
+
+
+
+
             $planos = $vinculos->pluck('plano')->unique('id')->values();
             // Buscar cidades pela assinatura
             //$cidades = $user->assinaturas->tabelasOrigens ?? collect();
             $cidades = $vinculos->pluck('cidade')->unique('id')->values();
 
-        } else {
-            // Se não encontrar assinatura, manda vazio
-            $cidades = collect();
-            $administradoras = collect();
-            $planos = collect();
-        }
+
+            $estados = TabelaOrigens::select('uf')->distinct()->get();
+
 
 
         return view('dashboard',[
             'cidades' => $cidades,
             'administradoras' => $administradoras,
-            'planos' => $planos
+            'planos' => $planos,
+            'estados' => $estados
         ]);
     }
 
+    public function getCidadesDeOrigem(Request $request)
+    {
+        $uf = $request->input('uf'); // Pode ser 'id' se for id do estado
+
+        $cidades = \DB::table('tabela_origens')
+            ->where('uf', $uf)
+            ->select('id', 'nome')
+            ->orderBy('nome')
+            ->get();
+
+        return response()->json($cidades);
+    }
+
+
     public function buscar_planos(Request $request)
     {
-
         $administradora_id = $request->input('administradora_id');
         $tabela_origens_id = $request->input('tabela_origens_id');
         $planos = DB::table('administradora_planos')
@@ -200,7 +221,11 @@ class DashboardController extends Controller
         $odonto_frase = $odonto == 1 ? " c/ Odonto" : " s/ Odonto";
         $frase = $plano_nome.$odonto_frase;
         $keys = implode(",",$chaves);
-        $imagem_user = "storage/".auth()->user()->imagem;
+        $imagem_user = "";
+        $image = auth()->user()->imagem;
+        if($image != "") {
+            $imagem_user = "storage/".auth()->user()->imagem;
+        }
 
         $nome = auth()->user()->name;
         $celular = auth()->user()->phone;
@@ -243,19 +268,36 @@ class DashboardController extends Controller
 
             $layout = auth()->user()->layout_id;
             $layout_user = in_array($layout, [1, 2, 3, 4]) ? $layout : 1;
-            $layout_folder = auth()->user()->isFolder() ?: '';
+            //$layout_folder = auth()->user()->isFolder() ?: '';
+
+            $assinatura = auth()->user()->assinaturas()->first()->id;
+
+            $excecaoFolder = DB::table('assinatura_folders')->where([
+                ['assinatura_id', $assinatura],
+                ['tabela_origens_id', $cidade]
+            ])->first();
+            if ($excecaoFolder) {
+                $layout_folder = $excecaoFolder->folder;
+            } else {
+                $layout_folder = auth()->user()->isFolder() ?: '';
+            }
+
+
+            $quantidade_cop = 0;
+
             $viewName = "cotacao.modelo{$layout_user}";
             if($apenasvalores == 0) {
-
-
-                if(($cidade_uf == "MT" || $cidade_uf == "MS") && $plano == 3) {
+                $pdf_excecao = PdfExcecao::where("plano_id",$plano)->where("tabela_origens_id",$cidade)->count();
+                if($pdf_excecao == 1) {
                     $status_excecao = true;
-                    $pdf_copar = PdfExcecao::where('plano_id', $plano)->first();
+                    $pdf_copar = PdfExcecao::where("plano_id",$plano)->where("tabela_origens_id",$cidade)->first();
+                    $quantidade_cop = 1;
                 } else {
                     $hasTabelaOrigens = Pdf::where('plano_id', $plano)
                         ->where('tabela_origens_id',$cidade)
                         ->exists();
                     if ($hasTabelaOrigens) {
+                        $quantidade_cop = 1;
                         $pdf_copar = Pdf::where('plano_id', $plano)
                             ->where('tabela_origens_id',$cidade)
                             ->first();
@@ -273,6 +315,7 @@ class DashboardController extends Controller
                     } else {
                         $pdf_copar = Pdf::where('plano_id', $plano)->first();
                         if(isset($pdf_copar->linha02) && $pdf_copar->linha02) {
+                            $quantidade_cop = 1;
                             $itens = explode('|', $pdf_copar->linha02);
                             $itensFormatados = array_map(function($item) {
                                 return trim($item); // Remove espaços extras
@@ -284,14 +327,25 @@ class DashboardController extends Controller
                     }
                 }
 
+
+                $carencia = Carencia::where("plano_id",$plano)->where("tabela_origens_id",$cidade)->get();
+
+
+                $quantidade_carencia = Carencia::where("plano_id",$plano)->where("tabela_origens_id",$cidade)->count();
+
+
+
                 $view = \Illuminate\Support\Facades\View::make($viewName,[
                     'com_coparticipacao' => $com_coparticipacao,
                     'sem_coparticipacao' => $sem_coparticipacao,
                     'apenas_valores' => $apenasvalores,
                     'folder' => $layout_folder,
                     'linha_01' => $linha_01,
+                    'quantidade_carencia' => $quantidade_carencia,
+                    'quantidade_copar' => $quantidade_cop,
                     //'carencia' => 0,
                     'linha_02' => $linha_02,
+                    'carencia_texto' => $carencia,
                     'valor_desconto' => $valor_desconto,
                     'desconto' => $status_desconto,
                     //'carencias' => $carencias,
@@ -342,9 +396,6 @@ class DashboardController extends Controller
                     'frase' => $frase,
                     'status_desconto' => $status_desconto,
                     'odonto' => $odonto,
-
-
-
                 ]);
             }
 
@@ -410,7 +461,11 @@ class DashboardController extends Controller
 
             $frase = "Ambulatorial ".$odonto_frase;
 
-            $imagem_user = "storage/".auth()->user()->imagem;
+            $imagem_user = "";
+            $image = auth()->user()->imagem;
+            if($image != "") {
+                $imagem_user = "storage/".auth()->user()->imagem;
+            }
 
             $dados = Tabela::select('tabelas.*')
                 ->selectRaw("CASE $sql END AS quantidade")
@@ -444,12 +499,7 @@ class DashboardController extends Controller
                 if($desconto) {
                     $valor_desconto = $desconto->valor;
                 }
-
             }
-
-
-
-
 
             if(($cidade_uf == "MT" || $cidade_uf == "MS") && $plano == 3) {
                 $status_excecao = true;
@@ -486,12 +536,6 @@ class DashboardController extends Controller
 
                 }
             }
-
-
-
-
-
-
 
 
             $view = \Illuminate\Support\Facades\View::make($viewName,[

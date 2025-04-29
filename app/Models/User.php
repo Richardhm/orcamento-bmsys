@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomVerifyEmail;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -74,6 +75,21 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail());
+    }
+
+    public function estaEmTrial()
+    {
+        return $this->assinaturaStatus()
+            ->where('status', 'trial')
+            ->whereNotNull('trial_ends_at')
+            ->where('trial_ends_at', '>', Carbon::now())
+            ->exists();
+    }
+
+
+    public function assinaturaStatus()
+    {
+        return $this->hasMany(\App\Models\Assinatura::class, 'user_id');
     }
 
     public function assinatura()
