@@ -370,7 +370,7 @@
                         <a href="{{route('assinaturas.individual.create')}}" class="bg-white w-full md:w-[320px] min-h-[70vh] rounded-xl shadow-lg p-4 md:p-6 border-4 border-purple-950 transition-all hover:bg-gray-100 flex flex-col justify-between">
                             <div>
 
-                                <div class="bg-purple-950 text-white text-center py-3 rounded-full mt-6">
+                                <div class="bg-red-600 text-white text-center py-3 rounded-full mt-6">
                                     Assine Agora
                                 </div>
                                 <div class="my-6 text-center flex items-center justify-center">
@@ -407,6 +407,7 @@
                                         ✅ Acima de 3 usuários, R$ 37,90/usuario
                                     </li>
                                 </ul>
+                                <div class="text-center text-red-600">Experimente por 7 dias grátis</div>
                             </div>
 
                             <div>

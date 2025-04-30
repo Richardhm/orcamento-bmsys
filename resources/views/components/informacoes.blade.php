@@ -18,9 +18,6 @@
                 <label for="cidade" class="text-white text-sm">Cidade</label>
                 <select id="cidade" class="py-2 py-2 text-black w-full dark:border-white text-xs px-1 me-2 mb-2 font-medium rounded-lg dark:bg-transparent dark:text-white">
                     <option value="" class="text-xs text-black">Escolher Cidade</option>
-                    @foreach($cidades as $cc)
-                        <option value="{{$cc->id}}" class="text-black">{{$cc->nome}}</option>
-                    @endforeach
                 </select>
             </div>
         </div>

@@ -227,12 +227,12 @@
        <script>
            $(document).ready(function(){
 
-               $('#cidade').on('focus', function() {
-                   if($('#estado').val() === '' || $('#estado').val() == null) {
-                       //alert("OPSSSSS");
-                       toastr.error('Escolha o estado primeiro','error');
-                   }
-               });
+               // $('#cidade').on('focus', function() {
+               //     if($('#estado').val() === '' || $('#estado').val() == null) {
+               //         //alert("OPSSSSS");
+               //         toastr.error('Escolha o estado primeiro','error');
+               //     }
+               // });
 
 
 
@@ -318,8 +318,6 @@
                    let valor = $(this).val();
                    let cidade = $("#cidade").val();
 
-                   console.log("valor", valor);
-                   console.log("cidade", cidade);
 
 
 

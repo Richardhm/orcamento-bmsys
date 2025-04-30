@@ -86,7 +86,7 @@
                 <div class="mb-4">
                     <label class="inline-flex items-center">
                         <input type="checkbox" name="trial" id="trialCheckbox" class="form-checkbox text-cyan-500">
-                        <span class="ml-2 text-white">Desejo usar o período de teste gratuito de 7 dias???</span>
+                        <span class="ml-2 text-white">Experimente por 7 dias grátis</span>
                     </label>
                 </div>
 
