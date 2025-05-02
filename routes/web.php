@@ -65,7 +65,7 @@ Route::post('/buscar_planos',[DashboardController::class,'buscar_planos'])->midd
 Route::post('/dashboard/orcamento',[DashboardController::class,'orcamento'])->middleware(['auth', 'verified'])->name('orcamento.montarOrcamento');
 Route::post("/pdf",[DashboardController::class,'criarPDF'])->middleware(['auth', 'verified'])->name('gerar.imagem');
 
-Route::get('/assinaturas/individual', [AssinaturaController::class, 'createIndividual'])->name('assinaturas.individual.create');
+Route::get('/assinaturas/plano', [AssinaturaController::class, 'createIndividual'])->name('assinaturas.individual.create');
 Route::post('/assinaturas/individual', [AssinaturaController::class, 'storeIndividual'])->name('assinaturas.individual.store');
 
 Route::get('/assinatura/historico', [AssinaturaController::class, 'historicoPagamentos'])->middleware(['auth', 'verified','check'])->name('assinatura.historico');
@@ -76,7 +76,7 @@ Route::post('/assinaturas/empresarial', [AssinaturaController::class, 'storeEmpr
 Route::get('/assinaturas/promocional', [AssinaturaController::class, 'createPromocional'])->name('assinaturas.promocional.create');
 Route::post('/assinaturas/promocional', [AssinaturaController::class, 'storePromocional'])->name('assinaturas.promocional.store');
 
-Route::get('/teste', [AssinaturaController::class, 'testNotification'])->name('teste');
+
 
 //Route::get('/csrf-token', function () {
 //    return response()->json(['token' => csrf_token()]);

@@ -32,27 +32,22 @@ class DashboardController extends Controller
         $assinaturaId = $emailAssinatura?->assinatura_id; // Usando safe operator para evitar erro se não encontrar
 
 
-            // Buscar só vínculos que pertencem à assinatura do usuário
-            $vinculos = AdministradoraPlano::with(['administradora', 'plano', 'cidade'])
-                ->where('assinatura_id', $assinaturaId)
-                ->get();
+        // Buscar só vínculos que pertencem à assinatura do usuário
+        $vinculos = AdministradoraPlano::with(['administradora', 'plano', 'cidade'])
+            ->where('assinatura_id', $assinaturaId)
+            ->get();
+
+        // Pegar administradoras e planos dos vínculos
+        $administradoras = $vinculos->pluck('administradora')->unique('id')->values();
+
+        $planos = $vinculos->pluck('plano')->unique('id')->values();
+        // Buscar cidades pela assinatura
+        //$cidades = $user->assinaturas->tabelasOrigens ?? collect();
+        $cidades = $vinculos->pluck('cidade')->unique('id')->values();
 
 
+        $estados = $vinculos->pluck('cidade')->unique('uf')->values();
 
-            // Pegar administradoras e planos dos vínculos
-            $administradoras = $vinculos->pluck('administradora')->unique('id')->values();
-
-
-
-
-
-            $planos = $vinculos->pluck('plano')->unique('id')->values();
-            // Buscar cidades pela assinatura
-            //$cidades = $user->assinaturas->tabelasOrigens ?? collect();
-            $cidades = $vinculos->pluck('cidade')->unique('id')->values();
-
-
-            $estados = TabelaOrigens::select('uf')->distinct()->get();
 
 
 
@@ -371,7 +366,7 @@ class DashboardController extends Controller
 
                 $cabecalho = auth()->user()->layout_id;
                 $cabecalho_user = in_array($cabecalho, [1, 2, 3, 4]) ? $cabecalho : 1;
-                $cabecalhoName = "cotacao.cabecalho{$cabecalho_user}";
+                $cabecalhoName = "cotacao.cabecalho1";
 
                 $layout_folder = auth()->user()->isFolder() ?: '';
 

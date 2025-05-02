@@ -42,30 +42,6 @@ class AssinaturaController extends Controller
 
     }
 
-
-    public function testNotification()
-    {
-//        $user = User::find(1); // Substitua pelo ID válido de um usuário
-//        $notification = new CustomVerifyEmail();
-//        $mailMessage = $notification->toMail($user);
-//
-//        // Renderiza a mensagem de e-mail como HTML
-//        return $mailMessage->render();
-
-
-
-
-
-//        $user = User::find(1); // Substitua pelo ID válido
-//        $user->notify(new CustomVerifyEmail());
-//        //$notification = new CustomVerifyEmail();
-//        //$content = $notification->toMail($user)->render();
-//
-//        ///\Log::info('Template renderizado:', ['html' => $htmlContent]);
-//        //dd($content); // Verifique se o conteúdo HTML gerado é válido
-    }
-
-
     public function createIndividual()
     {
         return view('assinaturas.individual.create');
@@ -76,7 +52,49 @@ class AssinaturaController extends Controller
         return view('assinaturas.empresarial.create');
     }
 
+    public function createPromocional()
+    {
+        return view('assinaturas.promocional.create');
+    }
 
+    public function edit()
+    {
+        return view('assinaturas.trial.create');
+    }
+
+
+
+
+    public function storeIndividual(Request $request)
+    {
+        $isTrial = $request->has('trial');
+        $validationRules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'cpf' => 'required|string',
+            'birth_date' => 'required|date|before:-18 years',
+            'phone' => 'required|string',
+            'password' => 'required|confirmed|min:8',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ];
+
+        if(!$isTrial) {
+            $validationRules['paymentToken'] = 'required|string';
+        }
+
+        $request->validate($validationRules);
+
+        $imagePath = null;
+        if ($request->hasFile('imagem')) {
+            $imagePath = $request->file('imagem')->store('users', 'public');
+        }
+
+        if($isTrial) {
+            return $this->handleTrialRegistration($request,$imagePath);
+        } else {
+            return $this->handlePaidRegistration($request,$imagePath,$redirect = false);
+        }
+    }
 
     private function handleTrialRegistration($request, $imagePath)
     {
@@ -109,6 +127,8 @@ class AssinaturaController extends Controller
             'is_administrador' => true, // Marca este e-mail como administrador
         ]);
 
+        $this->administradoraPlanos($assinatura->id);
+
         SendVerificationEmail::dispatch($user);
 
 
@@ -117,48 +137,6 @@ class AssinaturaController extends Controller
             'redirect' => route('bemvindo', ['user' => $user->id])
         ]);
     }
-
-
-
-
-
-    public function storeIndividual(Request $request)
-    {
-        $isTrial = $request->has('trial');
-
-        $validationRules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'cpf' => 'required|string',
-            'birth_date' => 'required|date|before:-18 years',
-            'phone' => 'required|string',
-            'password' => 'required|confirmed|min:8',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ];
-
-        if(!$isTrial) {
-            $validationRules['paymentToken'] = 'required|string';
-        }
-
-        $request->validate($validationRules);
-
-        $imagePath = null;
-        if ($request->hasFile('imagem')) {
-            $imagePath = $request->file('imagem')->store('users', 'public');
-        }
-
-        try {
-            if($isTrial) {
-                return $this->handleTrialRegistration($request,$imagePath);
-            } else {
-                return $this->handlePaidRegistration($request,$imagePath,$redirect = false);
-            }
-        } catch (EfiException $e) {
-            // ... tratamento de erro existente
-        }
-
-    }
-
 
     private function handlePaidRegistration($request, $imagePath)
     {
@@ -251,8 +229,8 @@ class AssinaturaController extends Controller
                 'is_administrador' => true, // Marca este e-mail como administrador
             ]);
 
+            $this->administradoraPlanos($assinatura->id);
 
-            // Dispara o email
             SendVerificationEmail::dispatch($user);
 
             return response()->json([
@@ -276,6 +254,50 @@ class AssinaturaController extends Controller
 
     }
 
+    private function administradoraPlanos($assinatura_id)
+    {
+        // Array de associações, cada um é um registro que será inserido
+        $associacoes = [
+            [
+                'plano_id' => 1,
+                'administradora_id' => 4,
+                'tabela_origens_id' => 1,
+            ],
+            [
+                'plano_id' => 1,
+                'administradora_id' => 4,
+                'tabela_origens_id' => 2,
+            ],
+            [
+                'plano_id' => 1,
+                'administradora_id' => 4,
+                'tabela_origens_id' => 8,
+            ],
+            [
+                'plano_id' => 3,
+                'administradora_id' => 1,
+                'tabela_origens_id' => 1,
+            ],
+            // Adicione novos aqui conforme necessidade
+        ];
+
+        foreach ($associacoes as $associacao) {
+            // Cria o registro no banco vinculando a assinatura
+            \App\Models\AdministradoraPlano::create([
+                'plano_id'          => $associacao['plano_id'],
+                'administradora_id' => $associacao['administradora_id'],
+                'tabela_origens_id' => $associacao['tabela_origens_id'],
+                'assinatura_id'     => $assinatura_id,
+            ]);
+        }
+    }
+
+    /*
+     * Esse metodo da rota /assinatura/alterar quando acaba a assinatura trial do usuario cai nessa rota
+     * A 2 caminhos aqui para a assinatura:
+     * 1º se o usuario tiver um codigo promocional
+     * 2º cadastro sem codigo promocional valor cheio
+     * */
     public function storeTrial(Request $request)
     {
 
@@ -283,14 +305,8 @@ class AssinaturaController extends Controller
             return $this->storePromocionalTrialToPaid($request);
         } else {
             try {
-
                 $user = User::find(auth()->user()->id);
-
-                $params = [
-                    "id" => 13289
-                ];
-
-                // Itens da assinatura
+                $params = ["id" => 13289];
                 $items = [
                     [
                         "name" => "Plano Individual",
@@ -304,7 +320,7 @@ class AssinaturaController extends Controller
                     "cpf" => $user->cpf,
                     "phone_number" => preg_replace('/[^0-9]/', '', $user->phone),
                     "email" => $user->email,
-                    "birth" => "1986-10-24"
+                    "birth" => $user->birth_date instanceof \Carbon\Carbon ? $user->birth_date->format('Y-m-d') : $user->birth_date
                 ];
 
                 // Endereço (também necessário)
@@ -343,11 +359,10 @@ class AssinaturaController extends Controller
                 $assinatura->trial_ends_at = null;
                 $assinatura->save();
 
-
+                session()->flash('success', 'Assinatura Atualizada com sucesso');
                 return response()->json([
                     'success' => true,
-
-                    'redirect' => route('dashboard')->with('success','Assinatura Atualizada com sucesso')
+                    'redirect' => route('dashboard')
                 ]);
 
 
@@ -445,10 +460,8 @@ class AssinaturaController extends Controller
                 "cpf" => auth()->user()->cpf,
                 "phone_number" => preg_replace('/[^0-9]/', '', auth()->user()->phone),
                 "email" => auth()->user()->email,
-                "birth" => "1986-10-24" // Você precisa adicionar este campo no formulário!
+                "birth" => auth()->user()->birth_date instanceof \Carbon\Carbon ? auth()->user()->birth_date->format('Y-m-d') : auth()->user()->birth_date
             ];
-
-
 
             // Endereço (também necessário)
             $billingAddress = [
@@ -498,10 +511,11 @@ class AssinaturaController extends Controller
             $assinatura->save();
 
 
+            session()->flash('success', 'Assinatura Atualizada com sucesso');
             return response()->json([
                 'success' => true,
-                'redirect' => route('dashboard'),
-                'message' => 'Assinatura Atualizada com sucesso'
+                'redirect' => route('dashboard')
+
             ]);
 
 
@@ -662,7 +676,7 @@ class AssinaturaController extends Controller
             // 2. Vincular o ID da assinatura ao usuário
             $assinatura = Assinatura::create([
                 'user_id' => $user->id,
-                'tipo_plano_id' => 2, // ID do plano Individual
+                'tipo_plano_id' => null, // ID do plano Individual
                 'preco_base' => 250.00,
                 'emails_permitidos' => 10,
                 'emails_extra' => 1,
@@ -835,21 +849,6 @@ class AssinaturaController extends Controller
         }
     }
 
-    public function createPromocional()
-    {
-        return view('assinaturas.promocional.create');
-    }
-
-    public function edit()
-    {
-        return view('assinaturas.trial.create');
-    }
-
-
-
-
-
-
     public function historicoPagamentos()
     {
         try {
@@ -897,16 +896,8 @@ class AssinaturaController extends Controller
 
         } catch (\Exception $e) {
             \Log::error("Erro ao buscar histórico: " . $e->getMessage());
-            dd($e->getMessage());
-            //return redirect()->back()->withErrors('Erro ao carregar histórico de pagamentos');
+            return redirect()->back()->withErrors('Erro ao carregar histórico de pagamentos');
         }
     }
-
-
-
-
-
-
-
 
 }

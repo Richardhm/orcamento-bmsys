@@ -406,16 +406,13 @@
                                     url:"{{ route('assinaturas.trial.store') }}",
                                     method:"POST",
                                     data: formData,
-                                    contentType: false,  // Importante para envio de arquivos
-                                    processData: false,  // Impede que o jQuery converta os dados
+                                    contentType: false,
+                                    processData: false,
                                     beforeSend: function () {
                                         //load.fadeIn(100).css("display", "flex");
                                     },
                                     success:function(res) {
-                                        console.log(res);
-                                        //if(res.success == true) {
                                         load.fadeOut(100).css("display", "none");
-                                        // //}
                                         if (res.success && res.redirect) {
                                             window.location.href = res.redirect;
                                         }

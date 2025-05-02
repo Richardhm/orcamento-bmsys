@@ -295,7 +295,7 @@ focus:ring-4 focus:ring-gray-200 bg-red-400">
 
 <div class="flex justify-around items-center w-full mt-4 py-2">
     <label for="status_carencia">
-        <input type="checkbox" name="status_carencia" id="status_carencia" class="w-6 h-6 text-teal-600 bg-white border border-2 border-black rounded dark:bg-white dark:border-purple-900">
+        <input type="checkbox" checked="checked" name="status_carencia" id="status_carencia" class="w-6 h-6 text-teal-600 bg-white border border-2 border-black rounded dark:bg-white dark:border-purple-900">
         <span class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-2xl text-white">Com Carências</span>
     </label>
 

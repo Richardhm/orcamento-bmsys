@@ -1,4 +1,22 @@
 <x-app-layout>
+    @if(session('success'))
+        <div
+            id="alert-success"
+            class="flex items-center justify-between bg-green-100 border border-green-400 text-green-800 px-4 py-3 rounded relative mb-4"
+            role="alert"
+        >
+        <span class="block font-bold mr-6">
+            {{ session('success') }}
+        </span>
+            <button
+                type="button"
+                class="text-green-500 hover:text-green-700 text-xl font-bold focus:outline-none"
+                onclick="document.getElementById('alert-success').style.display='none'"
+            >
+                &times;
+            </button>
+        </div>
+    @endif
     <div id="loading-cidades" style="display:none; position: absolute; left:0; right:0; margin:auto; top:0; bottom:0; z-index:9999; background:rgba(0,0,0,0.2); width:100%; height:100%; text-align:center;">
         <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);">
             <div class="jumping-dots-loader">
@@ -756,7 +774,6 @@
                         },
                         success:function(blob,status,xhr,ppp) {
                             if(blob.size && blob.size != undefined) {
-
                                 var filename = "";
                                 var disposition = xhr.getResponseHeader('Content-Disposition');
                                 if (disposition && disposition.indexOf('attachment') !== -1) {
