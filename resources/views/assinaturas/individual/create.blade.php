@@ -449,6 +449,7 @@
                     const isTrial = $('#trialCheckbox').is(':checked');
 
                     if(!TestaCPF($("#cpf").val().replace(/[^0-9]/g,''))) {
+                        load.fadeOut(100).css("display", "none");
                         toastr.error("O CPF informado é inválido. Verifique e tente novamente.", "Error",{
                             toastClass: "toast-custom-width"
                         });

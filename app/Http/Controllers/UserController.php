@@ -326,9 +326,9 @@ class UserController extends Controller
 
                 if($assinatura->cupom_id and empty($assinatura->tipo_plano_id)) {
                     $cupom = Cupom::find($assinatura->cupom_id);
-                    $preco_base = 250 - $cupom->desconto_plano;
+                    $preco_base = 129.90 - $cupom->desconto_plano;
                     $limite_gratuito = $assinatura->emails_permitidos;
-                    $preco_extra_por_email = 50 - $cupom->desconto_extra;
+                    $preco_extra_por_email = 37.90 - $cupom->desconto_extra;
                 } elseif (empty($assinatura->cupom_id) && in_array($assinatura->tipo_plano_id, [1, 2])) {
                     $plan = TipoPlano::find($assinatura->tipo_plano_id);
                     $preco_base = $plan->valor_base;

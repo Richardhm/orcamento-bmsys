@@ -14,10 +14,12 @@
                     $assinaturaId = \Illuminate\Support\Facades\Auth::user()->assinaturas()->first()?->id;
                 @endphp
 
-                @if(in_array($assinaturaId, [56,57]))
-                    <a href="https://select.bmsys.com.br/dashboard">
-                        <img src="{{ asset('logo_select.png') }}" alt="Logo" class="h-8 md:h-12 p-2 bg-white rounded-lg hover:bg-blue-100 ml-3">
-                    </a>
+                @if(in_array($assinaturaId, [58]))
+                    <div class="shrink-0 flex items-center">
+                        <a href="https://select.bmsys.com.br/dashboard" class="h-8">
+                            <img src="{{ asset('logo_select.png') }}" alt="Logo" style="width:50px;height:30px;" class="bg-white rounded-lg hover:bg-blue-100 ml-3">
+                        </a>
+                    </div>
                 @endif
 
 
