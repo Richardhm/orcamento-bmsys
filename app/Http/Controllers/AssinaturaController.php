@@ -545,8 +545,8 @@ class AssinaturaController extends Controller
         ]);
 
         $cupom = null;
-        $precoBase = 25000; // 250 reais em centavos
-        $precoExtraPorEmail = 5000; // 50 reais em centavos
+        $precoBase = 12990; // 250 reais em centavos
+        $precoExtraPorEmail = 3790; // 50 reais em centavos
 
         if ($request->filled('cupom_promocional')) {
             $cupom = Cupom::where('codigo', $request->cupom_promocional)
@@ -649,9 +649,6 @@ class AssinaturaController extends Controller
 
             $response = $this->efi->createOneStepSubscription($params, $body);
 
-
-
-
             if (!isset($response['data']['subscription_id'])) {
 
                 return response()->json([
@@ -677,10 +674,10 @@ class AssinaturaController extends Controller
             $assinatura = Assinatura::create([
                 'user_id' => $user->id,
                 'tipo_plano_id' => null, // ID do plano Individual
-                'preco_base' => 250.00,
-                'emails_permitidos' => 10,
+                'preco_base' => 129.90,
+                'emails_permitidos' => 3,
                 'emails_extra' => 1,
-                'preco_total' => 250.00, // Preço base sem e-mails extras
+                'preco_total' => 129.90, // Preço base sem e-mails extras
                 'status' => 'ativo',
                 'subscription_id' => $response['data']['subscription_id']
             ]);

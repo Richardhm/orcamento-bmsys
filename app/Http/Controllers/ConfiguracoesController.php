@@ -603,8 +603,8 @@ class ConfiguracoesController extends Controller
                 'success' => true,
                 'codigo' => $dado->codigo,
                 'validade' => $dado->validade->format('Y-m-d H:i:s'),
-                'valor_plano' => 250 - $dado->desconto_plano,
-                'valor_desconto' => 50 - $dado->desconto_extra,
+                'valor_plano' => 129.90 - $dado->desconto_plano,
+                'valor_desconto' => 37.90 - $dado->desconto_extra,
                 'message' => 'Cupom criado com sucesso!'
             ]);
 

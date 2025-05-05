@@ -7,8 +7,6 @@
         </div>
     @endif
 
-
-
     <x-auth-session-status class="mb-1" :status="session('status')" />
     <section class="md:w-[70%] rounded-lg mx-auto">
         <img src="{{asset('logo_bm_1.png')}}" class="mx-auto my-1 w-32 md:w-32" alt="">

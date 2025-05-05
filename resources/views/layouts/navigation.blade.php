@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" class="bg-opacity-10 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="w-full px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-16 items-center">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
@@ -9,6 +9,19 @@
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
+
+                @php
+                    $assinaturaId = \Illuminate\Support\Facades\Auth::user()->assinaturas()->first()?->id;
+                @endphp
+
+                @if(in_array($assinaturaId, [56,57]))
+                    <a href="https://select.bmsys.com.br/dashboard">
+                        <img src="{{ asset('logo_select.png') }}" alt="Logo" class="h-8 md:h-12 p-2 bg-white rounded-lg hover:bg-blue-100 ml-3">
+                    </a>
+                @endif
+
+
+
             </div>
 
 
@@ -41,7 +54,6 @@
 
                     </a>
                 @endif
-
 
 
 
