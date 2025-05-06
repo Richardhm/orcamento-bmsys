@@ -14,6 +14,19 @@ use Illuminate\Support\Facades\Route;
 use App\Jobs\SendSuggestionEmail;
 use App\Http\Controllers\BemvindoController;
 
+
+Route::get('/teste-tz', function () {
+    return [
+        'php_time' => date('Y-m-d H:i:s'),
+        'php_timezone' => date_default_timezone_get(),
+        'laravel_time' => now()->format('Y-m-d H:i:s'),
+        'laravel_timezone' => now()->timezoneName,
+        'app_config' => config('app.timezone'),
+        'env_set' => env('APP_TIMEZONE')
+    ];
+});
+
+
 Route::post('/send-suggestion', function (Illuminate\Http\Request $request) {
     $request->validate([
         'name' => 'required|string|max:255',
@@ -37,26 +50,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/teste-charge', function() {
-    $event = [
-        "type" => "subscription_charge",
-        "status" => ["current" => "paid"],
-        "identifiers" => [
-            "subscription_id" => 95856,
-            "charge_id" => 44525608
-        ],
-        "value" => 2990, // em centavos
-        "received_by_bank_at" => "2025-03-28 12:00:00",
-        "created_at" => "2025-03-28 10:32:32"
-    ];
-
-    $controller = new \App\Http\Controllers\CallbackController();
-    $controller->processCharge($event);
-
-    dd(\App\Models\SubscriptionCharge::all());
-});
-
-
 
 Route::post('/callback', [CallbackController::class,'index']);
 Route::get('/bem-vindo/{user}', [BemvindoController::class, 'index'])->name('bemvindo');
@@ -78,13 +71,15 @@ Route::post('/assinaturas/promocional', [AssinaturaController::class, 'storeProm
 
 
 
+
+
 //Route::get('/csrf-token', function () {
 //    return response()->json(['token' => csrf_token()]);
 //})->name('csrf-token');
 
 
 Route::middleware(['auth'])->group(function () {
-
+    Route::post('cupom/validar', [ConfiguracoesController::class, 'validar'])->name('cupom.validar');
     /********* Configurações **************/
     Route::middleware(['apenasDesenvolvedores'])->group(function () {
         Route::get("/configuracoes", [ConfiguracoesController::class, 'index'])->name('configuracoes.index');

@@ -59,6 +59,7 @@ class AssinaturaController extends Controller
 
     public function edit()
     {
+
         return view('assinaturas.trial.create');
     }
 
@@ -300,10 +301,12 @@ class AssinaturaController extends Controller
      * */
     public function storeTrial(Request $request)
     {
-
+        //return $request->all();
         if($request->cupom_promocional) {
+
             return $this->storePromocionalTrialToPaid($request);
         } else {
+
             try {
                 $user = User::find(auth()->user()->id);
                 $params = ["id" => 13289];
@@ -388,15 +391,17 @@ class AssinaturaController extends Controller
 
     public function storePromocionalTrialToPaid(Request $request)
     {
-
+        //return $request->all();
 
         $cupom = null;
-        $precoBase = 25000; // 250 reais em centavos
-        $precoExtraPorEmail = 5000; // 50 reais em centavos
+        $precoBase = 12990; // 129.90 reais em centavos
+        $precoExtraPorEmail = 3790; // 37.90 reais em centavos
 
         if ($request->filled('cupom_promocional')) {
-            $cupom = Cupom::where('codigo', $request->cupom_promocional)
-                ->where('ativo', true)
+            $cupom = Cupom::where('codigo', $request->codigo_cupom)
+                ->where('ativo', 1)
+                ->where('validade', '>=', now()->format('Y-m-d H:i:s'))
+                ->whereRaw('usos < usos_maximos')
                 ->first();
 
 
@@ -410,7 +415,7 @@ class AssinaturaController extends Controller
             }
 
             // Verificar validade
-            if (now()->gt($cupom->validade)) {
+            if (now()->format('Y-m-d H:i:s') > $cupom->validade) {
                 return response()->json([
                     'error' => true,
                     'message' => 'Cupom expirado'
@@ -427,6 +432,9 @@ class AssinaturaController extends Controller
 
             // Aplicar descontos
             $precoBase -= $cupom->desconto_plano * 100;
+
+
+
             $precoExtraPorEmail -= $cupom->desconto_extra * 100;
 
             // Garantir valores mínimos
@@ -449,7 +457,7 @@ class AssinaturaController extends Controller
 
             $items = [
                 [
-                    "name" => "Plano Multiusuário",
+                    "name" => "Plano Start",
                     "amount" => 1,
                     "value" => $precoBase
                 ]
@@ -499,12 +507,12 @@ class AssinaturaController extends Controller
             }
 
             $assinatura = Assinatura::where("user_id",auth()->user()->id)->first();
-            $assinatura->preco_base = 250.00;
+            $assinatura->preco_base = 129.90;
             $assinatura->emails_permitidos = 3;
             $assinatura->emails_extra = 1;
             $assinatura->tipo_plano_id = null;
             $assinatura->cupom_id = $cupom->id;
-            $assinatura->preco_total = 250.00;
+            $assinatura->preco_total = 129.90;
             $assinatura->status = 'ativo';
             $assinatura->subscription_id = $response['data']['subscription_id'];
             $assinatura->trial_ends_at = null;

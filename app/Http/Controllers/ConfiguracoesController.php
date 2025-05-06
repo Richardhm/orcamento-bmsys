@@ -591,7 +591,7 @@ class ConfiguracoesController extends Controller
                 'duracao_minutos' => $request->duracao_minutos,
                 'duracao_segundos' => $request->duracao_segundos,
                 'validade' => $validade->setTimezone(config('app.timezone')),
-                'usos_maximos' => $request->usos_maximos,
+                'usos_maximos' => $request->usos_maximos ?? 1,
                 'ativo' => $request->ativo
             ]);
 
@@ -614,6 +614,31 @@ class ConfiguracoesController extends Controller
                 'message' => 'Erro ao criar cupom: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function validar(Request $request) {
+
+
+
+        $cupom = Cupom::where('codigo', $request->codigo_cupom)
+            ->where('ativo', 1)
+            ->where('validade', '>=', now()->format('Y-m-d H:i:s'))
+            ->whereRaw('usos < usos_maximos')
+            ->first();
+
+
+
+        if (!$cupom) {
+            return response()->json(['success'=>false, 'mensagem'=>'Cupom inválido ou expirado.']);
+        }
+
+        // Retorna os dados que o JS vai usar
+        return response()->json([
+            'success' => true,
+            'desconto_plano' => $cupom->desconto_plano,
+            'desconto_extra' => $cupom->desconto_extra,
+            'mensagem' => 'Cupom aplicado com sucesso!'
+        ]);
     }
 
     private function gerarCodigoUnico()

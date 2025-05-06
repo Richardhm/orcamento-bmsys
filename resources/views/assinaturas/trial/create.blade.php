@@ -9,189 +9,174 @@
 
     <x-auth-session-status class="mb-1" :status="session('status')" />
     <section class="md:w-[70%] rounded-lg mx-auto">
-        <img src="{{asset('logo_bm_1.png')}}" class="mx-auto my-1 w-32 md:w-32" alt="">
+        <img src="{{ asset('logo_bm_1.png') }}" class="mx-auto my-1 w-32 md:w-32" alt="">
+
         <form method="POST" name="cadastrar_individual" class="p-1 flex flex-wrap gap-4" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <div class="w-full">
+                {{-- CUPOM PROMOCIONAL --}}
+                <div class="mb-2">
+                    <label class="text-white">
 
+                        <input type="checkbox" id="cupom_promocional" name="usar_cupom">
+                        Possui cupom promocional?
+                    </label>
+                </div>
 
-                <fieldset id="cardFields" class="border border-gray-300 p-1 rounded-lg">
+                <div id="cardCupom" class="mb-2" style="display:none;">
+                    <label for="codigo_cupom" class="block mb-1 font-medium text-white text-sm">Código do Cupom</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="codigo_cupom" name="codigo_cupom" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" autocomplete="off">
+                        <button type="button" id="aplicarCupom" class="bg-blue-600 text-white px-4 py-1 rounded">Aplicar</button>
+                    </div>
+                    <div id="cupomMensagem" class="text-sm text-red-600"></div>
+                </div>
+
+                {{-- RESUMO DA COMPRA --}}
+                <div id="resumoCompra" class="bg-gray-100 rounded-lg p-4 mb-4 text-black">
+                    <h3 class="text-lg font-semibold mb-2">Resumo da compra</h3>
+                    <ul>
+                        <li>Plano: <span id="precoPlanoOriginal">R$ 129,90</span> <span id="descontoPlano"></span></li>
+                        <li>Usuários adicionais: <span id="precoUsuarioOriginal">R$ 37,90</span> <span id="descontoUsuario"></span></li>
+                        <li><b>Total:</b> <span id="totalFinal">R$ 129,90</span></li>
+                    </ul>
+                </div>
+
+                {{-- ENDEREÇO --}}
+                <fieldset id="cardFields" class="border border-gray-300 p-1 rounded-lg mb-4">
                     <legend class="text-lg font-semibold text-white">Endereço</legend>
-
                     <div class="flex flex-col md:flex-row gap-4">
                         <div class="w-full md:w-1/3">
                             <label for="zipcode" class="block mb-1 font-medium text-white text-sm">CEP</label>
-                            <input type="text" name="zipcode" id="zipcode" placeholder="XXXXX-XXX"
-                                   class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
+                            <input type="text" name="zipcode" id="zipcode" placeholder="XXXXX-XXX" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                         </div>
-
                         <div class="w-full md:w-1/2">
                             <label for="street" class="block mb-1 font-medium text-white text-sm">Rua</label>
-                            <input type="text" name="street" id="street" placeholder="Rua"
-                                   class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
+                            <input type="text" name="street" id="street" placeholder="Rua" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                         </div>
                         <div class="w-full md:w-1/4">
                             <label for="number" class="block mb-1 font-medium text-white text-sm">Nº <small>(Opcional)</small></label>
-                            <input type="text" name="number" id="number" placeholder="Nº"
-                                   class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg">
+                            <input type="text" name="number" id="number" placeholder="Nº" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg">
                         </div>
                     </div>
-
                     <div class="flex flex-col md:flex-row gap-4">
                         <div class="w-full md:w-1/3">
                             <label for="city" class="block mb-1 font-medium text-white text-sm">Cidade</label>
-                            <input type="text" name="city" id="city" placeholder="Cidade"
-                                   class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
+                            <input type="text" name="city" id="city" placeholder="Cidade" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                         </div>
                         <div class="w-full md:w-1/2">
                             <label for="neighborhood" class="block mb-1 font-medium text-white text-sm">Bairro</label>
-                            <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro"
-                                   class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
+                            <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                         </div>
                         <div class="w-full md:w-1/4">
                             <label for="state" class="block mb-1 font-medium text-white text-sm">Estado</label>
-                            <input type="text" name="state" id="state" placeholder="UF"
-                                   class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
+                            <input type="text" name="state" id="state" placeholder="UF" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
                         </div>
                     </div>
-
                 </fieldset>
 
-                <fieldset id="cardDados" class="border border-gray-300 p-1 rounded-lg">
+                {{-- DADOS DO CARTÃO --}}
+                <fieldset id="cardDados" class="border border-gray-300 p-1 rounded-lg mb-4">
                     <legend class="text-lg font-semibold text-white">Dados Cartão</legend>
                     <div class="mb-2">
                         <label for="numero_cartao" class="block mb-1 font-medium text-white text-sm">Número do Cartão</label>
-                        <input type="text" name="numero_cartao" required id="numero_cartao" placeholder="XXXX XXXX XXXX XXXX"
-                               class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
+                        <input type="text" name="numero_cartao" required id="numero_cartao" placeholder="XXXX XXXX XXXX XXXX" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
                     </div>
-
                     <div class="mb-2">
                         <label for="nome_titular" class="block mb-1 font-medium text-white text-sm">Nome do Titular</label>
-                        <input type="text" name="nome_titular" required id="nome_titular" placeholder="Nome do Titular do Cartão"
-                               class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
+                        <input type="text" name="nome_titular" required id="nome_titular" placeholder="Nome do Titular do Cartão" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
                     </div>
-
                     <div class="flex justify-between gap-2">
                         <div class="w-1/3">
                             <label for="mes" class="block mb-1 font-medium text-white text-sm">Mês</label>
-                            <select name="mes" id="mes" required
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
+                            <select name="mes" id="mes" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
                                 <option value="">MM</option>
-                                <option value="01">01</option>
-                                <option value="02">02</option>
-                                <option value="03">03</option>
-                                <option value="04">04</option>
-                                <option value="05">05</option>
-                                <option value="06">06</option>
-                                <option value="07">07</option>
-                                <option value="08">08</option>
-                                <option value="09">09</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
+                                @for ($i = 1; $i <= 12; $i++)
+                                    <option value="{{ sprintf('%02d', $i) }}">{{ sprintf('%02d', $i) }}</option>
+                                @endfor
                             </select>
                         </div>
-
                         <div class="w-1/3">
                             <label for="ano" class="block mb-1 font-medium text-white text-sm">Ano</label>
                             <select name="ano" id="ano" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
                                 <option value="">ANO</option>
-                                <option value="25">2025</option>
-                                <option value="26">2026</option>
-                                <option value="27">2027</option>
-                                <option value="28">2028</option>
-                                <option value="29">2029</option>
-                                <option value="30">2030</option>
-                                <option value="31">2031</option>
-                                <option value="32">2032</option>
-                                <option value="33">2033</option>
-                                <option value="34">2034</option>
-                                <option value="35">2035</option>
-                                <option value="36">2036</option>
-                                <option value="37">2037</option>
-                                <option value="38">2038</option>
-                                <option value="39">2039</option>
-                                <option value="40">2040</option>
-                                <option value="41">2041</option>
-                                <option value="42">2042</option>
-                                <option value="43">2043</option>
-                                <option value="44">2044</option>
-                                <option value="45">2045</option>
-                                <option value="46">2046</option>
-                                <option value="47">2047</option>
-                                <option value="48">2048</option>
-                                <option value="49">2049</option>
-                                <option value="50">2050</option>
+                                @for ($i = now()->year; $i <= now()->year + 12; $i++)
+                                    <option value="{{ substr($i, -2) }}">{{ $i }}</option>
+                                @endfor
                             </select>
                         </div>
-
                         <div class="w-1/3">
                             <label for="cvv" class="block mb-1 font-medium text-white text-sm">CVV</label>
-                            <input type="text" name="cvv" required id="cvv" placeholder="XXX"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
+                            <input type="text" name="cvv" required id="cvv" placeholder="XXX" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
                         </div>
-
                     </div>
                 </fieldset>
 
-                <div id="cartao" class="relative w-[70%] max-w-md mx-auto md:max-w-full md:h-52 h-42 bg-gradient-to-r mt-1 from-blue-700 to-blue-900 rounded-xl shadow-lg transform transition-transform duration-500">
-                    <!-- Frente do Cartão -->
-                    <div id="cartao-frente" class="absolute inset-0 flex flex-col justify-between p-2 text-white">
-                        <div class="flex justify-between">
-                            <span class="text-sm">Cartão de Crédito</span>
-                            <span class="text-sm">💳</span>
-                        </div>
-                        <div class="text-center text-lg tracking-widest" id="cartao-numero">•••• •••• •••• ••••</div>
-                        <div class="flex justify-between">
-                            <span class="text-sm">Nome:</span>
-                            <span class="text-sm">Validade:</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-sm uppercase" id="cartao-nome">SEU NOME</span>
-                            <span class="text-sm" id="cartao-validade">MM/AA</span>
-                        </div>
-                    </div>
-
-                    <!-- Verso do Cartão (Mostra o CVV) -->
-                    <div id="cartao-verso" class="absolute inset-0 flex flex-col justify-center items-center bg-gray-900 text-white rounded-xl transform rotate-y-180 opacity-0 transition-opacity duration-500">
-                        <div class="w-full bg-black h-8"></div>
-                        <span class="mt-4 text-lg">CVV</span>
-                        <div class="text-2xl bg-gray-800 px-6 py-2 rounded-lg" id="cartao-cvv">•••</div>
-                    </div>
-                </div>
-
-
                 <input type="hidden" name="bandeira" id="bandeira">
 
-
-            </div>
-
-
-            <div>
-                <label for="cupom_promocional" class="text-white">Você possui um cupom Promocional?</label>
-                <input type="checkbox" id="cupom_promocional">
-            </div>
-
-
-            <!--Fim Lado Direito-->
-            <fieldset id="cardCupom" class="border border-gray-300 p-1 rounded-lg w-full">
-                <legend class="text-lg font-semibold text-white">Cupom Promocional?</legend>
-
-                <div class="mb-2">
-                    <label for="cupom_promocional" class="block mb-1 font-medium text-white text-sm">Digite o seu cupom promocional abaixo</label>
-                    <input type="text" name="cupom_promocional" id="cupom_promocional" class="rounded">
+                {{-- BOTÃO SUBMIT --}}
+                <div>
+                    <button type="submit" class="text-white bg-gradient-to-r from-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2 text-center me-2 mb-1 w-full rounded-lg">Salvar</button>
                 </div>
-            </fieldset>
-
-            <div class="w-full mx-auto my-1">
-                <button type="submit" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2 text-center me-2 mb-1 w-full rounded-lg">Salvar</button>
             </div>
         </form>
     </section>
 
+
+
     @section('scripts')
         <script>
+            $(function() {
+                let precoPlano = 129.90;
+                let precoPorUsuario = 37.90;
+                let descontoPlano = 0.0;
+                let descontoUsuario = 0.0;
+                let totalUsuarios = 1; // Atualize se tiver multiusuário
 
+                function atualizarResumo() {
+                    let valorPlano = precoPlano - descontoPlano;
+                    let valorUsuarios = (precoPorUsuario - descontoUsuario) * (totalUsuarios - 1);
+                    valorUsuarios = Math.max(0, valorUsuarios);
+
+                    let total = valorPlano + valorUsuarios;
+                    $("#precoPlanoOriginal").text(`R$ ${precoPlano.toFixed(2)}`);
+                    $("#descontoPlano").html(descontoPlano > 0 ? `<span class="text-red-400">(- R$ ${descontoPlano.toFixed(2)})</span>` : "");
+                    $("#precoUsuarioOriginal").text(`R$ ${precoPorUsuario.toFixed(2)}`);
+                    $("#descontoUsuario").text(descontoUsuario > 0 ? `(- R$ ${descontoUsuario.toFixed(2)}) x ${totalUsuarios-1} usuário(s)` : "");
+                    $("#totalFinal").html(`<span class="text-green-600">R$ ${total.toFixed(2)}</span>`);
+                }
+
+                atualizarResumo();
+
+                // Mostrar/esconder campo cupom
+                $('#cupom_promocional').on('change', function() {
+                    $('#cardCupom').toggle(this.checked);
+                });
+
+                // Aplicação do cupom
+                $('#aplicarCupom').on('click', function() {
+                    let codigoCupom = $('#codigo_cupom').val();
+                    if (!codigoCupom) {
+                        $('#cupomMensagem').text('Informe o código do cupom');
+                        return;
+                    }
+
+                    $.post("{{ route('cupom.validar') }}", { codigo_cupom: codigoCupom, _token: '{{ csrf_token() }}' }, function(data) {
+                        console.log(data);
+                        if (data.success) {
+                            descontoPlano = parseFloat(data.desconto_plano || 0);
+                            descontoUsuario = parseFloat(data.desconto_extra || 0);
+                            atualizarResumo();
+                            $('#cupomMensagem').removeClass('text-red-600').addClass('text-green-600 bg-white w-full p-2 text-center mt-2').text(data.mensagem);
+                        } else {
+                            descontoPlano = 0;
+                            descontoUsuario = 0;
+                            atualizarResumo();
+                            $('#cupomMensagem').removeClass('text-green-600').addClass('text-red-600').text(data.mensagem);
+                        }
+                    });
+                });
+            });
 
             $gn.ready(function(checkout){
 
@@ -354,6 +339,7 @@
 
                     let numero_cartao = $("#numero_cartao").val();
 
+                    let cupom_promocional = $('#cupom_promocional').is(':checked') == true ? 1 : 0;
 
 
                     let bandeira_validar = getBandeira(numero_cartao.replace(/\s/g, "").substring(0,6));
@@ -399,6 +385,7 @@
                                 let formData = new FormData($("form[name='cadastrar_individual']")[0]);
                                 formData.append("paymentToken", paymentToken);
                                 formData.append("mascaraCartao", mascaraCartao);
+                                formData.append("cupom_promocional",cupom_promocional);
 
                                 $.ajax({
                                     url:"{{ route('assinaturas.trial.store') }}",
@@ -410,6 +397,7 @@
                                         //load.fadeIn(100).css("display", "flex");
                                     },
                                     success:function(res) {
+
                                         load.fadeOut(100).css("display", "none");
                                         if (res.success && res.redirect) {
                                             window.location.href = res.redirect;
