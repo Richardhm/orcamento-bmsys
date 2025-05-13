@@ -254,7 +254,7 @@
                     Login
                 </a>
                 <div>
-                    <img src="{{asset('hapvida-notreDame_baixa_1.png')}}" alt="Hapvida">
+                    <img src="{{asset('logo-hapvida-branco.png')}}" style="width:80px;height:60px;" alt="Hapvida">
                 </div>
             </div>
 
@@ -376,17 +376,14 @@
                                 <div class="my-6 text-center flex items-center justify-center">
                                     <p class="flex flex-col items-start relative">
                                         <span class="text-lg font-bold text-purple-900 leading-none">R$</span>
-                                        <span class="text-7xl font-bold text-purple-900">129,90</span>
+                                        <span class="text-7xl font-bold text-purple-900">29,90</span>
                                         <span class="text-sm text-purple-900 self-end">/mês</span>
                                     </p>
                                 </div>
 
                                 <ul class="space-y-2 text-gray-600 text-xs">
                                     <li class="flex items-center">
-                                        ✅ Liberado para 03 Usuários
-                                    </li>
-                                    <li class="flex items-center">
-                                        ✅ Taxa implantação R$ 100,00 (PIX)
+                                        ✅ Liberado para 01 Usuários
                                     </li>
                                     <li class="flex items-center">
                                         ✅ Tabelas Nacionais Atualizadas
@@ -404,7 +401,7 @@
                                         ✅ Gestão completa
                                     </li>
                                     <li class="flex items-center">
-                                        ✅ Acima de 3 usuários, R$ 37,90/usuario
+                                        ✅ Acima de 1 usuários, R$ 29,90/usuario
                                     </li>
                                 </ul>
                                 <div class="text-center text-red-600">Experimente por 7 dias grátis</div>

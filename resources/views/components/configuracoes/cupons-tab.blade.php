@@ -107,13 +107,13 @@
 
         <div class="text-gray-700 space-y-4 text-sm">
             <p class="border-black border-2 rounded p-1">
-                <span class="font-semibold">Desconto Plano (R$):</span> Base de <strong>R$129,90</strong>. O valor inserido será descontado deste valor.<br />
-                <span class="text-blue-600">Exemplo:</span> Inserindo <strong>R$29,90</strong> → Resultado: <strong>R$129,90 - R$29,90 = R$100,00(Valor Plano)</strong>.
+                <span class="font-semibold">Desconto Plano (R$):</span> Base de <strong>R$29,90</strong>. O valor inserido será descontado deste valor.<br />
+                <span class="text-blue-600">Exemplo:</span> Inserindo <strong>R$10,00</strong> → Resultado: <strong>R$29,90 - R$10,00 = R$19,90(Valor Plano)</strong>.
             </p>
 
             <p class="border-black border-2 rounded p-1">
-                <span class="font-semibold">Desconto por Extra (R$):</span> Base de <strong>R$37,90</strong>. O valor inserido será descontado deste valor.<br />
-                <span class="text-blue-600">Exemplo:</span> Inserindo <strong>R$7,90</strong> → Resultado: <strong>R$37,90 - R$7,90 = R$30,00</strong> por usuário extra (email).
+                <span class="font-semibold">Desconto por Extra (R$):</span> Base de <strong>R$29,90</strong>. O valor inserido será descontado deste valor.<br />
+                <span class="text-blue-600">Exemplo:</span> Inserindo <strong>R$9,90</strong> → Resultado: <strong>R$29,90 - R$9,90 = R$20,00</strong> por usuário extra (email).
 
             </p>
             <p class="border-black border-2 rounded p-1">

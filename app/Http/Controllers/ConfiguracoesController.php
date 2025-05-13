@@ -22,9 +22,6 @@ use App\Models\PdfExcecao;
 class ConfiguracoesController extends Controller
 {
 
-
-
-
     public function index()
     {
         return view('configuracoes.index');
@@ -603,8 +600,8 @@ class ConfiguracoesController extends Controller
                 'success' => true,
                 'codigo' => $dado->codigo,
                 'validade' => $dado->validade->format('Y-m-d H:i:s'),
-                'valor_plano' => 129.90 - $dado->desconto_plano,
-                'valor_desconto' => 37.90 - $dado->desconto_extra,
+                'valor_plano' => 29.90 - $dado->desconto_plano,
+                'valor_desconto' => 29.90 - $dado->desconto_extra,
                 'message' => 'Cupom criado com sucesso!'
             ]);
 

@@ -12,7 +12,7 @@
         <img src="{{ asset('logo_bm_1.png') }}" class="mx-auto my-1 w-32 md:w-32" alt="">
 
         <form method="POST" name="cadastrar_individual" class="p-1 flex flex-wrap gap-4" enctype="multipart/form-data">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+            @csrf
             <div class="w-full">
                 {{-- CUPOM PROMOCIONAL --}}
                 <div class="mb-2">
@@ -127,6 +127,13 @@
     @section('scripts')
         <script>
             $(function() {
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 let precoPlano = 129.90;
                 let precoPorUsuario = 37.90;
                 let descontoPlano = 0.0;
@@ -180,11 +187,7 @@
 
             $gn.ready(function(checkout){
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+
 
                 $('#cardCupom').hide();
 
@@ -359,10 +362,6 @@
                     let cvv = $("#cvv").val();
                     let bandeira = $("#bandeira").val();
 
-
-
-
-
                     let paymentToken = "";
                     let mascaraCartao = "";
 
@@ -375,12 +374,15 @@
                             expiration_year: ano
                         },
                         function(error,response) {
-                            console.log(error);
+
                             if(error) {
                                 load.fadeOut(100).css("display", "none");
                             } else {
                                 paymentToken = response.data.payment_token;
                                 mascaraCartao = response.data.card_mask;
+
+                                let csrf = $('meta[name="csrf-token"]').attr('content');
+                                $("input[name='_token']").val(csrf);
 
                                 let formData = new FormData($("form[name='cadastrar_individual']")[0]);
                                 formData.append("paymentToken", paymentToken);
@@ -393,15 +395,20 @@
                                     data: formData,
                                     contentType: false,
                                     processData: false,
+                                    headers: {
+                                        'X-CSRF-TOKEN': csrf
+                                    },
                                     beforeSend: function () {
                                         //load.fadeIn(100).css("display", "flex");
                                     },
                                     success:function(res) {
 
+
                                         load.fadeOut(100).css("display", "none");
                                         if (res.success && res.redirect) {
                                             window.location.href = res.redirect;
                                         }
+
                                     },
                                     error: function (xhr) {
                                         load.fadeOut(100).css("display", "none");

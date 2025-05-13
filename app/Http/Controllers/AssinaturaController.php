@@ -115,7 +115,7 @@ class AssinaturaController extends Controller
             'tipo_plano_id' => 1,
             'status' => 'trial',
             'trial_ends_at' => now()->addDays(7),
-            'emails_permitidos' => 3,
+            'emails_permitidos' => 1,
             'email_extra' => 1,
             'preco_base' => 0,
             'preco_total' => 0,
@@ -152,7 +152,7 @@ class AssinaturaController extends Controller
                 [
                     "name" => "Plano Individual",
                     "amount" => 1,
-                    "value" => 12990 // R$129,90 em centavos
+                    "value" => 2990 // R$129,90 em centavos
                 ]
             ];
             // Dados do cliente
@@ -173,8 +173,6 @@ class AssinaturaController extends Controller
                 "city" => $request->city, // Adicionar campo no formulário
                 "state" => $request->state, // Adicionar campo no formulário
             ];
-
-
 
             $body = [
                 "items" => $items,
@@ -215,10 +213,10 @@ class AssinaturaController extends Controller
             $assinatura = Assinatura::create([
                 'user_id' => $user->id,
                 'tipo_plano_id' => 1, // ID do plano Individual
-                'preco_base' => 129.90,
-                'emails_permitidos' => 3,
+                'preco_base' => 29.90,
+                'emails_permitidos' => 1,
                 'emails_extra' => 1,
-                'preco_total' => 129.90, // Preço base sem e-mails extras
+                'preco_total' => 29.90, // Preço base sem e-mails extras
                 'status' => 'ativo',
                 'subscription_id' => $response['data']['subscription_id']
             ]);
@@ -314,7 +312,7 @@ class AssinaturaController extends Controller
                     [
                         "name" => "Plano Individual",
                         "amount" => 1,
-                        "value" => 12990 // R$29,90 em centavos
+                        "value" => 2990
                     ]
                 ];
                 // Dados do cliente
@@ -355,8 +353,8 @@ class AssinaturaController extends Controller
                 $response = $this->efi->createOneStepSubscription($params, $body);
 
                 $assinatura = Assinatura::where("user_id",$user->id)->first();
-                $assinatura->preco_base = 129.90;
-                $assinatura->preco_total = 129.90;
+                $assinatura->preco_base = 29.90;
+                $assinatura->preco_total = 29.90;
                 $assinatura->status = 'ativo';
                 $assinatura->subscription_id = $response['data']['subscription_id'];
                 $assinatura->trial_ends_at = null;
@@ -394,8 +392,8 @@ class AssinaturaController extends Controller
         //return $request->all();
 
         $cupom = null;
-        $precoBase = 12990; // 129.90 reais em centavos
-        $precoExtraPorEmail = 3790; // 37.90 reais em centavos
+        $precoBase = 2990; // 29.90 reais em centavos
+        $precoExtraPorEmail = 2990; // 29.90 reais em centavos
 
         if ($request->filled('cupom_promocional')) {
             $cupom = Cupom::where('codigo', $request->codigo_cupom)
@@ -507,12 +505,12 @@ class AssinaturaController extends Controller
             }
 
             $assinatura = Assinatura::where("user_id",auth()->user()->id)->first();
-            $assinatura->preco_base = 129.90;
-            $assinatura->emails_permitidos = 3;
+            $assinatura->preco_base = 29.90;
+            $assinatura->emails_permitidos = 1;
             $assinatura->emails_extra = 1;
             $assinatura->tipo_plano_id = null;
             $assinatura->cupom_id = $cupom->id;
-            $assinatura->preco_total = 129.90;
+            $assinatura->preco_total = 29.90;
             $assinatura->status = 'ativo';
             $assinatura->subscription_id = $response['data']['subscription_id'];
             $assinatura->trial_ends_at = null;
@@ -553,8 +551,8 @@ class AssinaturaController extends Controller
         ]);
 
         $cupom = null;
-        $precoBase = 12990; // 250 reais em centavos
-        $precoExtraPorEmail = 3790; // 50 reais em centavos
+        $precoBase = 29.90; // 250 reais em centavos
+        $precoExtraPorEmail = 29.90; // 50 reais em centavos
 
         if ($request->filled('cupom_promocional')) {
             $cupom = Cupom::where('codigo', $request->cupom_promocional)
@@ -682,10 +680,10 @@ class AssinaturaController extends Controller
             $assinatura = Assinatura::create([
                 'user_id' => $user->id,
                 'tipo_plano_id' => null, // ID do plano Individual
-                'preco_base' => 129.90,
-                'emails_permitidos' => 3,
+                'preco_base' => 29.90,
+                'emails_permitidos' => 1,
                 'emails_extra' => 1,
-                'preco_total' => 129.90, // Preço base sem e-mails extras
+                'preco_total' => 29.90, // Preço base sem e-mails extras
                 'status' => 'ativo',
                 'subscription_id' => $response['data']['subscription_id']
             ]);
@@ -758,7 +756,7 @@ class AssinaturaController extends Controller
                 [
                     "name" => "Plano Multiusuário",
                     "amount" => 1,
-                    "value" => 25000 // R$250,00 em centavos
+                    "value" => 2990 // R$250,00 em centavos
                 ]
             ];
 
@@ -815,10 +813,10 @@ class AssinaturaController extends Controller
             $assinatura = Assinatura::create([
                 'user_id' => $user->id,
                 'tipo_plano_id' => 2, // ID do plano Individual
-                'preco_base' => 250.00,
-                'emails_permitidos' => 10,
+                'preco_base' => 29.90,
+                'emails_permitidos' => 1,
                 'emails_extra' => 1,
-                'preco_total' => 250.00, // Preço base sem e-mails extras
+                'preco_total' => 29.90, // Preço base sem e-mails extras
                 'status' => 'ativo',
                 'subscription_id' => $response['data']['subscription_id']
             ]);
