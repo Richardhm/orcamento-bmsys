@@ -2,36 +2,48 @@
     <!-- Botão redondo -->
     <div class="flex mt-2 justify-between items-center w-full md:mx-auto md:w-[99%] bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] rounded">
         <!-- Botão para abrir a modal -->
-
-
             <!-- Botão de Abrir Modal -->
         <div class="flex items-center flex-wrap">
-
-
-
             <!-- Botão -->
             <button id="toggle-modal"
-                    class="w-14 h-14 flex items-center justify-center rounded-full bg-yellow-500 border-black border-4 text-white text-4xl font-bold shadow-lg transition">
+                    class="w-14 mr-3 h-14 flex items-center justify-center rounded-full bg-yellow-500 border-black border-4 text-white text-4xl font-bold shadow-lg transition">
                 +
             </button>
+
+            @if(!auth()->user()->estaEmTrial())
+                <p class="text-sm text-white dark:text-gray-400 text-center">
+                    Sua assinatura inclui <strong class="text-blue-200 font-bold">{{ $assinatura->emails_permitidos }}</strong> e-mails. Acima disso, é cobrado <strong class="text-yellow-600 text-lg quantidade_email_extra">R$ {{$extra}}</strong> por e-mail.
+                </p>
+            @endif
+
+            @if(auth()->user()->estaEmTrial())
+                <p class="text-sm text-white dark:text-gray-400 text-center">
+                    Valor por usúario <strong class="text-blue-200 font-bold">R$ 29,90</strong>
+                </p>
+            @endif
 
 
         </div>
 
-        @if(!auth()->user()->estaEmTrial())
-        <p class="text-sm text-white dark:text-gray-400 text-center">
-            Sua assinatura inclui <strong class="text-blue-200 font-bold">{{ $assinatura->emails_permitidos }}</strong> e-mails. Acima disso, é cobrado <strong class="text-yellow-600 text-lg quantidade_email_extra">R$ {{$extra}}</strong> por e-mail.
-        </p>
-        @endif
+
 
         @if(!auth()->user()->estaEmTrial())
-        <p>
-            <span class="text-white">📈 Preço Total:</span>
-            <strong class="text-red-500 text-sm preco_total">R$ {{ number_format($valor, 2, ',', '.') }}</strong>
-        </p>
+            <p>
+                <span class="text-white">📈 Preço Total:</span>
+                <strong class="text-red-500 text-sm preco_total">R$ {{ number_format($valor, 2, ',', '.') }}</strong>
+            </p>
         @endif
 
 
+
+        @if(auth()->user()->estaEmTrial())
+            <p>
+                <span class="text-white">📈 Valor Total:</span>
+                <strong class="text-red-500 text-sm preco_total">R$ {{ number_format($valor, 2, ',', '.') }}</strong>
+            </p>
+
+
+        @endif
 
 
         <!-- Fundo de sobreposição (backdrop) -->
@@ -426,6 +438,7 @@
 
                                     if(data.emails_cobrados >= 1) {
                                         document.querySelector('.preco_total').textContent  = data.preco_total;
+                                        document.querySelector('.preco_total_desc').textContent  = data.preco_total;
                                         //document.querySelector('.quantidade_emails').innerHTML  = `Pagando por ${data.emails_cobrados} e-mails extras`;
                                     }
                                     closeModal();
@@ -551,10 +564,12 @@
                            status
                        },
                        success:function(res) {
+                            console.log(res);
                            load.fadeOut(100).css("display", "none");
-                           //document.querySelector('.email_atuais').textContent  = res.emails_extra;
+
                            document.querySelector('.preco_total').textContent  = res.preco_total;
-                           //document.querySelector('.quantidade_emails').textContent  = `Pagando por ${res.emails_cobrados} e-mails extras`;
+                           document.querySelector('.preco_total_desc').textContent  = res.preco_total;
+
                        }
                     });
                 });

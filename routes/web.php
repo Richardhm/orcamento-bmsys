@@ -3,6 +3,7 @@
 use App\Http\Controllers\CallbackController;
 use App\Http\Controllers\ConfiguracoesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GerenciadorController;
 use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AssinaturaController;
@@ -135,6 +136,20 @@ Route::middleware(['auth'])->group(function () {
     /********* Fim Configurações **************/
 
 
+    /************Gerenciar************************/
+    Route::get("/gerenciamento", [GerenciadorController::class, 'index'])->name('gerenciamento.index')->middleware('apenasAdministradores');
+    Route::post("/gerenciamento/regiao", [GerenciadorController::class, 'regiao'])->name('gerenciamento.regiao')->middleware('apenasAdministradores');
+
+    //Route::post('/profile/regiao', [ProfileController::class, ''])->name('profile.regiao');
+
+
+
+
+    /************Fim Gerenciar********************/
+
+
+
+
 
 
 
@@ -151,7 +166,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit')->middleware(['check']);
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/regiao', [ProfileController::class, 'regiao'])->name('profile.regiao');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profile/imagem/atualizar', [ProfileController::class, 'updateAvatar'])->name('profile.imagem.atualizar');
+    Route::post('/profile/user/imagem/atualizar', [ProfileController::class, 'updateAvatarUser'])->name('profile.imagem.atualizar.user');
 
     Route::get('/dashboard', [DashboardController::class,"index"])
         ->middleware(['verified','check'])

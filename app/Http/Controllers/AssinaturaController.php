@@ -59,8 +59,11 @@ class AssinaturaController extends Controller
 
     public function edit()
     {
+        $assinatura = \auth()->user()->assinaturas()->first();
 
-        return view('assinaturas.trial.create');
+        return view('assinaturas.trial.create',[
+            'preco_total' => $assinatura->preco_total
+        ]);
     }
 
 
@@ -116,9 +119,9 @@ class AssinaturaController extends Controller
             'status' => 'trial',
             'trial_ends_at' => now()->addDays(7),
             'emails_permitidos' => 1,
-            'email_extra' => 1,
-            'preco_base' => 0,
-            'preco_total' => 0,
+            'emails_extra' => 1,
+            'preco_base' => 29.90,
+            'preco_total' => 29.90,
         ]);
 
         EmailAssinatura::create([
@@ -389,10 +392,8 @@ class AssinaturaController extends Controller
 
     public function storePromocionalTrialToPaid(Request $request)
     {
-        //return $request->all();
-
         $cupom = null;
-        $precoBase = 2990; // 29.90 reais em centavos
+        $precoBase = (int) round($request->preco_base * 100);
         $precoExtraPorEmail = 2990; // 29.90 reais em centavos
 
         if ($request->filled('cupom_promocional')) {
@@ -429,14 +430,14 @@ class AssinaturaController extends Controller
             }
 
             // Aplicar descontos
-            $precoBase -= $cupom->desconto_plano * 100;
+            //$precoBase -= $cupom->desconto_plano * 100;
 
 
 
-            $precoExtraPorEmail -= $cupom->desconto_extra * 100;
+            ///$precoExtraPorEmail -= $cupom->desconto_extra * 100;
 
             // Garantir valores mínimos
-            $precoBase = max($precoBase, 0);
+            //$precoBase = max($precoBase, 0);
             $precoExtraPorEmail = max($precoExtraPorEmail, 0);
 
 
@@ -506,11 +507,11 @@ class AssinaturaController extends Controller
 
             $assinatura = Assinatura::where("user_id",auth()->user()->id)->first();
             $assinatura->preco_base = 29.90;
-            $assinatura->emails_permitidos = 1;
-            $assinatura->emails_extra = 1;
+            //$assinatura->emails_permitidos = 1;
+            //$assinatura->emails_extra = 1;
             $assinatura->tipo_plano_id = null;
             $assinatura->cupom_id = $cupom->id;
-            $assinatura->preco_total = 29.90;
+            $assinatura->preco_total = $request->preco_base;
             $assinatura->status = 'ativo';
             $assinatura->subscription_id = $response['data']['subscription_id'];
             $assinatura->trial_ends_at = null;

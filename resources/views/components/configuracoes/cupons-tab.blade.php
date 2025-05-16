@@ -4,7 +4,7 @@
 
 
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4">
             <div>
                 <label class="block text-sm font-medium mb-1 text-white">Desconto Plano (R$)</label>
                 <input type="text" name="desconto_plano" required
@@ -12,12 +12,12 @@
                        placeholder="Ex: 100.00">
             </div>
 
-            <div>
-                <label class="block text-sm font-medium mb-1 text-white">Desconto por Extra (R$)</label>
-                <input type="text" name="desconto_extra" required
-                       class="w-full px-3 py-2 border rounded-md"
-                       placeholder="Ex: 15.00">
-            </div>
+{{--            <div>--}}
+{{--                <label class="block text-sm font-medium mb-1 text-white">Desconto por Extra (R$)</label>--}}
+{{--                <input type="text" name="desconto_extra" required--}}
+{{--                       class="w-full px-3 py-2 border rounded-md"--}}
+{{--                       placeholder="Ex: 15.00">--}}
+{{--            </div>--}}
         </div>
 
         <!-- Duração com Selects -->
@@ -52,6 +52,7 @@
                             {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}
                         </option>
                     @endfor
+
                 </select>
             </div>
         </div>
@@ -98,8 +99,7 @@
             <h3 class="font-bold">Cupom cadastrado com sucesso!</h3>
             <p>Código: <span id="success-codigo" class="font-mono"></span></p>
             <p>Válido até: <span id="success-validade" class="font-medium"></span></p>
-            <p>Valor do PLano: <span id="success-plano" class="font-medium"></span></p>
-            <p>Valor do desconto por usúario extrar: <span id="success-desconto" class="font-medium"></span></p>
+            <p>Valor do Desconto: <span id="success-plano" class="font-medium"></span></p>
         </div>
     </form>
     <div class="flex w-[50%] flex-col items-center bg-white/90 p-6 rounded-xl shadow-lg">

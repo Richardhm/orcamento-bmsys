@@ -17,6 +17,10 @@
             </button>
         </div>
     @endif
+
+
+
+
     <div id="loading-cidades" style="display:none; position: absolute; left:0; right:0; margin:auto; top:0; bottom:0; z-index:9999; background:rgba(0,0,0,0.2); width:100%; height:100%; text-align:center;">
         <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);">
             <div class="jumping-dots-loader">
@@ -32,7 +36,7 @@
         <div class="bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] flex flex-col items-center justify-center text-center w-full text-white rounded py-2 mb-4 relative">
             <div class="mb-2">
                 <strong>Bem-vindo!</strong> Para cadastrar usuários da sua equipe, acesse o link:
-                <a href="{{ route('users.manage') }}" style="border: 2px solid #ffcc00;border-radius: 5px;"
+                <a href="{{ route('gerenciamento.index') }}" style="border: 2px solid #ffcc00;border-radius: 5px;"
                    class="inline-flex ml-2 p-1 items-center gap-1 underline text-white font-bold">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="w-5 h-5">
@@ -62,9 +66,10 @@
             </a>
         </div>
 
+
     <input type="hidden" id="odonto_resultado" />
     <div class="max-w-full mx-auto sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-x-4 px-4">
-        <x-informacoes :cidades="$cidades" :estados="$estados" class="sm:mx-5"></x-informacoes>
+        <x-informacoes :cidades="$cidades" :estados="$estados" :ufpreferencia="$uf_preferencia" class="sm:mx-5"></x-informacoes>
         <x-operadoras :operadoras="$administradoras" class="sm:mx-5"></x-operadoras>
         <x-planos :planos="$planos" class="sm:mx-5"></x-planos>
         <div class="p-1 rounded mt-2 hidden bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border w-full lg:w-[30%] sm:mx-5" id="resultado"></div>
@@ -244,6 +249,14 @@
     @section('scripts')
        <script>
            $(document).ready(function(){
+               let ufPreferida = "{{ $uf_preferencia }}";
+
+               if (ufPreferida) {
+                   mudarEstado()
+                   //$('#estado').val(ufPreferida).trigger('change'); // dispara o evento para carregar cidades
+               }
+
+
 
                // $('#cidade').on('focus', function() {
                //     if($('#estado').val() === '' || $('#estado').val() == null) {
@@ -253,10 +266,8 @@
                // });
 
 
-
-               $('#estado').on('change', function() {
-                   let estado_id = $(this).val();
-
+               function mudarEstado() {
+                   let estado_id = $("#estado").val();
                    if(estado_id) {
                        $('#loading-cidades').fadeIn(150);
                        $.ajax({
@@ -283,19 +294,8 @@
                        $('#cidade').empty();
                        $('#cidade').append('<option value="">Escolher Cidade</option>');
                    }
-               });
-
-
-
-
-
-
-
-
-
-
-
-
+               }
+               $('#estado').on('change',mudarEstado);
 
                function scrollToBottom() {
                    if (window.innerWidth <= 768) { // Aplica apenas para mobile

@@ -25,7 +25,6 @@ class DashboardController extends Controller
     {
 
         $user = auth()->user(); // Usuário logado
-
         // Busca na tabela emails_assinatura
         $emailAssinatura = EmailAssinatura::where('email', $user->email)->first();
 
@@ -55,7 +54,8 @@ class DashboardController extends Controller
             'cidades' => $cidades,
             'administradoras' => $administradoras,
             'planos' => $planos,
-            'estados' => $estados
+            'estados' => $estados,
+            'uf_preferencia' => $user->uf_preferencia
         ]);
     }
 

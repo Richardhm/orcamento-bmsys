@@ -7,11 +7,12 @@
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs md:text-lg bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
             <tr class="hidden md:table-row">
-                <th scope="col" class="px-2 py-1 text-white">Imagem</th>
-                <th scope="col" class="py-1 text-white">Nome</th>
-                <th scope="col" class="py-1 text-white">Email</th>
-                <th scope="col" class="py-1 text-white">Telefone</th>
-                <th scope="col" class="py-1 text-center text-white">Ações</th>
+                <td class="px-2 py-1 text-white text-sm">Foto</td>
+                <td class="py-1 text-white text-sm">Nome</td>
+                <td class="py-1 text-white text-sm">Email</td>
+                <td class="py-1 text-white text-sm">Telefone</td>
+                <td class="py-1 text-white text-sm">Editar</td>
+                <td class="py-1 text-white text-sm">Liga/Des</td>
             </tr>
             <tr class="md:hidden">
                 <!-- Cabeçalho simplificado para mobile -->
@@ -32,17 +33,18 @@
                             </div>
                         @endif
                     </td>
-                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none">{{ $user['name'] }}</td>
-                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none">{{ $user['email'] }}</td>
-                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none">{{ $user['phone'] }}</td>
-                    <td class="py-1 flex flex-col md:flex-row items-center justify-center space-y-1 md:space-y-0 md:space-x-2">
+                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none text-sm">{{ $user['name'] }}</td>
+                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none text-sm">{{ $user['email'] }}</td>
+                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none text-sm">{{ $user['phone'] }}</td>
+                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none text-sm">
                         <button type="button" id="openModal" data-id="{{ $user['id'] }}"
                                 class="edit focus:outline-none text-white bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] focus:ring-2 focus:ring-purple-300 font-medium rounded-md p-1 md:p-1.5 text-xs md:text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                             </svg>
                         </button>
-
+                    </td>
+                    <td class="py-1 text-white md:table-cell block before:content-[attr(data-label)] before:float-left before:font-bold before:md:content-none text-sm">
                         <label class="switch mt-1 md:mt-0" data-id="{{ $user['id'] }}">
                             <input type="checkbox" class="toggle-switch" data-id="{{$user['id']}}" {{$user['status'] == 1 ? "checked" : ''}}>
                             <span class="slider"></span>

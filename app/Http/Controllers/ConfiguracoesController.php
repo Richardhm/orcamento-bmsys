@@ -552,7 +552,7 @@ class ConfiguracoesController extends Controller
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             //'codigo' => 'required|string|size:10|unique:cupons',
             'desconto_plano' => 'required|min:0',
-            'desconto_extra' => 'required|min:0',
+            //'desconto_extra' => 'required|min:0',
             'duracao_horas' => 'required|min:0|max:8760',
             'duracao_minutos' => 'required|min:0|max:59',
             'duracao_segundos' => 'required|min:0|max:59',
@@ -583,7 +583,7 @@ class ConfiguracoesController extends Controller
             $cupom = Cupom::create([
                 'codigo' => $codigo,
                 'desconto_plano' => str_replace([".",","],["","."],$request->desconto_plano),
-                'desconto_extra' => str_replace([".",","],["","."],$request->desconto_extra),
+                'desconto_extra' => 0,
                 'duracao_horas' => $request->duracao_horas,
                 'duracao_minutos' => $request->duracao_minutos,
                 'duracao_segundos' => $request->duracao_segundos,
@@ -600,8 +600,8 @@ class ConfiguracoesController extends Controller
                 'success' => true,
                 'codigo' => $dado->codigo,
                 'validade' => $dado->validade->format('Y-m-d H:i:s'),
-                'valor_plano' => 29.90 - $dado->desconto_plano,
-                'valor_desconto' => 29.90 - $dado->desconto_extra,
+                'valor_plano' => $dado->desconto_plano,
+                //'valor_desconto' => $dado->desconto_extra,
                 'message' => 'Cupom criado com sucesso!'
             ]);
 

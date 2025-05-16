@@ -7,6 +7,8 @@
         </div>
     @endif
 
+    <input type="hidden" id="preco_final">
+
     <x-auth-session-status class="mb-1" :status="session('status')" />
     <section class="md:w-[70%] rounded-lg mx-auto">
         <img src="{{ asset('logo_bm_1.png') }}" class="mx-auto my-1 w-32 md:w-32" alt="">
@@ -36,9 +38,8 @@
                 <div id="resumoCompra" class="bg-gray-100 rounded-lg p-4 mb-4 text-black">
                     <h3 class="text-lg font-semibold mb-2">Resumo da compra</h3>
                     <ul>
-                        <li>Plano: <span id="precoPlanoOriginal">R$ 129,90</span> <span id="descontoPlano"></span></li>
-                        <li>Usuários adicionais: <span id="precoUsuarioOriginal">R$ 37,90</span> <span id="descontoUsuario"></span></li>
-                        <li><b>Total:</b> <span id="totalFinal">R$ 129,90</span></li>
+                        <li>Plano: <span id="precoPlanoOriginal"></span> <span id="descontoPlano"></span></li>
+                        <li><b>Total:</b> <span id="totalFinal"></span></li>
                     </ul>
                 </div>
 
@@ -134,8 +135,8 @@
                     }
                 });
 
-                let precoPlano = 129.90;
-                let precoPorUsuario = 37.90;
+                var precoPlano = {{$preco_total}};
+                let precoPorUsuario = 29.90;
                 let descontoPlano = 0.0;
                 let descontoUsuario = 0.0;
                 let totalUsuarios = 1; // Atualize se tiver multiusuário
@@ -146,10 +147,10 @@
                     valorUsuarios = Math.max(0, valorUsuarios);
 
                     let total = valorPlano + valorUsuarios;
-                    $("#precoPlanoOriginal").text(`R$ ${precoPlano.toFixed(2)}`);
+                    $("#precoPlanoOriginal").text(`${precoPlano.toLocaleString('pt-BR', {style: 'currency',currency: 'BRL'})}`);
+                    $("#preco_final").val(valorPlano.toFixed(2));
                     $("#descontoPlano").html(descontoPlano > 0 ? `<span class="text-red-400">(- R$ ${descontoPlano.toFixed(2)})</span>` : "");
                     $("#precoUsuarioOriginal").text(`R$ ${precoPorUsuario.toFixed(2)}`);
-                    $("#descontoUsuario").text(descontoUsuario > 0 ? `(- R$ ${descontoUsuario.toFixed(2)}) x ${totalUsuarios-1} usuário(s)` : "");
                     $("#totalFinal").html(`<span class="text-green-600">R$ ${total.toFixed(2)}</span>`);
                 }
 
@@ -361,6 +362,7 @@
                     let ano = $("#ano").val();
                     let cvv = $("#cvv").val();
                     let bandeira = $("#bandeira").val();
+                    let precoPlano = $("#preco_final").val();
 
                     let paymentToken = "";
                     let mascaraCartao = "";
@@ -388,6 +390,7 @@
                                 formData.append("paymentToken", paymentToken);
                                 formData.append("mascaraCartao", mascaraCartao);
                                 formData.append("cupom_promocional",cupom_promocional);
+                                formData.append("preco_base",precoPlano);
 
                                 $.ajax({
                                     url:"{{ route('assinaturas.trial.store') }}",

@@ -426,12 +426,12 @@
                     const data = await response.json();
 
                     if (data.success) {
-                        console.log(data);
+                        //console.log(data);
                         // Exibir mensagem de sucesso
                         document.getElementById('success-codigo').textContent = data.codigo;
                         document.getElementById('success-validade').textContent = data.validade;
                         document.getElementById('success-plano').textContent = parseFloat(data.valor_plano).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        document.getElementById('success-desconto').textContent = parseFloat(data.valor_desconto).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
                         successMessage.classList.remove('hidden');
 
                         // Rolagem suave para a mensagem

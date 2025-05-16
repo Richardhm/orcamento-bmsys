@@ -1,27 +1,21 @@
-<section>
+<section class="p-2">
     <header class="w-full">
         <div class="w-full flex justify-between items-center">
             <div class="flex flex-col">
-                <h2 class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                <h2 class="text-sm font-medium text-white">
                     {{ __('Informações de Perfil') }}
                 </h2>
 
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    {{ __("Atualize as informações do perfil e o endereço de e-mail da sua conta.") }}
+                <p class="mt-1 text-sm text-white">
+                    {{ __("Atualize as informações do perfil.") }}
                 </p>
             </div>
 
             <div class="flex flex-col items-center">
-                @if ($user->imagem)
-                    <div class="mt-4">
-                        <img src="{{ $user->imagem ? Storage::url($user->imagem) : 'placeholder.jpg' }}"
-                             class="user-avatar w-24 h-24 rounded-full object-cover">
-                    </div>
-                @else
-                    <div class="mt-4">
-                        <img src="https://via.placeholder.com/150" alt="Default Profile Image" class="w-24 h-24 rounded-full shadow-lg">
-                    </div>
-                @endif
+                <img src="{{ $user->imagem ? Storage::url($user->imagem) : 'https://via.placeholder.com/150' }}"
+                     class="user-avatar w-24 h-24 rounded-full object-cover cursor-pointer"
+                     id="user-avatar">
+                <input type="file" id="avatar-input" class="hidden" accept="image/*">
             </div>
         </div>
     </header>
@@ -30,56 +24,26 @@
         @csrf
     </form>
 
-    <div class="flex lg:flex-row items-start lg:items-center mt-2 w-full">
+    <div class="flex lg:flex-row items-start lg:items-center w-full">
 
         <form id="profileForm" method="post" action="{{ route('profile.update') }}" class="mt-1 space-y-6 w-full" enctype="multipart/form-data">
             @csrf
             @method('patch')
 
             <div>
-                <x-input-label for="name" :value="__('Nome')" />
+                <x-input-label for="name" class="text-white" :value="__('Nome')" />
                 <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
             </div>
 
             <div>
-                <x-input-label for="phone" :value="__('Telefone')" />
+                <x-input-label for="phone" class="text-white" :value="__('Telefone')" />
                 <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" required autocomplete="tel" />
                 <x-input-error class="mt-2" :messages="$errors->get('phone')" />
             </div>
 
-            <div>
-                <x-input-label for="imagem" :value="__('Upload Imagem')" />
-                <input id="imagem" name="imagem" type="file" class="mt-1 block w-full" accept="image/*" />
-                <x-input-error class="mt-2" :messages="$errors->get('imagem')" />
-            </div>
-
-            <div>
-                {{--            <x-input-label for="email" :value="__('Email')" />--}}
-                {{--            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />--}}
-                {{--            <x-input-error class="mt-2" :messages="$errors->get('email')" />--}}
-
-                @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                    <div>
-                        <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                            {{ __('Seu endereço de e-mail não foi verificado.') }}
-
-                            <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                                {{ __('Clique aqui para reenviar o e-mail de verificação.') }}
-                            </button>
-                        </p>
-
-                        @if (session('status') === 'verification-link-sent')
-                            <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                                {{ __('Um novo link de verificação foi enviado para seu endereço de e-mail.') }}
-                            </p>
-                        @endif
-                    </div>
-                @endif
-            </div>
-
             <div class="flex items-center gap-4">
-                <x-primary-button>{{ __('Salvar') }}</x-primary-button>
+                <x-primary-button class="w-full text-center flex justify-center">Salvar</x-primary-button>
 
                 @if (session('status') === 'profile-updated')
                     <p
