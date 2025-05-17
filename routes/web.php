@@ -137,8 +137,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     /************Gerenciar************************/
-    Route::get("/gerenciamento", [GerenciadorController::class, 'index'])->name('gerenciamento.index')->middleware('apenasAdministradores');
-    Route::post("/gerenciamento/regiao", [GerenciadorController::class, 'regiao'])->name('gerenciamento.regiao')->middleware('apenasAdministradores');
+    Route::get("/gerenciamento", [GerenciadorController::class, 'index'])->name('gerenciamento.index')->middleware(['apenasAdministradores','check']);
+    Route::post("/gerenciamento/regiao", [GerenciadorController::class, 'regiao'])->name('gerenciamento.regiao')->middleware(['apenasAdministradores','check']);
 
     //Route::post('/profile/regiao', [ProfileController::class, ''])->name('profile.regiao');
 
