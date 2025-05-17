@@ -259,29 +259,67 @@ class AssinaturaController extends Controller
     private function administradoraPlanos($assinatura_id)
     {
         // Array de associações, cada um é um registro que será inserido
-        $associacoes = [
-            [
-                'plano_id' => 1,
-                'administradora_id' => 4,
-                'tabela_origens_id' => 1,
-            ],
-            [
-                'plano_id' => 1,
-                'administradora_id' => 4,
-                'tabela_origens_id' => 2,
-            ],
-            [
-                'plano_id' => 1,
-                'administradora_id' => 4,
-                'tabela_origens_id' => 8,
-            ],
-            [
-                'plano_id' => 3,
-                'administradora_id' => 1,
-                'tabela_origens_id' => 1,
-            ],
-            // Adicione novos aqui conforme necessidade
+        $dados = [
+            [3, 1, 1],
+            [3, 1, 2],
+            [3, 1, 8],
+            [3, 1, 9],
+            [3, 2, 1],
+            [3, 2, 2],
+            [3, 2, 8],
+            [3, 2, 9],
+            [3, 3, 1],
+            [3, 3, 2],
+            [3, 3, 8],
+            [3, 3, 9],
+            [1, 4, 1],
+            [1, 4, 2],
+            [1, 4, 8],
+            [1, 4, 9],
+            [10, 4, 9],
+            [11, 4, 9],
+            [8, 2, 9],
+            [14, 2, 9],
+            [1, 4, 11],
+            [1, 4, 12],
+            [1, 4, 13],
+            [16, 4, 14],
+            [17, 4, 14],
+            [18, 4, 14],
+            [19, 4, 14],
+            [20, 4, 14],
+            [21, 4, 14],
+            [22, 4, 14],
+            [1, 4, 15],
+            [5, 4, 15],
+            [1, 4, 16],
+            [5, 4, 16],
+            [1, 4, 17],
+            [1, 4, 18],
+            [1, 4, 19],
+            [1, 4, 21],
+            [1, 4, 22],
+            [1, 4, 23],
+            [1, 4, 26],
+            [1, 4, 27],
+            [1, 4, 25],
+            [1, 4, 29],
+            [1, 4, 30],
+            [1, 4, 32],
+            [1, 4, 31],
+            [1, 4, 33],
+            [1, 4, 34],
+            [1, 4, 36],
         ];
+
+        $associacoes = array_map(function($item) {
+            return [
+                'plano_id' => $item[0],
+                'administradora_id' => $item[1],
+                'tabela_origens_id' => $item[2],
+            ];
+        }, $dados);
+
 
         foreach ($associacoes as $associacao) {
             // Cria o registro no banco vinculando a assinatura

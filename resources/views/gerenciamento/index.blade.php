@@ -62,11 +62,11 @@
             <h3 class="text-white font-semibold text-lg mb-1 text-sm">Gerenciador de Layout e UF de Referência</h3>
 
             <div class="flex w-full md:w-[94%] justify-around bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border-white border mt-1 mb-1 rounded p-1 items-center">
-                <label  for="regiao" class="block text-sm font-medium text-white mb-1 w-[40%]">Região (UF) de Preferência</label>
+                <label  for="regiao" class="block text-sm font-medium text-white mb-1 w-[50%]">Região (UF) de Preferência</label>
                 <select name="regiao" id="regiao"
                         class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-           text-gray-700 bg-white  w-[30%]">
+           text-gray-700 bg-white  w-[20%]">
                     <option value="" disabled selected>UF</option>
                     @foreach($cidades as $uf => $grupo)
                         <option value="{{ $uf }}" {{ auth()->user()->uf_preferencia === $uf ? 'selected' : '' }}>{{ $uf }}</option>

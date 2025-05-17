@@ -254,7 +254,7 @@
                     Login
                 </a>
                 <div>
-                    <img src="{{asset('logo-hapvida-branco.png')}}" style="width:80px;height:60px;" alt="Hapvida">
+                    <img src="{{asset('logo-hapvida-branco-lg.png')}}" style="width:160px;height:55px;" alt="Hapvida">
                 </div>
             </div>
 

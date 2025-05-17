@@ -26,6 +26,16 @@
 
             </div>
 
+            @if(Auth::user()->isAdmin() && auth()->user()->estaEmTrial())
+                <p class="bg-red-600 border-white border p-2 rounded text-white text-sm">
+                    @php
+                        $data = Auth::user()->assinaturas()->first()->trial_ends_at;
+                    @endphp
+                    Seu período de teste se encerra em: {{ \Carbon\Carbon::parse($data)->format('d/m/Y \à\s H:i') }}.
+                    <a class="p-1 bg-orange-500 text-white rounded ml-2" href="{{route('assinatura.edit')}}">Pagar</a>
+                </p>
+            @endif
+
 
 
             <!-- Settings Dropdown -->
@@ -117,6 +127,8 @@
                         </form>
                     </div>
             </div>
+
+
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
