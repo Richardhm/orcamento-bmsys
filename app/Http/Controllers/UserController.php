@@ -282,14 +282,15 @@ class UserController extends Controller
 
                 if($cupom_status) {
                     $valor_total_sem_desconto = $preco_base + ($emails_cobrados * $preco_extra_por_email);
-                    $assinatura->preco_total = max($valor_total_sem_desconto - $cupom->desconto_plano, 0); // nunca menor que 0
+                    $assinatura->preco_total = max($valor_total_sem_desconto - $cupom->desconto_plano, 29.90); // nunca menor que 0
                 } else {
-                    $assinatura->preco_total = $preco_base + ($emails_cobrados * $preco_extra_por_email);
+                    $valor_total_sem_desconto = $preco_base + ($emails_cobrados * $preco_extra_por_email);
+                    $assinatura->preco_total = max($valor_total_sem_desconto, 29.90); // nunca menor que 0
                 }
             } else {
 
                 $emails_cobrados = 0;
-                $assinatura->preco_total = $preco_base;
+                $assinatura->preco_total = max($preco_base, 29.90);
             }
 
             // Salvar a assinatura
@@ -300,7 +301,7 @@ class UserController extends Controller
             $user->save();
 
             if($assinatura->status != "trial") {
-                //$this->atualizarAssinaturaEFi($assinatura);
+                $this->atualizarAssinaturaEFi($assinatura);
             }
 
 
