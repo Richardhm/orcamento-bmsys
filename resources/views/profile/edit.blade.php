@@ -28,7 +28,6 @@
                     <option value="" disabled selected>UF</option>
                     @foreach($cidades as $uf => $grupo)
                         <option value="{{ $uf }}" {{ auth()->user()->uf_preferencia === $uf ? 'selected' : '' }}>{{ $uf }}</option>
-
                     @endforeach
                 </select>
             </div>

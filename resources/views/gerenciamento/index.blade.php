@@ -61,7 +61,7 @@
 
             <h3 class="text-white font-semibold text-lg mb-1 text-lg">Gerenciador de Layout e UF de Referência</h3>
 
-            <div class="flex bg-red-600 w-full md:w-[94%] justify-around bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border-white border mt-1 mb-1 rounded p-1 items-center">
+            <div class="flex w-full md:w-[94%] justify-around bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border-white border mt-1 mb-1 rounded p-1 items-center">
                 <label  for="regiao" class="block text-sm font-medium text-white mb-1 w-[50%]">Região (UF) de Preferência</label>
                 <select name="regiao" id="regiao"
                         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm

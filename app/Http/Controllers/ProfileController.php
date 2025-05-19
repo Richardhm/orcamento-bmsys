@@ -49,7 +49,6 @@ class ProfileController extends Controller
         ]);
 
         try {
-
             $id = $request->id;
             $user = \App\Models\User::find($id);
             $imagemAntiga = $user->imagem;
