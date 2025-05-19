@@ -178,6 +178,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cidades/origem', [DashboardController::class, 'getCidadesDeOrigem'])->name('cidades.origem');
 
 
+    Route::post('/filtrar/administradora',[DashboardController::class,'filtrarAdministradora'])->name('filtrar.administradora');
+
     Route::get('/layout', [LayoutController::class, 'index'])->name('layouts.index')->middleware(['check']);
     Route::post('/layouts/select', [LayoutController::class, 'select'])->name('layouts.select');
 

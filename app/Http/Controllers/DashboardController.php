@@ -61,6 +61,33 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function filtrarAdministradora(Request $request)
+    {
+        $cidade = $request->cidade;
+
+//        $administradora_id = DB::table('tabelas')
+//            ->select('administradora_id')
+//            ->where('tabela_origens_id', $cidade)
+//            ->groupBy('administradora_id')
+//            ->get();
+
+        $administradoraIds = DB::table('tabelas')
+            ->select('administradora_id')
+            ->where('tabela_origens_id', $cidade)
+            ->groupBy('administradora_id')
+            ->pluck('administradora_id');
+        $operadoras = Administradora::whereIn('id', $administradoraIds)
+            //->where('cidade', $cidade)
+            ->get();
+
+
+        //$operadoras = Administradora::where('cidade', $cidade)->get();
+        return response()->json($operadoras);
+    }
+
+
+
+
     public function getCidadesDeOrigem(Request $request)
     {
         $uf = $request->input('uf'); // Pode ser 'id' se for id do estado

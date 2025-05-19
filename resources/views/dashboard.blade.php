@@ -400,9 +400,48 @@
                    });
                    // Verifica se o select está preenchido
                    var cidadeSelected = $('#cidade').val() !== '';
-                   console.log(cidadeSelected);
+
                    // Se ambas as condições forem verdadeiras, remova a classe 'hidden'
                    if (hasValue && cidadeSelected) {
+
+                       $.ajax({
+                            url:"{{route('filtrar.administradora')}}",
+                            method:"POST",
+                            data: {
+                                cidade:$('#cidade').val()
+                            },
+                           success:function(res) {
+                               let operadorasContainer = $('#operadoras');
+                               operadorasContainer.empty(); // Limpa o conteúdo existente
+                               let titulo = `
+            <button class="py-1.5 w-full px-1 me-2 mb-2 text-sm font-medium text-white bg-white rounded-lg border border-gray-200 bg-gray-500 bg-opacity-10">
+                Operadoras
+            </button>`;
+                               operadorasContainer.append(titulo);
+                               res.forEach(op => {
+                                   let operadoraDiv = `
+                <div class="bg-white w-full container_image_operadora flex flex-wrap justify-between py-1 px-1 me-2 mb-1 text-sm font-medium text-white focus:outline-none bg-white rounded-lg border border-gray-200 focus:z-10 bg-gray-500 bg-opacity-10 dark:hover:text-gray-900">
+                    <label class="flex justify-between items-center w-full cursor-pointer">
+                        <div class="flex w-[50%] items-center">
+                            <input type="radio"
+                                   name="operadoras"
+                                   id="operadoras_${op.id}"
+                                   value="${op.id}"
+                                   class="w-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <span class="ml-1 text-sm">${op.nome}</span>
+                        </div>
+                        <div class="flex w-[50%] justify-end">
+                            <img src="${op.logo}" alt="${op.nome}" class="image_operadora rounded-md" style="width:100px;border-radius:5px;padding:2px;background-color: white;">
+                        </div>
+                    </label>
+                </div>`;
+                                   operadorasContainer.append(operadoraDiv);
+                               });
+
+                               operadorasContainer.removeClass('hidden');
+                           }
+
+                       });
                        $('#operadoras').removeClass('hidden');
                    } else {
                        $('#operadoras').addClass('hidden');
