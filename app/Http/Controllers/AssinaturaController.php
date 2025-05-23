@@ -34,8 +34,10 @@ class AssinaturaController extends Controller
         $options = [
             'client_id' => $client_id,
             'client_secret' => $client_secret,
-            'sandbox' => true,
+            'certificate' => $certificate_path,
+            'sandbox' => false,
             'debug' => false
+
         ];
 
         $this->efi = new EfiPay($options);
@@ -331,6 +333,139 @@ class AssinaturaController extends Controller
             ]);
         }
     }
+
+    public function pix(Request $request)
+    {
+        $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
+        $body = [
+            "calendario" => [
+                "expiracao" => 3600 // Charge lifetime, specified in seconds from creation date
+            ],
+            "devedor" => [
+                "cpf" => $cpf,
+                "nome" => 'Richard Lopes'
+            ],
+            "valor" => [
+                "original" => "29.90"
+            ],
+            "chave" => "130ceaee-b233-481e-8feb-6029a5429b75", // Pix key registered in the authenticated Efí account
+            "solicitacaoPagador" => "Informe o número do identificador de pedido",
+
+        ];
+
+        $responsePix = $this->efi->pixCreateImmediateCharge([], $body);
+
+        if($responsePix['txid']) {
+            $params = [
+                "id" => $responsePix['loc']['id']
+            ];
+            $responseQrcode = $this->efi->pixGenerateQRCode($params);
+            return [
+              "imagem" => $responseQrcode['imagemQrcode'],
+              "copiacola" => $responseQrcode['qrcode'],
+              "txid" => $responsePix['txid']
+            ];
+        }
+        return "Erro";
+    }
+
+    public function historicoPagamentosPix(Request $request)
+    {
+        $cpf = \auth()->user()->first()->cpf;
+        $params = [
+            "inicio" => "2025-05-01T00:00:00Z",
+            "fim" => "2025-06-25T23:59:59Z",
+            "status" => "CONCLUIDA",
+            "cpf" => $cpf,
+        ];
+
+        $response = $this->efi->pixListCharges($params);
+        $dados = $response['cobs'];
+
+
+
+
+        return view('assinaturas.historicopix', compact('dados'));
+
+
+
+    }
+
+
+
+
+
+
+
+
+    public function verificarPagamento(Request $request)
+    {
+        $status = true;
+
+
+        $imagePath = null;
+        if ($request->hasFile('imagem')) {
+            $imagePath = $request->file('imagem')->store('users', 'public');
+        }
+
+        $params = [
+            "txid" => $request->id
+        ];
+        $response = $this->efi->pixDetailCharge($params);
+
+
+        if($response['status'] === "CONCLUIDA" && $status) {
+            $status = false;
+            $user = User::create([
+                'name' => $request->nome,
+                'email' => $request->email,
+                'password' => $request->password,
+                'phone' => $request->phone,
+                'imagem' => $imagePath,
+            ]);
+
+            // 2. Vincular o ID da assinatura ao usuário
+            $assinatura = Assinatura::create([
+                'user_id' => $user->id,
+                'tipo_plano_id' => 1, // ID do plano Individual
+                'preco_base' => 29.90,
+                'emails_permitidos' => 1,
+                'emails_extra' => 1,
+                'preco_total' => 29.90, // Preço base sem e-mails extras
+                'status' => 'ativo',
+                'subscription_id' => null,
+                'tipo' => 'PIX',
+                'next_charge' => Carbon::now()->addMonth(),
+
+            ]);
+
+            EmailAssinatura::create([
+                'assinatura_id' => $assinatura->id,
+                'email' => $user->email,
+                'user_id' => $user->id,
+                'is_administrador' => true, // Marca este e-mail como administrador
+            ]);
+
+            $this->administradoraPlanos($assinatura->id);
+
+            SendVerificationEmail::dispatch($user);
+
+
+            return response()->json([
+                'success' => true,
+                'redirect' => route('bemvindo', ['user' => $user->id])
+            ]);
+
+
+
+        }
+
+
+
+
+    }
+
+
 
     /*
      * Esse metodo da rota /assinatura/alterar quando acaba a assinatura trial do usuario cai nessa rota

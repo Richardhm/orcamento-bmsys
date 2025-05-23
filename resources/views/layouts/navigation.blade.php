@@ -14,7 +14,7 @@
                     $assinaturaId = \Illuminate\Support\Facades\Auth::user()->assinaturas()->first()?->id;
                 @endphp
 
-                @if(in_array($assinaturaId, [58]))
+                @if(in_array($assinaturaId, [29]))
                     <div class="shrink-0 flex items-center">
                         <a href="https://select.bmsys.com.br/dashboard" class="h-8">
                             <img src="{{ asset('logo_select.png') }}" alt="Logo" style="width:50px;height:30px;" class="bg-white rounded-lg hover:bg-blue-100 ml-3">
@@ -103,11 +103,32 @@
                     </a>
 
                     @if(Auth::user()->isAdmin() && !auth()->user()->estaEmTrial())
-                        <a class="text-white ml-2" title="Historico Financeiro" alt="Editar Seu Perfil" href="{{route('assinatura.historico')}}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
-                            </svg>
-                        </a>
+
+                        @if(\Illuminate\Support\Facades\Auth::user()->assinaturas()->first()->tipo == "PIX")
+
+                            <a class="text-white ml-2" title="Historico Financeiro" alt="Editar Seu Perfil" href="{{route('assinatura.historico.pix')}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                                </svg>
+                            </a>
+
+
+
+
+                        @else
+
+                            <a class="text-white ml-2" title="Historico Financeiro" alt="Editar Seu Perfil" href="{{route('assinatura.historico')}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                                </svg>
+                            </a>
+
+
+                        @endif
+
+
+
+
                     @endif
 
 
@@ -160,19 +181,16 @@
                 </x-responsive-nav-link>
 
                 @if(Auth::user()->isAdmin())
-                    <a href="{{route('users.manage')}}" class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-700 transition">
+                    <a class="text-white relative flex items-center gap-1" title="Configurações" alt="Configurações" href="{{ route('gerenciamento.index') }}">
                         👥 Gerenciar Usuários
                     </a>
+                @else
+                    <a class="text-white ml-2" title="Editar Seu Perfil" alt="Editar Seu Perfil" href="{{route('profile.edit')}}">
+                        ✏️ Editar Perfil
+                    </a>
                 @endif
-
-                <a href="{{route('profile.edit')}}" class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-700 transition">
-                    ✏️ Editar Perfil
-                </a>
                 <a href="{{route('tabela_completa.index')}}" class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-700 transition">
                     📋 Tabela Completa
-                </a>
-                <a href="{{route('layouts.index')}}" class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-700 transition">
-                    🎨 Escolher Layout
                 </a>
             </nav>
 

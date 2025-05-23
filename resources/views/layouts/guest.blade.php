@@ -115,6 +115,69 @@
             transform: scale(1.1);
         }
 
+        .jumping-dots-loader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            gap: 8px;
+        }
+
+        .jumping-dots-loader .dot {
+            width: 15px;
+            height: 15px;
+            background: orange;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: jumping 0.6s infinite alternate;
+            display: inline-block;
+        }
+
+        .jumping-dots-loader .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .jumping-dots-loader .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes jumping {
+            to {
+                transform: translateY(-16px);
+            }
+        }
+
+        .loading-dots {
+            display: flex;
+            align-items: center;
+        }
+
+        .loading-dots div {
+            width: 8px;
+            height: 8px;
+            margin: 0 2px;
+            border-radius: 50%;
+            background-color: #000;
+            animation: bounce 1.5s infinite;
+        }
+
+        .loading-dots div:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .loading-dots div:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        .loading-dots div:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+        }
 
 
     </style>
@@ -130,6 +193,7 @@
         </svg>
     </a>
 </div>
+
 
 
 

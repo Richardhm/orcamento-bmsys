@@ -135,8 +135,6 @@ class UserController extends Controller
             $user->primeiro_acesso = 1;
             $user->save();
 
-
-
             // Passo 2: Obter a Assinatura do Administrador
             $assinatura = Assinatura::where('user_id', auth()->id())->firstOrFail();
 
@@ -183,7 +181,7 @@ class UserController extends Controller
             $assinatura->save();
 //
 //
-            if($assinatura->status != "trial") {
+            if($assinatura->status != "trial" && $assinatura->tipo != "PIX") {
                 $this->atualizarAssinaturaEFi($assinatura);
             }
 //
@@ -222,6 +220,9 @@ class UserController extends Controller
 
     public function alterar(Request $request)
     {
+
+
+
         $user_id = (int) $request->userId;
         $status = $request->status == 'false' ? 0 : 1;
 
@@ -296,11 +297,14 @@ class UserController extends Controller
             // Salvar a assinatura
             $assinatura->save();
 
+
+
+
             // Atualizar o status do usuário
             $user->status = $status;
             $user->save();
 
-            if($assinatura->status != "trial") {
+            if($assinatura->status != "trial" && $assinatura->tipo != "PIX") {
                 $this->atualizarAssinaturaEFi($assinatura);
             }
 

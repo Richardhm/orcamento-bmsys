@@ -24,15 +24,15 @@
 
 
 
-       <div class="flex items-center">
-           <p>
-               <span class="text-white">📈 Valor Total:</span>
-               <strong class="text-red-500 text-sm preco_total">R$ {{ number_format($valor, 2, ',', '.') }}</strong>
-           </p>
-           <p class="text-white ml-2">|</p>
-           <a class="p-1 bg-orange-500 text-white rounded ml-2" href="{{route('assinatura.edit')}}">Pagar</a>
+        <div class="flex items-center">
+            <p>
+                <span class="text-white">📈 Valor Total:</span>
+                <strong class="text-red-500 text-sm preco_total">R$ {{ number_format($valor, 2, ',', '.') }}</strong>
+            </p>
+            <p class="text-white ml-2">|</p>
+            <a class="p-1 bg-orange-500 text-white rounded ml-2" href="{{route('assinatura.edit')}}">Pagar</a>
 
-       </div>
+        </div>
 
 
 
@@ -61,7 +61,7 @@
 
             <h3 class="text-white font-semibold text-lg mb-1 text-lg">Gerenciador de Layout e UF de Referência</h3>
 
-            <div class="flex w-full md:w-[94%] justify-around bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border-white border mt-1 mb-1 rounded p-1 items-center">
+            <div class="flex w-full md:w-[89%] justify-around bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border-white border mt-1 mb-1 rounded p-1 items-center">
                 <label  for="regiao" class="block text-sm font-medium text-white mb-1 w-[50%]">Região (UF) de Preferência</label>
                 <select name="regiao" id="regiao"
                         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm
@@ -127,7 +127,7 @@
 
     </div>
 
-@section('css')
+    @section('css')
         <style>
 
             #user-table::-webkit-scrollbar {
@@ -348,20 +348,20 @@
                 const modalEdit = document.getElementById('editUserModal');
 
                 $("body").on('change','#regiao',function(){
-                   let regiao = $(this).val();
-                   $.ajax({
-                      url:"{{route('gerenciamento.regiao')}}",
-                      method:"POST",
-                      data: {regiao},
-                      success:function(res) {
+                    let regiao = $(this).val();
+                    $.ajax({
+                        url:"{{route('gerenciamento.regiao')}}",
+                        method:"POST",
+                        data: {regiao},
+                        success:function(res) {
 
-                          if(res == true) {
-                              toastr.success("Região alterada com sucesso", 'Sucesso');
-                          } else {
-                              toastr.error("Erro ao alterar região", 'Error');
-                          }
-                      }
-                   });
+                            if(res == true) {
+                                toastr.success("Região alterada com sucesso", 'Sucesso');
+                            } else {
+                                toastr.error("Erro ao alterar região", 'Error');
+                            }
+                        }
+                    });
                 });
 
                 $("input[name='layout_id']").on('change',function(){

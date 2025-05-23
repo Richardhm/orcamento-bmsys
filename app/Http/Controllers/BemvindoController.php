@@ -9,8 +9,13 @@ class BemvindoController extends Controller
 {
     public function index($userId)
     {
-
         $user = User::findOrFail($userId);
         return view('bemvindo', compact('user'));
     }
+
+    public function pix($user)
+    {
+        $user = User::findOrFail($user);
+    }
+
 }

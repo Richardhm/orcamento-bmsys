@@ -5,26 +5,32 @@
         </div>
     @endif
 
+        @if (session('error'))
+            <div class="bg-red-600 border border-red-400 text-white px-4 py-3 rounded relative w-[80%] mx-auto text-center" role="alert">
+                <span class="block sm:inline">{{ session('error') }}</span>
+            </div>
+        @endif
+
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Profile') }}
         </h2>
     </x-slot>
-    <div class="flex justify-around">
+    <div class="w-[99%] mx-auto flex justify-between">
 
-        <!-- Coluna da esquerda com título + grid -->
+
         <div class="md:w-[32%] mt-3">
 
             <!-- Título -->
-            <h3 class="text-white font-semibold text-lg mb-1 bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] rounded p-2">Gerenciador de Layout e UF de Referência</h3>
+            <h3 class="text-white font-semibold text-lg mb-1 text-lg">Gerenciador de Layout e UF de Referência</h3>
 
-            <div class="flex w-full w-[94%] justify-around bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border-white border mt-1 rounded p-1 items-center">
-                <label  for="regiao" class="block text-sm font-medium text-white mb-1 w-[40%]">Região (UF) de Preferência</label>
+            <div class="flex w-full md:w-[94%] justify-around bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px] border-white border mt-1 mb-1 rounded p-1 items-center">
+                <label  for="regiao" class="block text-sm font-medium text-white mb-1 w-[50%]">Região (UF) de Preferência</label>
                 <select name="regiao" id="regiao"
                         class="px-4 py-2 border border-gray-300 rounded-md shadow-sm
            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-           text-gray-700 bg-white  w-[30%]" translate="no">
+           text-gray-700 bg-white  w-[20%]" translate="no">
                     <option value="" disabled selected>UF</option>
                     @foreach($cidades as $uf => $grupo)
                         <option value="{{ $uf }}" {{ auth()->user()->uf_preferencia === $uf ? 'selected' : '' }}>{{ $uf }}</option>
@@ -35,7 +41,7 @@
             <!-- Grid de Layouts -->
             <div class="grid grid-cols-2 gap-1">
                 @foreach($layouts as $layout)
-                    <label style="height: 250px;max-height: 250px;" class="layout relative group w-60 flex flex-col items-center border p-0.5 rounded bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
+                    <label style="height: 250px;max-height: 250px;width:210px;max-width:210px;" class="layout relative group flex flex-col items-center border p-0.5 rounded bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
                         <!-- Input Radio -->
                         <input
                             type="radio"
@@ -51,7 +57,7 @@
                             <img
                                 src="{{ $folder ? asset($folder.'/'.$layout->imagem) : asset($layout->imagem) }}"
                                 alt="{{ $layout->nome }}"
-                                class="w-[65%] mx-auto rounded-lg transition-all duration-300"
+                                class="w-[80%] mx-auto rounded-lg transition-all duration-300"
                                 style="height:100%;"
                             />
                         </div>
@@ -63,7 +69,6 @@
                     </label>
                 @endforeach
             </div>
-
 
         </div>
 

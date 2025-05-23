@@ -16,25 +16,24 @@ class PasswordController extends Controller
      */
     public function update(Request $request)
     {
+
         try {
             $validated = $request->validateWithBag('updatePassword', [
                 'current_password' => ['required', 'current_password'],
                 'password' => ['required', Password::defaults(), 'confirmed'],
             ]);
-
             $request->user()->update([
                 'password' => Hash::make($validated['password']),
             ]);
-
             return redirect()->back()->with('success', 'Senha atualizado com sucesso!');
         } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'errors' => $e->errors()
-            ], 422);
+            return redirect()->back()->with('error', $e->getMessage());
+//            return response()->json([
+//                'success' => false,
+//                'message' => $e->getMessage(),
+//                'errors' => $e->errors()
+//            ], 422);
         }
-
 
     }
 }

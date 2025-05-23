@@ -19,6 +19,7 @@ class Assinatura extends Model
         'last_updated',
         'last_payment',
         'next_charge',
+        'tipo',
         'trial_ends_at'
     ];
 

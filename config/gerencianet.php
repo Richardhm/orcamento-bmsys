@@ -12,6 +12,6 @@ return [
     'production' => [
         'client_id' => env('GN_PROD_CLIENT_ID'),
         'client_secret' => env('GN_PROD_CLIENT_SECRET'),
-        'certificate_name' => base_path('certs/'.env('GN_PROD_CERTIFICATE_NAME','producao.p12'))
+        'certificate_name' => env('GN_PROD_CERTIFICATE_NAME')
     ],
 ];

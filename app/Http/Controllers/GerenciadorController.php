@@ -75,19 +75,13 @@ class GerenciadorController extends Controller
     public function regiao(Request $request)
     {
         $user = Auth::user(); // ou auth()->user()
-
-        // Valida se veio um UF válido ou vazio
         $uf = $request->input('regiao');
-
-        // Se for vazio, zera (null)
         $user->uf_preferencia = $uf ?: null;
-
         if($user->save()) {
             return true;
         } else {
             return false;
         }
-
         //return back()->with('status', 'Região atualizada com sucesso!');
     }
 

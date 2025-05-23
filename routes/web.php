@@ -55,14 +55,20 @@ Route::get('/', function () {
 Route::post('/callback', [CallbackController::class,'index']);
 Route::get('/bem-vindo/{user}', [BemvindoController::class, 'index'])->name('bemvindo');
 
+
 Route::post('/buscar_planos',[DashboardController::class,'buscar_planos'])->middleware(['auth', 'verified'])->name('buscar_planos');
 Route::post('/dashboard/orcamento',[DashboardController::class,'orcamento'])->middleware(['auth', 'verified'])->name('orcamento.montarOrcamento');
 Route::post("/pdf",[DashboardController::class,'criarPDF'])->middleware(['auth', 'verified'])->name('gerar.imagem');
 
 Route::get('/assinaturas/plano', [AssinaturaController::class, 'createIndividual'])->name('assinaturas.individual.create');
 Route::post('/assinaturas/individual', [AssinaturaController::class, 'storeIndividual'])->name('assinaturas.individual.store');
+Route::post('/assinatura/pix',[AssinaturaController::class, 'pix'])->name('assinatura.pix');
+
+Route::post('/verificar-pagamento', [AssinaturaController::class, 'verificarPagamento'])->name('verificar.pagamento');
+
 
 Route::get('/assinatura/historico', [AssinaturaController::class, 'historicoPagamentos'])->middleware(['auth', 'verified','check'])->name('assinatura.historico');
+Route::get('/assinatura/pix/historico', [AssinaturaController::class, 'historicoPagamentosPix'])->middleware(['auth', 'verified','check'])->name('assinatura.historico.pix');
 
 Route::get('/assinaturas/empresarial', [AssinaturaController::class, 'createEmpresarial'])->name('assinaturas.empresarial.create');
 Route::post('/assinaturas/empresarial', [AssinaturaController::class, 'storeEmpresarial'])->name('assinaturas.empresarial.store');
@@ -138,7 +144,10 @@ Route::middleware(['auth'])->group(function () {
 
     /************Gerenciar************************/
     Route::get("/gerenciamento", [GerenciadorController::class, 'index'])->name('gerenciamento.index')->middleware(['apenasAdministradores','check']);
-    Route::post("/gerenciamento/regiao", [GerenciadorController::class, 'regiao'])->name('gerenciamento.regiao')->middleware(['apenasAdministradores','check']);
+    Route::post("/gerenciamento/regiao", [GerenciadorController::class, 'regiao'])->name('gerenciamento.regiao')->middleware(['check']);
+
+
+
 
     //Route::post('/profile/regiao', [ProfileController::class, ''])->name('profile.regiao');
 
@@ -159,6 +168,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get("/assinatura/alterar", [AssinaturaController::class, 'edit'])->name('assinatura.edit')->middleware('apenasAdministradores');
     Route::post("/assinatura/trial/store", [AssinaturaController::class, 'storeTrial'])->name('assinaturas.trial.store')->middleware('apenasAdministradores');
+
+
+
 
     Route::get('/assinatura/expirada', function () {
         return view('assinaturas.expirada');
