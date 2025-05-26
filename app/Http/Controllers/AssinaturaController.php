@@ -25,6 +25,7 @@ class AssinaturaController extends Controller
     public function __construct()
     {
         $mode = config('gerencianet.mode');
+
         $certificate = config("gerencianet.{$mode}.certificate_name");
 
         $client_id = config("gerencianet.{$mode}.client_id");
@@ -39,6 +40,7 @@ class AssinaturaController extends Controller
             'debug' => false
 
         ];
+
 
         $this->efi = new EfiPay($options);
 
@@ -333,6 +335,62 @@ class AssinaturaController extends Controller
             ]);
         }
     }
+
+    public function pixTrial(Request $request)
+    {
+
+        $valor = number_format((float) $request->precoPlano, 2, '.', '');
+
+
+        $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
+        $body = [
+            "calendario" => [
+                "expiracao" => 3600 // Charge lifetime, specified in seconds from creation date
+            ],
+            "devedor" => [
+                "cpf" => $cpf,
+                "nome" => $request->nome
+            ],
+            "valor" => [
+                "original" => (string) $valor
+            ],
+            "chave" => "130ceaee-b233-481e-8feb-6029a5429b75", // Pix key registered in the authenticated Efí account
+            "solicitacaoPagador" => "Informe o número do identificador de pedido",
+
+        ];
+
+        $responsePix = $this->efi->pixCreateImmediateCharge([], $body);
+
+        if($responsePix['txid']) {
+            $params = [
+                "id" => $responsePix['loc']['id']
+            ];
+            $responseQrcode = $this->efi->pixGenerateQRCode($params);
+
+            $qrcode = $responseQrcode['qrcode'];
+
+            // Remover prefixo 'http://' ou 'https://'
+            $qrcode = preg_replace('/^https?:\/\//', '', $qrcode);
+
+            // Adicionar espaço no final do código
+            $qrcode = ' ' . $qrcode;
+
+            return [
+                "imagem" => $responseQrcode['imagemQrcode'],
+                "copiacola" => $qrcode,
+                "txid" => $responsePix['txid']
+            ];
+        }
+        return "Erro";
+    }
+
+
+
+
+
+
+
+
 
     public function pix(Request $request)
     {

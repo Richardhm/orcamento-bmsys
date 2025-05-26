@@ -33,7 +33,16 @@ class CheckSubscription
             }
 
 
+            if ($assinatura->tipo === 'PIX' && now()->gt($assinatura->next_charge)) {
 
+                if ($user->id === $assinatura->user_id) {
+                    return redirect()->route('assinatura.edit')
+                        ->with('error', 'Sua assinatura PIX expirou. Por favor, renove-a para continuar utilizando nossos serviços.');
+                }
+
+                return redirect()->route('assinatura.expirada')
+                    ->with('error', 'O período trial expirou. Entre em contato com o administrador.');
+            }
 
 
 

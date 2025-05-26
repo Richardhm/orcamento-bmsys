@@ -21,10 +21,12 @@ class CheckSubscriptionExpired
         if ($user && $user->assinaturas) {
             $assinatura = $user->assinaturas;
 
-            // Se a assinatura foi atualizada e não está mais expirada
-            if (!$this->isSubscriptionExpired($assinatura)) {
+
+            if (!$this->isSubscriptionExpired($assinatura) && !$this->isPixExpired($assinatura)) {
                 return redirect()->route('dashboard');
             }
+
+
         }
 
         return $next($request);
@@ -35,5 +37,12 @@ class CheckSubscriptionExpired
         return $assinatura->status === 'trial' &&
             $assinatura->trial_ends_at &&
             now()->gt($assinatura->trial_ends_at);
+    }
+
+    private function isPixExpired($assinatura): bool
+    {
+        return $assinatura->tipo === 'PIX' &&
+            $assinatura->next_charge &&
+            now()->gt($assinatura->next_charge);
     }
 }

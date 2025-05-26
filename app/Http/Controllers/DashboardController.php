@@ -395,7 +395,7 @@ class DashboardController extends Controller
 
                 $cabecalho = auth()->user()->layout_id;
                 $cabecalho_user = in_array($cabecalho, [1, 2, 3, 4]) ? $cabecalho : 1;
-                $cabecalhoName = "cotacao.cabecalho1";
+                $cabecalhoName = "cotacao.cabecalho{$cabecalho_user}";
 
                 $layout_folder = auth()->user()->isFolder() ?: '';
 

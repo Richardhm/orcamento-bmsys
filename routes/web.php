@@ -63,6 +63,7 @@ Route::post("/pdf",[DashboardController::class,'criarPDF'])->middleware(['auth',
 Route::get('/assinaturas/plano', [AssinaturaController::class, 'createIndividual'])->name('assinaturas.individual.create');
 Route::post('/assinaturas/individual', [AssinaturaController::class, 'storeIndividual'])->name('assinaturas.individual.store');
 Route::post('/assinatura/pix',[AssinaturaController::class, 'pix'])->name('assinatura.pix');
+Route::post('/assinatura/trial/pix',[AssinaturaController::class, 'pixTrial'])->name('assinatura.pix.trial');
 
 Route::post('/verificar-pagamento', [AssinaturaController::class, 'verificarPagamento'])->name('verificar.pagamento');
 

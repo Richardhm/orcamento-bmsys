@@ -1,6 +1,16 @@
 <x-guest-layout>
     <!-- Session Status -->
 
+    <div id="loading-cidades" style="display:none; position: absolute; left:0; right:0; margin:auto; top:0; bottom:0; z-index:9999; background:rgba(0,0,0,0.2); width:100%; height:100%; text-align:center;">
+        <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);">
+            <div class="jumping-dots-loader">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+
     @if(session('error'))
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 text-center">
             {{ session('error') }}
@@ -43,81 +53,129 @@
                     </ul>
                 </div>
 
-                {{-- ENDEREÇO --}}
-                <fieldset id="cardFields" class="border border-gray-300 p-1 rounded-lg mb-4">
-                    <legend class="text-lg font-semibold text-white">Endereço</legend>
-                    <div class="flex flex-col md:flex-row gap-4">
-                        <div class="w-full md:w-1/3">
-                            <label for="zipcode" class="block mb-1 font-medium text-white text-sm">CEP</label>
-                            <input type="text" name="zipcode" id="zipcode" placeholder="XXXXX-XXX" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
-                        </div>
-                        <div class="w-full md:w-1/2">
-                            <label for="street" class="block mb-1 font-medium text-white text-sm">Rua</label>
-                            <input type="text" name="street" id="street" placeholder="Rua" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
-                        </div>
-                        <div class="w-full md:w-1/4">
-                            <label for="number" class="block mb-1 font-medium text-white text-sm">Nº <small>(Opcional)</small></label>
-                            <input type="text" name="number" id="number" placeholder="Nº" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg">
-                        </div>
-                    </div>
-                    <div class="flex flex-col md:flex-row gap-4">
-                        <div class="w-full md:w-1/3">
-                            <label for="city" class="block mb-1 font-medium text-white text-sm">Cidade</label>
-                            <input type="text" name="city" id="city" placeholder="Cidade" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
-                        </div>
-                        <div class="w-full md:w-1/2">
-                            <label for="neighborhood" class="block mb-1 font-medium text-white text-sm">Bairro</label>
-                            <input type="text" name="neighborhood" id="neighborhood" placeholder="Bairro" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
-                        </div>
-                        <div class="w-full md:w-1/4">
-                            <label for="state" class="block mb-1 font-medium text-white text-sm">Estado</label>
-                            <input type="text" name="state" id="state" placeholder="UF" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 rounded-lg" required>
-                        </div>
-                    </div>
+                <fieldset class="border border-gray-300 px-1 py-1 rounded-lg flex gap-4" id="opcoes_pagamento">
+                    <legend class="text-lg font-semibold text-white">Forma de Pagamento</legend>
+                    <button type="button" id="pixButton" class="flex items-center justify-center w-full bg-green-500 text-white px-1 py-2 rounded-xl text-sm shadow-lg" class="mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" width="28px" height="28px" viewBox="0 0 16 16"><path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/></svg>
+                        PIX
+                    </button>
+                    <button type="button" id="creditCardButton" class="flex items-center justify-center w-full bg-blue-500 text-white px-1 py-2 rounded-xl text-sm shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="28px" height="28px" class="mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                        </svg>
+                        Cartão de Crédito
+                    </button>
                 </fieldset>
+
+                {{-- PIX --}}
+                <div id="pix_montar" class="mt-2" style="display: none;">
+                    <h2 class="text-white text-center">Pague com o <strong>QR Code</strong> abaixo:</h2>
+                    <img id="qrcode_img" class="mx-auto"  />
+
+                    <input type="hidden" id="copiacola_input" class="border rounded p-2 flex-1" readonly />
+                    <div class="flex text-center justify-center my-2 w-full">
+                        <button id="copyButton" class="bg-green-500 text-white justify-center p-2 rounded w-56 flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
+                            </svg>
+                            Pix Copia e Cola
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col gap-1 p-2 border rounded-lg bg-gray-50">
+                        <h3 class="text-sm text-center font-semibold">Resumo da Compra</h3>
+
+                        <div class="flex justify-between text-sm">
+                            <span>Plano:</span>
+                            <span>Mensal</span>
+                        </div>
+
+
+                        <div class="flex justify-between text-sm">
+                            <span>Método de Pagamento:</span>
+                            <span>PIX</span>
+                        </div>
+
+
+                        <div class="flex justify-between font-bold text-blue-700 border-t text-sm">
+                            <span>Total:</span>
+                            <span id="resumo_total"></span>
+                        </div>
+
+                        <div class="flex items-center justify-center mt-4">
+                            <span>Aguardando pagamento:</span>
+                            <div class="loading-dots ml-2">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+
+                            <div id="resultado_pix text-black" style="display: none;">
+                                <span class="text-green-900">PAGO</span>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                {{-- FIM PIX --}}
 
                 {{-- DADOS DO CARTÃO --}}
-                <fieldset id="cardDados" class="border border-gray-300 p-1 rounded-lg mb-4">
-                    <legend class="text-lg font-semibold text-white">Dados Cartão</legend>
-                    <div class="mb-2">
-                        <label for="numero_cartao" class="block mb-1 font-medium text-white text-sm">Número do Cartão</label>
-                        <input type="text" name="numero_cartao" required id="numero_cartao" placeholder="XXXX XXXX XXXX XXXX" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
-                    </div>
-                    <div class="mb-2">
-                        <label for="nome_titular" class="block mb-1 font-medium text-white text-sm">Nome do Titular</label>
-                        <input type="text" name="nome_titular" required id="nome_titular" placeholder="Nome do Titular do Cartão" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
-                    </div>
-                    <div class="flex justify-between gap-2">
-                        <div class="w-1/3">
-                            <label for="mes" class="block mb-1 font-medium text-white text-sm">Mês</label>
-                            <select name="mes" id="mes" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
-                                <option value="">MM</option>
-                                @for ($i = 1; $i <= 12; $i++)
-                                    <option value="{{ sprintf('%02d', $i) }}">{{ sprintf('%02d', $i) }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="w-1/3">
-                            <label for="ano" class="block mb-1 font-medium text-white text-sm">Ano</label>
-                            <select name="ano" id="ano" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
-                                <option value="">ANO</option>
-                                @for ($i = now()->year; $i <= now()->year + 12; $i++)
-                                    <option value="{{ substr($i, -2) }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="w-1/3">
-                            <label for="cvv" class="block mb-1 font-medium text-white text-sm">CVV</label>
-                            <input type="text" name="cvv" required id="cvv" placeholder="XXX" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
-                        </div>
-                    </div>
-                </fieldset>
+                <div id="container_cartao" style="display: none;">
 
-                <input type="hidden" name="bandeira" id="bandeira">
+                    <fieldset id="cardDados" class="border border-gray-300 p-1 rounded-lg mb-4">
+                        <legend class="text-lg font-semibold text-white">Dados Cartão</legend>
+                        <div class="mb-2">
+                            <label for="numero_cartao" class="block mb-1 font-medium text-white text-sm">Número do Cartão</label>
+                            <input type="text" name="numero_cartao" required id="numero_cartao" placeholder="XXXX XXXX XXXX XXXX" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
+                        </div>
+                        <div class="mb-2">
+                            <label for="nome_titular" class="block mb-1 font-medium text-white text-sm">Nome do Titular</label>
+                            <input type="text" name="nome_titular" required id="nome_titular" placeholder="Nome do Titular do Cartão" class="bg-gray-50 border border-gray-300 text-gray-950 text-sm block w-full p-1.5 focus:border-transparent focus:ring-0 focus:outline-none rounded-lg">
+                        </div>
+                        <div class="flex justify-between gap-2">
+                            <div class="w-1/3">
+                                <label for="mes" class="block mb-1 font-medium text-white text-sm">Mês</label>
+                                <select name="mes" id="mes" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
+                                    <option value="">MM</option>
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <option value="{{ sprintf('%02d', $i) }}">{{ sprintf('%02d', $i) }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="w-1/3">
+                                <label for="ano" class="block mb-1 font-medium text-white text-sm">Ano</label>
+                                <select name="ano" id="ano" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
+                                    <option value="">ANO</option>
+                                    @for ($i = now()->year; $i <= now()->year + 12; $i++)
+                                        <option value="{{ substr($i, -2) }}">{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="w-1/3">
+                                <label for="cvv" class="block mb-1 font-medium text-white text-sm">CVV</label>
+                                <input type="text" name="cvv" required id="cvv" placeholder="XXX" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <input type="hidden" name="bandeira" id="bandeira">
+
+
+
+
+
+
+
+                </div>
+                {{-- FIM DADOS DO CARTÃO --}}
+
+
 
                 {{-- BOTÃO SUBMIT --}}
                 <div>
-                    <button type="submit" class="text-white bg-gradient-to-r from-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2 text-center me-2 mb-1 w-full rounded-lg">Salvar</button>
+                    <button type="submit" id="buttonSubmit" class="hidden text-white bg-gradient-to-r from-cyan-500 to-cyan-600 hover:bg-gradient-to-br dark:focus:ring-cyan-800 font-medium px-5 py-2 text-center me-2 mb-1 w-full rounded-lg">Salvar</button>
                 </div>
             </div>
         </form>
@@ -141,6 +199,83 @@
                 let descontoUsuario = 0.0;
                 let totalUsuarios = 1; // Atualize se tiver multiusuário
 
+                $("#copyButton").on('click', function(e) {
+                    e.preventDefault();
+                    let copyText = $("#copiacola_input");
+                    copyText.select();
+                    navigator.clipboard.writeText(copyText.val()).then(function(){
+                        toastr.success("Sucesso","Codigo copiado com sucesso");
+                    }).catch(function(error){
+                        console.error("Erro ao copiar texto: ", error);
+                    });
+                    return false;
+                });
+
+
+
+                $("#pixButton").on('click',function(){
+
+                    if ($("#container_cartao").is(":visible")) {
+                        $("#container_cartao").hide(); // ou .fadeOut()
+                    }
+
+                    if ($("#buttonSubmit").is(":visible")) {
+                        $("#buttonSubmit").addClass('hidden');
+                    }
+
+
+                    let cpf = '01375583174';
+                    let nome = 'Richard F Lopes';
+
+                    $('#loading-cidades').fadeIn(150);
+
+                    $.ajax({
+                        url:"{{route('assinatura.pix.trial')}}",
+                        method:"POST",
+                        data: {
+                            cpf,nome,precoPlano
+                        },
+                        success:function(res) {
+                            console.log(res);
+                            if(res != "error") {
+
+                                $("#qrcode_img").attr("src", res.imagem);
+                                $("#copiacola_input").val(res.copiacola);
+
+                                $("#txid").val(res.txid);
+
+                                $("#pix_montar").fadeIn();
+
+                            } else {
+
+                            }
+                        },
+                        complete: function() {
+                            // Esconde loader sempre ao finalizar
+                            $('#loading-cidades').fadeOut(150);
+
+                        }
+                    });
+                });
+
+
+                $("#creditCardButton").on('click',function(){
+                    if ($("#pix_montar").is(":visible")) {
+                        $("#pix_montar").fadeOut(); // ou .hide()
+                    }
+                    $("#container_cartao").fadeIn();
+
+                    if ($("#buttonSubmit").hasClass("hidden")) {
+                        $("#buttonSubmit").removeClass("hidden");
+                    }
+                });
+
+
+
+
+
+
+
                 function atualizarResumo() {
                     let valorPlano = precoPlano - descontoPlano;
                     let valorUsuarios = (precoPorUsuario - descontoUsuario) * (totalUsuarios - 1);
@@ -152,6 +287,7 @@
                     $("#descontoPlano").html(descontoPlano > 0 ? `<span class="text-red-400">(- R$ ${descontoPlano.toFixed(2)})</span>` : "");
                     $("#precoUsuarioOriginal").text(`R$ ${precoPorUsuario.toFixed(2)}`);
                     $("#totalFinal").html(`<span class="text-green-600">R$ ${total.toFixed(2)}</span>`);
+                    $("#resumo_total").html(`<span class="text-green-600">R$ ${total.toFixed(2)}</span>`);
                 }
 
                 atualizarResumo();
