@@ -232,17 +232,17 @@
 
 
 <!-- Navbar -->
-<nav class="fixed w-full z-50 shadow-md bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
+<nav class="fixed w-full z-50 shadow-md bg-white">
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-row justify-between items-center py-4">
+        <div class="flex flex-row justify-between items-center">
             <!-- Logo -->
             <div>
-                <img src="{{asset('logo_bm_1.png')}}" alt="Logo" class="h-12 md:h-16 p-1">
+                <img src="{{asset('cotafacil_logo.png')}}" alt="Logo" class="h-20 p-1">
             </div>
 
             <!-- Título Centralizado -->
             <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2">
-                <h1 class="text-2xl md:text-4xl font-bold text-white text-center">Sistema Orçamento</h1>
+                <h1 class="text-2xl md:text-4xl font-bold text-blue-950 text-center">Sistema Orçamento</h1>
             </div>
 
             <!-- Botões Direita -->
@@ -250,11 +250,11 @@
                 <a href="#pricing" class="bg-red-600 text-white px-4 py-2 text-sm md:px-6 md:py-2 rounded-full hover:bg-red-900 transition-colors hidden md:inline-block">
                     Assine Agora
                 </a>
-                <a href="{{route('login')}}" class="bg-white text-black px-4 py-2 text-sm md:px-6 md:py-2 rounded-full hover:bg-gray-900 hover:text-white transition-colors">
+                <a href="{{route('login')}}" class="bg-blue-950 text-white px-4 py-2 text-sm md:px-6 md:py-2 rounded-full hover:bg-gray-900 hover:text-white transition-colors">
                     Login
                 </a>
                 <div>
-                    <img src="{{asset('hapvida-menor.png')}}" style="width:165px;height:37px;" alt="Hapvida">
+                    <img src="{{asset('hapvida-logo.png')}}" style="width:165px;height:37px;" alt="Hapvida">
                 </div>
             </div>
 
