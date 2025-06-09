@@ -26,7 +26,7 @@
         </div>
     @endif
     <section class="rounded-lg w-full min-h-screen flex items-center justify-center flex-col my-auto p-4">
-        <img src="{{ asset('logo_bm_1.png') }}" class="mx-auto my-2" alt="">
+        <img src="{{asset('cotafacil_logo.png')}}" class="mx-auto my-2 h-20 p-1" alt="">
         <form method="POST" action="{{ route('login') }}" class="p-4 rounded-lg w-full max-w-sm bg-[rgba(254,254,254,0.18)] backdrop-blur-[15px]">
             @csrf
             <div class="mb-4">
