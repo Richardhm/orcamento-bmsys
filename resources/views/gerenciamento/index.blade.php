@@ -431,6 +431,8 @@
                             if (data.imagem) {
 
                                 $('#imagem_edit').attr('src',data.imagem);
+                            } else {
+                                $('#imagem_edit').attr('src','avatar-padrao.png');
                             }
                         },
                         error: function (xhr) {
@@ -564,6 +566,12 @@
 
                     let id = $("#id_edit").val();
 
+                    let load = document.querySelector(".ajax_load");
+                    load.style.display = "flex";
+
+
+
+
                     const form = new FormData();
                     form.append('imagem',event.target.files[0]);
                     form.append('id',id);
@@ -578,6 +586,7 @@
                     }).then(response => response.json())
                         .then(data => {
                             if (data.message) {
+                                load.style.display = "none";
                                 // Atualiza a imagem de perfil no DOM
                                 const userAvatar = document.getElementById('imagem_edit');
                                 const newSrc = URL.createObjectURL(event.target.files[0]);

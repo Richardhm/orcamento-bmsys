@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Assinatura extends Model
 {
+
+    protected $casts = [
+        'next_charge' => 'datetime',
+    ];
+
     protected $fillable = [
         'user_id',
         'cupom_id',
@@ -64,8 +69,6 @@ class Assinatura extends Model
     {
         return $this->hasMany(EmailAssinatura::class)->with('user');
     }
-
-
 
     public function calcularPrecoTotal()
     {

@@ -19,9 +19,16 @@
 
     <input type="hidden" id="preco_final">
 
+    <input type="hidden" id="txid">
+
     <x-auth-session-status class="mb-1" :status="session('status')" />
     <section class="md:w-[70%] rounded-lg mx-auto">
         <img src="{{ asset('logo_bm_1.png') }}" class="mx-auto my-1 w-32 md:w-32" alt="">
+
+
+        <input type="hidden" id="cpf" value="{{$cpf}}">
+        <input type="hidden" id="nome" value="{{$nome}}">
+
 
         <form method="POST" name="cadastrar_individual" class="p-1 flex flex-wrap gap-4" enctype="multipart/form-data">
             @csrf
@@ -73,16 +80,9 @@
                     <img id="qrcode_img" class="mx-auto"  />
 
                     <input type="hidden" id="copiacola_input" class="border rounded p-2 flex-1" readonly />
-                    <div class="flex text-center justify-center my-2 w-full">
-                        <button id="copyButton" class="bg-green-500 text-white justify-center p-2 rounded w-56 flex">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
-                            </svg>
-                            Pix Copia e Cola
-                        </button>
-                    </div>
 
-                    <div class="flex flex-col gap-1 p-2 border rounded-lg bg-gray-50">
+
+                    <div class="flex flex-col gap-1 p-2 border rounded-lg bg-gray-50 mt-3">
                         <h3 class="text-sm text-center font-semibold">Resumo da Compra</h3>
 
                         <div class="flex justify-between text-sm">
@@ -199,6 +199,7 @@
                 let descontoUsuario = 0.0;
                 let totalUsuarios = 1; // Atualize se tiver multiusuário
 
+
                 $("#copyButton").on('click', function(e) {
                     e.preventDefault();
                     let copyText = $("#copiacola_input");
@@ -224,8 +225,8 @@
                     }
 
 
-                    let cpf = '01375583174';
-                    let nome = 'Richard F Lopes';
+                    let cpf = $("#cpf").val();
+                    let nome = $("#nome").val();
 
                     $('#loading-cidades').fadeIn(150);
 
@@ -236,16 +237,13 @@
                             cpf,nome,precoPlano
                         },
                         success:function(res) {
-                            console.log(res);
+
                             if(res != "error") {
 
                                 $("#qrcode_img").attr("src", res.imagem);
                                 $("#copiacola_input").val(res.copiacola);
-
                                 $("#txid").val(res.txid);
-
                                 $("#pix_montar").fadeIn();
-
                             } else {
 
                             }
@@ -323,11 +321,7 @@
             });
 
             $gn.ready(function(checkout){
-
-
-
                 $('#cardCupom').hide();
-
                 // Coloca um listener no checkbox
                 $('#cupom_promocional').on('change', function() {
                     if ($(this).is(':checked')) {
@@ -336,9 +330,6 @@
                         $('#cardCupom').hide();
                     }
                 });
-
-
-
                 $("#zipcode").change(function(){
                     let cep = $(this).val().replace("-","");
                     const url = `https://viacep.com.br/ws/${cep}/json`;
@@ -361,10 +352,40 @@
                 });
 
 
+                function verificarPagamento() {
+                    let transactionId = $("#txid").val(); // substitua pelo ID real da transação
+
+                    if(transactionId) {
+                        let precoPlano = $("#preco_final").val();
+                        let cpf = $("#cpf").val();
+                        let formData = new FormData(); // Cria um novo FormData
+                        formData.append("id", transactionId);
+                        formData.append("precoFinal",precoPlano);
+                        formData.append("cpf", cpf);
+                        $.ajax({
+                            url: `{{route('verificar.pagamento.pix')}}`,
+                            method: 'POST',
+                            data: formData,
+                            processData: false, // Necessário para o envio de FormData
+                            contentType: false, // Necessário para o envio de FormData
+                            success: function(res) {
+                                console.log(res);
+                                if (res.success) { // Verifique conforme o status que a API retorna
+                                    clearInterval(intervalo);
+                                    window.location.href = res.redirect;
+                                    // Atualize a interface ou redirecione o usuário
+                                }
+                            },
+                            error: function() {
+                                console.error("Erro ao verificar o pagamento");
+                            }
+                        });
+                    }
+                }
 
 
 
-
+                let intervalo = setInterval(verificarPagamento, 20000);
 
 
 
@@ -491,8 +512,6 @@
                         toastr.error("O número do cartão de crédito é inválido. Verifique e tente novamente.", "Erro");
                         return false;
                     }
-
-
 
                     let mes = $("#mes").val();
                     let ano = $("#ano").val();

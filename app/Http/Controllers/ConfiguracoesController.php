@@ -614,9 +614,6 @@ class ConfiguracoesController extends Controller
     }
 
     public function validar(Request $request) {
-
-
-
         $cupom = Cupom::where('codigo', $request->codigo_cupom)
             ->where('ativo', 1)
             ->where('validade', '>=', now()->format('Y-m-d H:i:s'))

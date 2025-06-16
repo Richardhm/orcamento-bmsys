@@ -16,7 +16,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-1" :status="session('status')" />
     <section class="w-full rounded-lg">
-        <img src="{{asset('logo_bm_1.png')}}" class="mx-auto my-1 w-32 md:w-32" alt="">
+        <img src="{{asset('cotafacil_logo.png')}}" class="mx-auto my-2 h-20 p-1" alt="">
         <form method="POST" name="cadastrar_individual" class="p-1 flex flex-wrap gap-4" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             <!--Lado Esquerdo-->
@@ -870,7 +870,6 @@
                         });
                     }
                 }
-
                 // Inicia o polling a cada 10 segundos
                 let intervalo = setInterval(verificarPagamento, 20000);
 

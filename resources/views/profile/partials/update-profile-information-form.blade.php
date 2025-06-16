@@ -16,6 +16,7 @@
                      class="user-avatar w-24 h-24 rounded-full object-cover cursor-pointer"
                      id="user-avatar">
                 <input type="file" id="avatar-input" class="hidden" accept="image/*">
+                <p class="text-white text-sm">Alterar Foto</p>
             </div>
         </div>
     </header>

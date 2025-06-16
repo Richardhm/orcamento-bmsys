@@ -66,6 +66,7 @@ Route::post('/assinatura/pix',[AssinaturaController::class, 'pix'])->name('assin
 Route::post('/assinatura/trial/pix',[AssinaturaController::class, 'pixTrial'])->name('assinatura.pix.trial');
 
 Route::post('/verificar-pagamento', [AssinaturaController::class, 'verificarPagamento'])->name('verificar.pagamento');
+Route::post('/pix/verificar-pagamento', [AssinaturaController::class, 'verificarPagamentoPIX'])->name('verificar.pagamento.pix');
 
 
 Route::get('/assinatura/historico', [AssinaturaController::class, 'historicoPagamentos'])->middleware(['auth', 'verified','check'])->name('assinatura.historico');

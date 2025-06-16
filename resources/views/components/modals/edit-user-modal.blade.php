@@ -80,9 +80,9 @@
                         src=""
                         id="imagem_edit"
                         alt="Foto do usuário"
-                        class="w-40 h-40 rounded-full border-2 border-gray-300 object-cover"
+                        class="w-40 h-40 rounded-full border-2 border-gray-300 object-cover hover:cursor-pointer"
                     />
-                    <p class="mt-4 text-center text-sm text-gray-500">Foto do Usuário</p>
+                    <p class="mt-4 text-center text-sm text-gray-500">Alterar Foto de Perfil</p>
                 </div>
             </div>
         </div>

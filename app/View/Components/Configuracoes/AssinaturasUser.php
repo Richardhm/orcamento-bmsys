@@ -12,6 +12,9 @@ class AssinaturasUser extends Component
     public $assinaturas;
     public $paginacao;
 
+    public $somaValor;
+    public $somaUsuarios;
+
     public function __construct($perPage = 10)
     {
         $this->assinaturas = Assinatura::with([
@@ -22,8 +25,12 @@ class AssinaturasUser extends Component
             //->where('is_administrador', 1)
             //->get();
             ->paginate($perPage);
-        //dd($this->assinaturas);
 
+        $this->somaValor = $this->assinaturas->sum('preco_total');
+
+        $this->somaUsuarios = $this->assinaturas->sum(function($assinatura){
+            return $assinatura->emails->count();
+        });
 
         $this->paginacao = $this->assinaturas;
     }
@@ -37,9 +44,9 @@ class AssinaturasUser extends Component
                 'email_admin' => $assinatura->emails->first()->email ?? 'N/A',
                 'valor' => number_format($assinatura->preco_total, 2, ',', '.'),
                 'usuarios' => $assinatura->emails->count(),
-                'cidades' => $assinatura->cidades->pluck('nome')->implode(', '),
+                'cidades' => $assinatura->user->phone,
                 'status' => $assinatura->status,
-                'proximo_pagamento' => $assinatura->next_charge?->format('d/m/Y')
+                'proximo_pagamento' => $assinatura->next_charge ? $assinatura->next_charge?->format('d/m/Y') : ""
             ];
         });
     }
@@ -48,7 +55,9 @@ class AssinaturasUser extends Component
     {
         return view('components.configuracoes.assinaturas-user', [
             'dados' => $this->formatarDados($this->assinaturas),
-            'paginacao' => $this->paginacao
+            'paginacao' => $this->paginacao,
+            'somaValor' => $this->somaValor,
+            'somaUsuarios' => $this->somaUsuarios,
         ]);
     }
 }

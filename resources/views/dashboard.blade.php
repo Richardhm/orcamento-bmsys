@@ -302,7 +302,7 @@
 
                        verificarVisibilidade();
 
-                       desmarcarPlanos()
+                       desmarcarPlanos();
                    }
                }
 

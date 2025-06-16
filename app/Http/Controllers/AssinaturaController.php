@@ -64,9 +64,15 @@ class AssinaturaController extends Controller
     public function edit()
     {
         $assinatura = \auth()->user()->assinaturas()->first();
+        $nome = \auth()->user()->name;
+        $cpf = \auth()->user()->cpf;
+
+
 
         return view('assinaturas.trial.create',[
-            'preco_total' => $assinatura->preco_total
+            'preco_total' => $assinatura->preco_total,
+            'nome' => $nome,
+            'cpf' => $cpf
         ]);
     }
 
@@ -125,6 +131,7 @@ class AssinaturaController extends Controller
             'emails_permitidos' => 1,
             'emails_extra' => 1,
             'preco_base' => 29.90,
+            'tipo' => 'cartao',
             'preco_total' => 29.90,
         ]);
 
@@ -225,6 +232,7 @@ class AssinaturaController extends Controller
                 'emails_extra' => 1,
                 'preco_total' => 29.90, // Preço base sem e-mails extras
                 'status' => 'ativo',
+                'tipo' => 'cartao',
                 'subscription_id' => $response['data']['subscription_id']
             ]);
 
@@ -440,17 +448,34 @@ class AssinaturaController extends Controller
         $response = $this->efi->pixListCharges($params);
         $dados = $response['cobs'];
 
-
-
-
         return view('assinaturas.historicopix', compact('dados'));
-
-
 
     }
 
 
+    public function verificarPagamentoPIX(Request $request)
+    {
+        $status= true;
+        $params = [
+            "txid" => $request->id
+        ];
+        $response = $this->efi->pixDetailCharge($params);
 
+        if($response['status'] === "CONCLUIDA" && $status) {
+            $status = false;
+            $user = User::where("cpf",$request->cpf)->first()->assinaturas()->first();
+            $user->next_charge = Carbon::now()->addMonth();
+            $user->preco_total = $request->precoFinal;
+            $user->tipo = "PIX";
+            $user->status = "ativo";
+            $user->save();
+            session()->flash('success', 'Sua Assinatura foi renovada até a data ' . $user->next_charge->format('d/m/Y'));
+            return response()->json([
+                'success' => true,
+                'redirect' => route('dashboard')
+            ]);
+        }
+    }
 
 
 
@@ -458,14 +483,11 @@ class AssinaturaController extends Controller
 
     public function verificarPagamento(Request $request)
     {
-        $status = true;
-
-
+        $status= true;
         $imagePath = null;
         if ($request->hasFile('imagem')) {
             $imagePath = $request->file('imagem')->store('users', 'public');
         }
-
         $params = [
             "txid" => $request->id
         ];
@@ -917,6 +939,7 @@ class AssinaturaController extends Controller
                 'emails_extra' => 1,
                 'preco_total' => 29.90, // Preço base sem e-mails extras
                 'status' => 'ativo',
+                'tipo' => 'cartao',
                 'subscription_id' => $response['data']['subscription_id']
             ]);
 
@@ -1050,6 +1073,7 @@ class AssinaturaController extends Controller
                 'emails_extra' => 1,
                 'preco_total' => 29.90, // Preço base sem e-mails extras
                 'status' => 'ativo',
+                'tipo' => 'cartao',
                 'subscription_id' => $response['data']['subscription_id']
             ]);
 

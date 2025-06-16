@@ -1,5 +1,12 @@
 @props(['dados', 'paginacao'])
 
+
+<p class="bg-blue-950 text-white flex justify-end p-3">
+    <span>Total de valores: R$ {{ number_format($somaValor, 2, ',', '.') }}</span>
+    <span class="mx-2"> - </span>
+    <span>Total de usuários: {{ $somaUsuarios }}</span>
+</p>
+
 <div class="bg-white/10 rounded-lg p-6">
     <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -11,7 +18,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Admin</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Valor</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Usuários</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Cidades</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Telefone</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
 
 
@@ -34,6 +41,9 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-green-400">
                                     R$ {{ $assinatura['valor'] }}
+
+
+
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                                     {{ $assinatura['usuarios'] }} usuários
@@ -54,6 +64,7 @@
                             </tr>
                         @endforeach
                         </tbody>
+
                     </table>
                 </div>
 
