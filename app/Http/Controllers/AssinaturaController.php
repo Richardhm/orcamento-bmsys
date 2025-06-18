@@ -36,7 +36,7 @@ class AssinaturaController extends Controller
             'client_id' => $client_id,
             'client_secret' => $client_secret,
             'certificate' => $certificate_path,
-            'sandbox' => false,
+            'sandbox' => true,
             'debug' => false
 
         ];
@@ -439,8 +439,8 @@ class AssinaturaController extends Controller
     {
         $cpf = \auth()->user()->first()->cpf;
         $params = [
-            "inicio" => "2025-05-01T00:00:00Z",
-            "fim" => "2025-06-25T23:59:59Z",
+            "inicio" => "2025-01-01T00:00:00Z",
+            "fim" => "2025-12-30T23:59:59Z",
             "status" => "CONCLUIDA",
             "cpf" => $cpf,
         ];
@@ -555,6 +555,7 @@ class AssinaturaController extends Controller
      * */
     public function storeTrial(Request $request)
     {
+
         //return $request->all();
         if($request->cupom_promocional) {
 
@@ -568,7 +569,7 @@ class AssinaturaController extends Controller
                     [
                         "name" => "Plano Individual",
                         "amount" => 1,
-                        "value" => 2990
+                        "value" => (int) round($request->preco_base * 100)
                     ]
                 ];
                 // Dados do cliente
@@ -577,7 +578,7 @@ class AssinaturaController extends Controller
                     "cpf" => $user->cpf,
                     "phone_number" => preg_replace('/[^0-9]/', '', $user->phone),
                     "email" => $user->email,
-                    "birth" => $user->birth_date instanceof \Carbon\Carbon ? $user->birth_date->format('Y-m-d') : $user->birth_date
+                    "birth" => $request->data_nascimento
                 ];
 
                 // Endereço (também necessário)
@@ -610,10 +611,12 @@ class AssinaturaController extends Controller
 
                 $assinatura = Assinatura::where("user_id",$user->id)->first();
                 $assinatura->preco_base = 29.90;
-                $assinatura->preco_total = 29.90;
+                $assinatura->preco_total = $request->preco_base;
                 $assinatura->status = 'ativo';
                 $assinatura->subscription_id = $response['data']['subscription_id'];
+                $assinatura->next_charge = null;
                 $assinatura->trial_ends_at = null;
+                $assinatura->tipo = "CARTAO";
                 $assinatura->save();
 
                 session()->flash('success', 'Assinatura Atualizada com sucesso');
